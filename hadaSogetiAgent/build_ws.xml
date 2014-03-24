@@ -1,0 +1,108 @@
+<project name="SOABPAgent" default="ejbjar" basedir=".">
+	<tstamp>
+		<format property="TODAY" pattern="d-MM-yy" />
+	</tstamp>
+
+	<property file="build.properties" />
+
+	<property environment="env" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="resources.dir" value="${basedir}/resources" />
+	<!--property name="test-src.dir" value="${basedir}/src/test/java" /-->
+	<property name="target.dir" value="${basedir}/build" />
+	<property name="target.classes.dir" value="${target.dir}/classes" />
+	<property name="conf.dir" value="${basedir}/conf" />
+	<!--property name="conf.app.dir" value="${conf.dir}/app" /-->
+    <property name="wsdl.dir" value="${basedir}/wsdl" />
+
+    <property name="generated.src.dir" value="${basedir}/generated" />
+	<property name="lib.dir" value="${basedir}/lib" />
+
+	<property name="dist.dir" value="${basedir}/dist" />
+
+	<path id="classpath">
+		<fileset dir="${java.classpath}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${basedir}/lib">
+        	<include name="*.jar"/>
+        </fileset>
+    </path>
+    
+	<target name="compile">
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${target.classes.dir}" />
+		<!--javac srcdir="${src.dir}" destdir="${target.classes.dir}" debug="true" debuglevel="lines, vars, source" deprecation="on" optimize="off" includes="**">
+			<classpath refid="classpath" />
+		</javac-->
+		<javac srcdir="${generated.src.dir}" destdir="${target.classes.dir}" debug="true" debuglevel="lines, vars, source" deprecation="on" optimize="off" includes="**">
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<target name="ejbjar" depends="jaxws.generate, compile">		
+		<jar jarfile="${target.dir}/${project.name}.jar">
+			<fileset dir="${target.classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${src.dir}">
+				<include name="**/*.*"/>
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="${wsdl.dir}">
+							<include name="**/*.*"/>
+						</fileset>
+		</jar>
+	</target>
+
+	<!-- Clean everything -->
+	<target name="clean">
+		<delete dir="${dist.dir}" />
+		<delete dir="${target.dir}" />
+	</target>
+	
+    <!-- ################################## -->
+    <!-- Generierung von Webservice-Client  -->
+    <!-- ################################## -->
+	
+	<!-- JaxWS-Generierung -->
+	<target name="jaxws.generate" description="Generates classes">
+		<delete dir="${generated.src.dir}" />
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${target.classes.dir}" />
+		<mkdir dir="${generated.src.dir}" />
+	   		<taskdef name="wsconsume" classname="com.sun.tools.ws.ant.WsImport">
+	   			<classpath refid="classpath"/>
+	   		</taskdef>
+	   		<wsconsume xendorsed="false"
+	   		  package="com.bms.dell.client.webservice"
+	   		  fork="true"
+	   		  verbose="true"
+	   		  extension="true"
+	   		  destdir="${target.classes.dir}"
+	   		  sourcedestdir="${generated.src.dir}"
+	   		  keep="true"
+	   		  wsdl="${wsdl.dir}/sogeti.wsdl" >
+	   		</wsconsume>	
+	   	</target>
+	
+    <target name="generate.webservice.wsdl2java" description="Generates classes">
+        <taskdef name="wsdl2java"
+                 classname="org.apache.axis2.tool.ant.AntCodegenTask"
+                 classpathref="classpath"/>
+        <wsdl2java wsdlFilename="${wsdl.dir}/sogeti.wsdl"
+                   output="${basedir}/generated"
+                   packageName="de.com.aca.client.webservice"
+                   databindingName="xmlbeans"    
+        		   portname="WS_datametriePort"    		   
+                   synconly="true" 
+                   serverside="false"
+                   serverSideInterface="false"
+                   generateservicexml="false"
+                   unpackClasses="true"
+                   generateAllClasses="false" />       
+   		<!--delete file="${generated.src.dir}/build.xml"/-->       
+    </target>
+</project>

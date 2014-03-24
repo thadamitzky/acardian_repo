@@ -1,0 +1,16 @@
+2014-03-21 13:24:44.254 INFO    [main] com.quest.glue.tools.AgentCompiler - Log messages will be written to C:\Users\TSHY\ws\hadaSogetiAgent\build\tooling\logs\hadaSogetiAgent-1.0.1_2014-03-21_132444_001.log
+2014-03-21 13:24:44.254 INFO    [main] com.quest.glue.tools.AgentCompiler - Processing Agent Definition hadaSogetiAgent 1.0.1 [build-id local-build-20140321-1324]
+2014-03-21 13:24:44.254 INFO    [main] com.quest.glue.tools.AgentCompiler - CollectorInterfaceGenerator generated files are up-to-date.
+2014-03-21 13:24:44.254 INFO    [main] com.quest.glue.tools.AgentCompiler - ManifestGenerator generated files are up-to-date.
+2014-03-21 13:24:44.254 INFO    [main] com.quest.glue.tools.AgentCompiler - ASPServiceGenerator generated files are up-to-date.
+2014-03-21 13:24:44.488 WARN    [main] com.quest.glue.tools.compiler.topology.common.TopologyHelper - The topology object MeasureData cannot be found.
+2014-03-21 13:24:44.488 ERROR   [main] com.quest.glue.tools.AgentCompiler - One or more configuration files were invalid.  No code will be generated.
+java.lang.IllegalArgumentException: Could not find a topology type definition for MeasureData
+	at com.quest.glue.tools.compiler.topology.common.TopologyPropertyFactory.getProperty(TopologyPropertyFactory.java:62)
+	at com.quest.glue.tools.compiler.topology.common.TopologyValidator.validateUserDefined(TopologyValidator.java:173)
+	at com.quest.glue.tools.compiler.topology.common.TopologyValidator.processObject(TopologyValidator.java:101)
+	at com.quest.glue.tools.compiler.topology.common.TopologyValidator.validate(TopologyValidator.java:80)
+	at com.quest.glue.tools.compiler.AgentConfigGenerator.visit(AgentConfigGenerator.java:97)
+	at com.quest.glue.tools.AgentCompiler.internalMain(AgentCompiler.java:180)
+	at com.quest.glue.tools.AgentCompiler.main(AgentCompiler.java:125)
+

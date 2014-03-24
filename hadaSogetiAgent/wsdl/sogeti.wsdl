@@ -1,0 +1,636 @@
+<?xml version="1.0"?>
+<definitions name="WS_datametrie"
+	targetNamespace="https://ws.ip-label.net/WS_datametrie.php" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://ws.ip-label.net/WS_datametrie.php"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+	<types>
+		<xsd:schema targetNamespace="https://ws.ip-label.net/WS_datametrie.php">
+			<xsd:complexType name="ArrayOfmeasurements">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:measurements[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="measurements">
+				<xsd:all>
+					<xsd:element name="ID_DONNEEMESURE" type="xsd:int" />
+					<xsd:element name="DESC_DONNEEMESURE" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOfcodeanomalie">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:codeanomalie[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="codeanomalie">
+				<xsd:all>
+					<xsd:element name="CODEANOMALIE" type="xsd:int" />
+					<xsd:element name="TYPEANOMALIE" type="xsd:int" />
+					<xsd:element name="DESCRIPTION" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOftypeanomalie">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:typeanomalie[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="typeanomalie">
+				<xsd:all>
+					<xsd:element name="TYPEANOMALIE" type="xsd:int" />
+					<xsd:element name="DESCRIPTION" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOflocation_description">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:location_description[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="location_description">
+				<xsd:all>
+					<xsd:element name="SITEID" type="xsd:int" />
+					<xsd:element name="NOMSITE" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOfmonitor">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:monitor[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOflocation">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:location[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="location">
+				<xsd:all>
+					<xsd:element name="SITEID" type="xsd:int" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="monitor">
+				<xsd:all>
+					<xsd:element name="IDCONTRAT" type="xsd:int" />
+					<xsd:element name="NOMCONTRAT" type="xsd:string" />
+					<xsd:element name="IDCLIENT" type="xsd:int" />
+					<xsd:element name="DESCRIPTION_OFFRE" type="xsd:string" />
+					<xsd:element name="ETATCONTRAT" type="xsd:string" />
+					<xsd:element name="PERIODICITE" type="xsd:int" />
+					<xsd:element name="LOCATIONS" type="tns:ArrayOflocation" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="date_value">
+				<xsd:all>
+					<xsd:element name="DATE" type="xsd:string" />
+					<xsd:element name="IS_LOCAL" type="xsd:boolean" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOfalarm_status">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:alarm_status[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="alarm_status">
+				<xsd:all>
+					<xsd:element name="IDCONTRAT" type="xsd:int" />
+					<xsd:element name="TYPEALARME" type="xsd:string" />
+					<xsd:element name="DATEALARME" type="xsd:string" />
+					<xsd:element name="DATEALARME_GMT" type="xsd:string" />
+					<xsd:element name="DATEESSAI" type="xsd:string" />
+					<xsd:element name="DATEESSAI_GMT" type="xsd:string" />
+					<xsd:element name="DATEALARMEFIN" type="xsd:string" />
+					<xsd:element name="DATEALARMEFIN_GMT" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOfmonitorStatus">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:monitorStatus[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="monitorStatus">
+				<xsd:all>
+					<xsd:element name="IDCONTRAT" type="xsd:int" />
+					<xsd:element name="IDALARMECONTRAT" type="xsd:int" />
+					<xsd:element name="TYPEALARME" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOfmeasure">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:measure[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="measure">
+				<xsd:all>
+					<xsd:element name="DATE_ESSAI" type="xsd:string" />
+					<xsd:element name="DATE_ESSAI_GMT" type="xsd:string" />
+					<xsd:element name="IDCONTRAT" type="xsd:int" />
+					<xsd:element name="IDMISSION" type="xsd:int" />
+					<xsd:element name="ID_ISP" type="xsd:int" />
+					<xsd:element name="ID_DONNEEMESURE" type="xsd:int" />
+					<xsd:element name="VALEURMESUREE" type="xsd:int" />
+					<xsd:element name="REQUETE" type="xsd:int" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOferror">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:error[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="error">
+				<xsd:all>
+					<xsd:element name="DATE_ESSAI" type="xsd:string" />
+					<xsd:element name="DATE_ESSAI_GMT" type="xsd:string" />
+					<xsd:element name="IDCONTRAT" type="xsd:int" />
+					<xsd:element name="REQUETE" type="xsd:int" />
+					<xsd:element name="DATE_ANOMALIE" type="xsd:string" />
+					<xsd:element name="DATE_ANOMALIE_GMT" type="xsd:string" />
+					<xsd:element name="IDMISSION" type="xsd:int" />
+					<xsd:element name="TYPEANOMALIE" type="xsd:int" />
+					<xsd:element name="CODEANOMALIE" type="xsd:int" />
+					<xsd:element name="IDANOMALIEMISSION" type="xsd:int" />
+					<xsd:element name="MESSAGE" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="testvalues">
+				<xsd:all>
+					<xsd:element name="TEST_DATE" type="tns:date_value" />
+					<xsd:element name="LOCATION" type="tns:location" />
+					<xsd:element name="MEASURE_LIST" type="tns:ArrayOfmeasure" />
+					<xsd:element name="ERROR_LIST" type="tns:ArrayOferror" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOftestvalues">
+				<xsd:complexContent>
+					<xsd:restriction base="soap-enc:Array">
+						<xsd:attribute ref="soap-enc:arrayType"
+							wsdl:arrayType="tns:testvalues[]" />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+		</xsd:schema>
+	</types>
+	<portType name="WS_datametriePort">
+		<operation name="Ref_Get_Measurements_List">
+			<documentation>
+				Returns the reference list of the
+				<b>MEASURES_ID</b>
+				with their
+				<b>DESCRIPTION</b>
+			</documentation>
+			<input message="tns:Ref_Get_Measurements_ListIn" />
+			<output message="tns:Ref_Get_Measurements_ListOut" />
+		</operation>
+		<operation name="Ref_Get_Codeanomalie_List">
+			<documentation>
+				Returns the list of the
+				<b>CODEANOMALIE</b>
+				with their
+				<b>TYPEANOMALIE</b>
+				and
+				<b>DESCRIPTION</b>
+			</documentation>
+			<input message="tns:Ref_Get_Codeanomalie_ListIn" />
+			<output message="tns:Ref_Get_Codeanomalie_ListOut" />
+		</operation>
+		<operation name="Ref_Get_Typeanomalie_List">
+			<documentation>
+				Returns the list of the
+				<b>TYPEANOMALIE</b>
+				with their
+				<b>DESCRIPTION</b>
+			</documentation>
+			<input message="tns:Ref_Get_Typeanomalie_ListIn" />
+			<output message="tns:Ref_Get_Typeanomalie_ListOut" />
+		</operation>
+		<operation name="Ref_Get_Locations_List">
+			<documentation>
+				Returns the list of the
+				<b>location_description</b>
+				available for the logged account
+			</documentation>
+			<input message="tns:Ref_Get_Locations_ListIn" />
+			<output message="tns:Ref_Get_Locations_ListOut" />
+		</operation>
+		<operation name="Get_Monitors">
+			<documentation>
+				Returns the list of the available
+				<b>monitors</b>
+				for the logged account
+			</documentation>
+			<input message="tns:Get_MonitorsIn" />
+			<output message="tns:Get_MonitorsOut" />
+		</operation>
+		<operation name="Get_Last_Measures_Date">
+			<documentation>
+				Returns the
+				<b>date</b>
+				of the last test for a given
+				<b>monitor</b>
+				in selected
+				<b>location</b>
+				, in LOCAL or GMT time depending of the
+				<b>local_time</b>
+				boolean value
+			</documentation>
+			<input message="tns:Get_Last_Measures_DateIn" />
+			<output message="tns:Get_Last_Measures_DateOut" />
+		</operation>
+		<operation name="Get_Current_Alarms_Per_Monitor">
+			<documentation>
+				Returns the current
+				<b>alarms</b>
+				,if any, for a given
+				<b>monitor</b>
+			</documentation>
+			<input message="tns:Get_Current_Alarms_Per_MonitorIn" />
+			<output message="tns:Get_Current_Alarms_Per_MonitorOut" />
+		</operation>
+		<operation name="Get_Current_Alarms_All_Monitors">
+			<documentation>
+				Returns the current
+				<b>alarms</b>
+				for all the
+				<b>monitors</b>
+				of the account
+			</documentation>
+			<input message="tns:Get_Current_Alarms_All_MonitorsIn" />
+			<output message="tns:Get_Current_Alarms_All_MonitorsOut" />
+		</operation>
+		<operation name="Get_Alarm_Description">
+			<documentation>
+				Returns the
+				<b>alarm</b>
+				description for the given
+				<b>idalarmecontrat</b>
+				(which can be returned by the
+				<i>
+					<b>Get_Status_All_Monitors</b>
+				</i>
+				method )
+			</documentation>
+			<input message="tns:Get_Alarm_DescriptionIn" />
+			<output message="tns:Get_Alarm_DescriptionOut" />
+		</operation>
+		<operation name="Get_Status_All_Monitors">
+			<documentation>
+				Returns the
+				<b>alarm status</b>
+				of all the account's monitors. The
+				<b>status typealarme</b>
+				value can be OK, ORANGE, RED or BLACK;
+			</documentation>
+			<input message="tns:Get_Status_All_MonitorsIn" />
+			<output message="tns:Get_Status_All_MonitorsOut" />
+		</operation>
+		<operation name="Get_Measures_Per_Date">
+			<documentation>
+				Returns the
+				<b>tests</b>
+				for a given
+				<b>monitor</b>
+				in selected
+				<b>location</b>
+				for a specified
+				<b>date</b>
+				, in LOCAL or GMT time depending of the
+				<b>local_time</b>
+				boolean value
+			</documentation>
+			<input message="tns:Get_Measures_Per_DateIn" />
+			<output message="tns:Get_Measures_Per_DateOut" />
+		</operation>
+		<operation name="Get_Measures_Between_Dates">
+			<documentation>
+				Returns the
+				<b>tests</b>
+				for a given
+				<b>monitor</b>
+				in selected
+				<b>location</b>
+				between two
+				<b>dates</b>
+				, in LOCAL or GMT time depending of the
+				<b>local_time</b>
+				boolean value
+			</documentation>
+			<input message="tns:Get_Measures_Between_DatesIn" />
+			<output message="tns:Get_Measures_Between_DatesOut" />
+		</operation>
+		<operation name="Get_Last_Measures">
+			<documentation>
+				Returns the last
+				<b>test</b>
+				for a given
+				<b>monitor</b>
+				in selected
+				<b>location</b>
+				, in LOCAL or GMT time depending of the
+				<b>local_time</b>
+				boolean value
+			</documentation>
+			<input message="tns:Get_Last_MeasuresIn" />
+			<output message="tns:Get_Last_MeasuresOut" />
+		</operation>
+		<operation name="Get_Live_Measures">
+			<documentation>
+				Returns the new available
+				<b>tests</b>
+				since the last call of the method for a given
+				<b>monitor</b>
+				in selected
+				<b>location</b>
+				, in LOCAL or GMT time depending of the
+				<b>local_time</b>
+				boolean value
+			</documentation>
+			<input message="tns:Get_Live_MeasuresIn" />
+			<output message="tns:Get_Live_MeasuresOut" />
+		</operation>
+	</portType>
+	<binding name="WS_datametrieBinding" type="tns:WS_datametriePort">
+		<soap:binding style="rpc"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="Ref_Get_Measurements_List">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Ref_Get_Measurements_List" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Ref_Get_Codeanomalie_List">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Ref_Get_Codeanomalie_List" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Ref_Get_Typeanomalie_List">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Ref_Get_Typeanomalie_List" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Ref_Get_Locations_List">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Ref_Get_Locations_List" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Monitors">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Monitors" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Last_Measures_Date">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Last_Measures_Date" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Current_Alarms_Per_Monitor">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Current_Alarms_Per_Monitor" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Current_Alarms_All_Monitors">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Current_Alarms_All_Monitors" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Alarm_Description">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Alarm_Description" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Status_All_Monitors">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Status_All_Monitors" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Measures_Per_Date">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Measures_Per_Date" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Measures_Between_Dates">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Measures_Between_Dates" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Last_Measures">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Last_Measures" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+		<operation name="Get_Live_Measures">
+			<soap:operation
+				soapAction="https://ws.ip-label.net/WS_datametrie.php#Get_Live_Measures" />
+			<input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</input>
+			<output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="https://ws.ip-label.net/WS_datametrie.php" />
+			</output>
+		</operation>
+	</binding>
+	<service name="WS_datametrieService">
+		<port name="WS_datametriePort" binding="tns:WS_datametrieBinding">
+			<soap:address location="https://ws.ip-label.net/WS_datametrie.php" />
+		</port>
+	</service>
+	<message name="Ref_Get_Measurements_ListIn" />
+	<message name="Ref_Get_Measurements_ListOut">
+		<part name="return" type="tns:ArrayOfmeasurements" />
+	</message>
+	<message name="Ref_Get_Codeanomalie_ListIn" />
+	<message name="Ref_Get_Codeanomalie_ListOut">
+		<part name="return" type="tns:ArrayOfcodeanomalie" />
+	</message>
+	<message name="Ref_Get_Typeanomalie_ListIn" />
+	<message name="Ref_Get_Typeanomalie_ListOut">
+		<part name="return" type="tns:ArrayOftypeanomalie" />
+	</message>
+	<message name="Ref_Get_Locations_ListIn" />
+	<message name="Ref_Get_Locations_ListOut">
+		<part name="return" type="tns:ArrayOflocation_description" />
+	</message>
+	<message name="Get_MonitorsIn" />
+	<message name="Get_MonitorsOut">
+		<part name="return" type="tns:ArrayOfmonitor" />
+	</message>
+	<message name="Get_Last_Measures_DateIn">
+		<part name="monitor" type="tns:monitor" />
+		<part name="location" type="tns:location" />
+		<part name="local_time" type="xsd:boolean" />
+	</message>
+	<message name="Get_Last_Measures_DateOut">
+		<part name="return" type="tns:date_value" />
+	</message>
+	<message name="Get_Current_Alarms_Per_MonitorIn">
+		<part name="monitor" type="tns:monitor" />
+	</message>
+	<message name="Get_Current_Alarms_Per_MonitorOut">
+		<part name="return" type="tns:ArrayOfalarm_status" />
+	</message>
+	<message name="Get_Current_Alarms_All_MonitorsIn" />
+	<message name="Get_Current_Alarms_All_MonitorsOut">
+		<part name="return" type="tns:ArrayOfalarm_status" />
+	</message>
+	<message name="Get_Alarm_DescriptionIn">
+		<part name="idalarmecontrat" type="xsd:int" />
+	</message>
+	<message name="Get_Alarm_DescriptionOut">
+		<part name="return" type="tns:alarm_status" />
+	</message>
+	<message name="Get_Status_All_MonitorsIn" />
+	<message name="Get_Status_All_MonitorsOut">
+		<part name="return" type="tns:ArrayOfmonitorStatus" />
+	</message>
+	<message name="Get_Measures_Per_DateIn">
+		<part name="monitor" type="tns:monitor" />
+		<part name="date_value" type="tns:date_value" />
+		<part name="location" type="tns:location" />
+	</message>
+	<message name="Get_Measures_Per_DateOut">
+		<part name="return" type="tns:testvalues" />
+	</message>
+	<message name="Get_Measures_Between_DatesIn">
+		<part name="monitor" type="tns:monitor" />
+		<part name="date_value1" type="tns:date_value" />
+		<part name="date_value2" type="tns:date_value" />
+		<part name="location" type="tns:location" />
+	</message>
+	<message name="Get_Measures_Between_DatesOut">
+		<part name="return" type="tns:ArrayOftestvalues" />
+	</message>
+	<message name="Get_Last_MeasuresIn">
+		<part name="monitor" type="tns:monitor" />
+		<part name="location" type="tns:location" />
+		<part name="local_time" type="xsd:boolean" />
+	</message>
+	<message name="Get_Last_MeasuresOut">
+		<part name="return" type="tns:testvalues" />
+	</message>
+	<message name="Get_Live_MeasuresIn">
+		<part name="monitor" type="tns:monitor" />
+		<part name="location" type="tns:location" />
+		<part name="local_time" type="xsd:boolean" />
+	</message>
+	<message name="Get_Live_MeasuresOut">
+		<part name="return" type="tns:ArrayOftestvalues" />
+	</message>
+</definitions>

@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE topology-adapter PUBLIC "-//Quest Software//Catalyst::topology-adapter.dtd//EN" "../../dtd/topology-adapter.dtd">
+<topology-adapter>
+    <!-- Copyright 2014 Dell Inc.
+ ALL RIGHTS RESERVED.
+
+ This software is the confidential and proprietary information of
+ Dell Inc. ("Confidential Information"). You shall not
+ disclose such Confidential Information and shall use it only in
+ accordance with the terms of the license agreement you entered
+ into with Dell Inc.
+
+ DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+    <!-- CDT generated for the hadaSogetiAgent version 1.0.1 -->
+    <!-- This file was generated using version 5.6.10 (5.6.10-201309231246-312109-302)
+         of the FglAM developer's kit. -->
+    <transformation>
+        <!-- Used by the adapter to predeclare and precreate variable names -->
+        <node pattern="__declare__">
+            <value var="$__variable_name__">
+                <declare var="{$__variable_name__}"/>
+            </value>
+            <node pattern="__create__">
+                <node>
+                    <node_name var="$__node_var__"/>
+                    <node>
+                        <node_name var="$__node_type__"/>
+                        <!-- Check to see if the type if defined. This will be false for dynamic topology types. -->
+                        <expression var="$__type_to_create__">
+                            <param val="{$__node_type__}"/>
+                            <expr_text><![CDATA[
+                                typeToCheck = args[1];
+                                topoService = server["TopologyService"];
+                                try {
+                                    topoService.getType(typeToCheck);
+                                }
+                                catch (Exception e) {
+                                    // Type not defined. User is responsible for defining it and
+                                    // creating the object in their own custom CDT section.
+                                    return null;
+                                }
+                                return typeToCheck;
+                                ]]></expr_text>
+                        </expression>
+                        <if comparator="is_defined" val1="{$__type_to_create__}">
+                            <obj type="{$__type_to_create__}" var="{$__node_var__}"/>
+                        </if>
+                    </node>
+                </node>
+            </node>
+            <node id="__top_of_tree__" pattern="__top_of_tree__">
+                <!-- # CollectionModelRoot # -->
+                <node pattern="CollectionModelRoot">
+                    <node>
+                        <node_name var="$__node_id__"/>
+                        <metrics_group object="{{$__node_id__}}"/>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="name">
+                            <value var="$__name_value__">
+                                <attr name="name" target="{{$__node_id__}}" val="{$__name_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="name">
+                            <value var="$__name_value__">
+                                <attr name="name" target="{{$__node_id__}}" val="{$__name_value__}"/>
+                            </value>
+                        </node>
+                        <!-- topology object -->
+                        <node pattern="monitoringAgent">
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the Agent object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+                <!-- # LocationData # -->
+                <node pattern="LocationData">
+                    <node>
+                        <node_name var="$__node_id__"/>
+                        <metrics_group object="{{$__node_id__}}"/>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="name">
+                            <value var="$__name_value__">
+                                <attr name="name" target="{{$__node_id__}}" val="{$__name_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="shortname">
+                            <value var="$__shortname_value__">
+                                <observation name="shortname" type="StringObservation" value="{$__shortname_value__}"/>
+                            </value>
+                        </node>
+                        <!-- topology object (is-many) -->
+                        <node pattern="steps">
+                            <declare var="$__replace__"/>
+                            <set value="false" var="$__replace__"/>
+                            <node pattern="__replace__">
+                                <set value="true" var="$__replace__"/>
+                            </node>
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="steps" replace="{$__replace__}" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="steps" replace="{$__replace__}" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the StepData object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                        <!-- topology object -->
+                        <node pattern="monitoringAgent">
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the Agent object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+                <!-- # MeasureData # -->
+                <node pattern="MeasureData">
+                    <node>
+                        <node_name var="$__node_id__"/>
+                        <metrics_group object="{{$__node_id__}}"/>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="name">
+                            <value var="$__name_value__">
+                                <attr name="name" target="{{$__node_id__}}" val="{$__name_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="shortname">
+                            <value var="$__shortname_value__">
+                                <observation name="shortname" type="StringObservation" value="{$__shortname_value__}"/>
+                            </value>
+                        </node>
+                        <!-- metric -->
+                        <node pattern="value">
+                            <node>
+                                <node_name var="$__field__"/>
+                                <value>
+                                    <metric field="{$__field__}" type="value"/>
+                                </value>
+                            </node>
+                        </node>
+                        <!-- topology object -->
+                        <node pattern="monitoringAgent">
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the Agent object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+                <!-- # ScenarioData # -->
+                <node pattern="ScenarioData">
+                    <node>
+                        <node_name var="$__node_id__"/>
+                        <metrics_group object="{{$__node_id__}}"/>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="name">
+                            <value var="$__name_value__">
+                                <attr name="name" target="{{$__node_id__}}" val="{$__name_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="shortname">
+                            <value var="$__shortname_value__">
+                                <observation name="shortname" type="StringObservation" value="{$__shortname_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="description">
+                            <value var="$__description_value__">
+                                <observation name="description" type="StringObservation" value="{$__description_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="status">
+                            <value var="$__status_value__">
+                                <observation name="status" type="StringObservation" value="{$__status_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="type">
+                            <value var="$__type_value__">
+                                <observation name="type" type="StringObservation" value="{$__type_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="version">
+                            <value var="$__version_value__">
+                                <observation name="version" type="StringObservation" value="{$__version_value__}"/>
+                            </value>
+                        </node>
+                        <!-- topology object (is-many) -->
+                        <node pattern="locations">
+                            <declare var="$__replace__"/>
+                            <set value="false" var="$__replace__"/>
+                            <node pattern="__replace__">
+                                <set value="true" var="$__replace__"/>
+                            </node>
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="locations" replace="{$__replace__}" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="locations" replace="{$__replace__}" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the LocationData object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                        <!-- topology object -->
+                        <node pattern="monitoringAgent">
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the Agent object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+                <!-- # StepData # -->
+                <node pattern="StepData">
+                    <node>
+                        <node_name var="$__node_id__"/>
+                        <metrics_group object="{{$__node_id__}}"/>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="name">
+                            <value var="$__name_value__">
+                                <attr name="name" target="{{$__node_id__}}" val="{$__name_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="shortname">
+                            <value var="$__shortname_value__">
+                                <observation name="shortname" type="StringObservation" value="{$__shortname_value__}"/>
+                            </value>
+                        </node>
+                        <!-- topology object (is-many) -->
+                        <node pattern="measures">
+                            <declare var="$__replace__"/>
+                            <set value="false" var="$__replace__"/>
+                            <node pattern="__replace__">
+                                <set value="true" var="$__replace__"/>
+                            </node>
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="measures" replace="{$__replace__}" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="measures" replace="{$__replace__}" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the MeasureData object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                        <!-- topology object -->
+                        <node pattern="monitoringAgent">
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the Agent object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+                <!-- # hadaSogetiAgentData # -->
+                <node pattern="hadaSogetiAgentData">
+                    <node>
+                        <node_name var="$__node_id__"/>
+                        <metrics_group object="{{$__node_id__}}"/>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="name">
+                            <value var="$__name_value__">
+                                <attr name="name" target="{{$__node_id__}}" val="{$__name_value__}"/>
+                            </value>
+                        </node>
+                        <!-- topology object (is-many) -->
+                        <node pattern="scenarios">
+                            <declare var="$__replace__"/>
+                            <set value="false" var="$__replace__"/>
+                            <node pattern="__replace__">
+                                <set value="true" var="$__replace__"/>
+                            </node>
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="scenarios" replace="{$__replace__}" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="scenarios" replace="{$__replace__}" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the ScenarioData object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="name">
+                            <value var="$__name_value__">
+                                <attr name="name" target="{{$__node_id__}}" val="{$__name_value__}"/>
+                            </value>
+                        </node>
+                        <!-- primitive : java.lang.String -->
+                        <node pattern="name">
+                            <value var="$__name_value__">
+                                <attr name="name" target="{{$__node_id__}}" val="{$__name_value__}"/>
+                            </value>
+                        </node>
+                        <!-- topology object -->
+                        <node pattern="monitoringAgent">
+                            <!-- used when submitting a reference to a previously defined object -->
+                            <node pattern="__reference__">
+                                <node>
+                                    <node_name var="$__reference_name__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__reference_name__}}"/>
+                                </node>
+                            </node>
+                            <!-- used when submitting an object for the first time -->
+                            <node>
+                                <!-- the variable name we must use when referencing this object -->
+                                <node_name var="$__name__"/>
+                                <node>
+                                    <node_name var="$__type__"/>
+                                    <attr name="monitoringAgent" target="{{$__node_id__}}" val="{{$__name__}}"/>
+                                    <!-- recurse up to the top of CDT to submit the contents of the Agent object -->
+                                    <node_reference refid="__top_of_tree__"/>
+                                </node>
+                            </node>
+                        </node>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </transformation>
+</topology-adapter>

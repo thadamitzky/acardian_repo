@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2014 Dell Inc.
+  ALL RIGHTS RESERVED.
+
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ -->
+
+<agent-definition xmlns="urn:X-quest.com:glue/agent/definition/1.9.1"
+                  name="hadaSogetiAgent" 
+                  allow-asynchronous-access="true"
+                  ver="1.0.1">
+
+    <!-- Since this configuration was generated with version 5.6.10 of the 
+         developer's kit, it requires at least a matching version of FglAM -->
+    <host-version min="5.6.10"/>                   
+
+    <topology-types package="de.com.aca.hada.agent.samples">
+        <!-- Relative file names are resolved against the directory
+             that this file is in -->
+        <topology-file filename="../config/hadaSogetiAgent-topology.xml"/>
+        <!-- Other topology files can be included here if necessary -->
+    </topology-types>
+
+    <agent name="hadaSogetiAgent" package="de.com.aca.hada.agent" class-name="hadaSogetiAgentImpl">
+        <!-- Collectors -->
+        <data-collection enable-cron="false">
+
+          <collector name="Hada Sogeti Test Collection" method-name="normalCollection" value="1" unit="minutes">
+              <!-- fast mode goes here -->
+          </collector>
+        </data-collection>
+        		<properties>
+			<group id="settings" label="Configuration">
+				<string id="collectionIntervalInMillis" label="Collection Interval in Milliseconds" size="256" default="900000" />
+                
+                <string id="url" label="Webservice Target Endpoint" default="https://ws.ip-label.net/WS_datametrie.php"/>                
+                <string id="username" label="HTTP Basic Auth User name" default="username"/>
+                <string id="password" label="HTTP Basic Auth Password" default="password" encrypted="true"/>
+                
+                <string id="truststorFile" label="Truststore Location" default="location"/>
+                <string id="truststorePassword" label="Truststore Password" default="password" encrypted="true"/>
+                           
+                <string id="appl" label="Appliction name" default="ApplicationName1" />
+			</group>
+		</properties>
+
+
+
+    </agent>
+
+</agent-definition>
