@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:X-quest.com:glue/messages/1.2"
+			xmlns:msgs1_2="urn:X-quest.com:glue/messages/1.2"
+			xmlns:msgs1_1="urn:X-quest.com:glue/messages/1.1"
+			xmlns:msgs1_0="urn:X-quest.com:glue/messages/1.0"
+			elementFormDefault="qualified">
+
+	<!-- Import the Message 1.0 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/1.0" schemaLocation="messages.1.0.xsd" />
+	<!-- Import the Message 1.1 XSD -->
+	<xsd:import namespace="urn:X-quest.com:glue/messages/1.1" schemaLocation="messages.1.1.xsd" />
+
+	<xsd:element name="downstream-envelope">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="msgs1_2:Envelope">
+					<xsd:sequence>
+						<xsd:element name="messages" type="msgs1_2:DownstreamMessages"
+									 maxOccurs="unbounded" minOccurs="0" />
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+    <xsd:element name="upstream-envelope">
+            <xsd:complexType>
+                <xsd:complexContent>
+                    <xsd:extension base="msgs1_2:Envelope">
+                        <xsd:sequence>
+                            <xsd:element name="messages" type="msgs1_2:UpstreamMessages"
+                                         maxOccurs="unbounded" minOccurs="0" />
+                        </xsd:sequence>
+                    </xsd:extension>
+                </xsd:complexContent>
+            </xsd:complexType>
+        </xsd:element>
+
+	<xsd:complexType name="Envelope" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="headers" type="msgs1_0:Headers" maxOccurs="1" minOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+		We are defining the ContentBlock here so that we can identify newly created
+		ContentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="ContentBlock" abstract="true" block="restriction">
+		<xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:ContentBlock to denote new Content Blocks that have been
+				added to the 1.2 schema
+            </xsd:documentation>
+        </xsd:annotation>
+    	<xsd:attribute name="msgid" type="msgs1_0:UUID" use="required"/>
+    	<xsd:attribute name="response-to" type="msgs1_0:UUID" use="optional"/>
+		<xsd:attribute name="sequence-number" use="optional" default="1">
+		<xsd:annotation>
+			<xsd:documentation>
+				Sequence number to denote message instance counts. This can be used to help
+				determine if a ordered set of messages is received out of order or if conflicting
+				message 'contents' should process only newer instances.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:long">
+				<xsd:minExclusive value="0"/>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:attribute>
+	</xsd:complexType>
+
+	<!--
+		We are defining the UpstreamContentBlock here so that we can identify newly created
+		UpstreamContentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="UpstreamContentBlock" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:UpstreamContentBlock to denote new Upstream Content Block
+				based messages that have been added to the 1.2 schema
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+    		<xsd:extension base="msgs1_2:ContentBlock"/>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+	<!--
+		We are defining the UpstreamAgentBlock here so that we can identify newly created
+		UpstreamAgentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="UpstreamAgentBlock" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:UpstreamAgentBlock to denote new Upstream Agent Block
+				based messages that have been added to the 1.2 schema
+			</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+			<xsd:extension base="msgs1_2:UpstreamContentBlock">
+				<xsd:attribute name="agentid" type="msgs1_0:UUID"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="UpstreamMessages">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines all UpstreamMessages that can be handled in this schema version
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_1:UpstreamMessages">
+				<xsd:sequence>
+					<xsd:group ref="msgs1_2:UpstreamMessageTypes_v1_0_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+					<xsd:group ref="msgs1_2:UpstreamMessageTypes_v1_1_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+					<xsd:group ref="msgs1_2:UpstreamMessageTypes_v1_2"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.0 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_0_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.0 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.1 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_1_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.1 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	Only list elements that are implementing new UpstreamContentBlock messages.
+	-->
+	<xsd:group name="UpstreamMessageTypes_v1_2">
+		<xsd:annotation>
+			<xsd:documentation>
+				List new UpstreamContentBlock messages that have been added to the 1.2 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+            <!-- TODO Delete this once we have more Upstream messages defined that are not agent messages. -->
+            <xsd:element name="placeholder1" type="msgs1_2:UpstreamPlaceHolder"/>
+            <xsd:element name="agent-callback-exception" type="msgs1_2:AgentCallbackException"/>
+            <xsd:element name="agent-callback-list"   type="msgs1_2:AgentCallbackList"/>
+            <xsd:element name="topology-data"         type="msgs1_2:TopologyData"/>
+			<xsd:element name="agent-properties-change" type="msgs1_2:AgentPropertyChangeRequest"/>
+			<xsd:element name="discovery-agent-properties-change"
+						 type="msgs1_2:DiscoveryAgentPropertyChangeRequest"/>
+		</xsd:choice>
+	</xsd:group>
+    
+    <!-- TODO Delete this once we have an Upstream Message Type added that is not an agent message -->
+    <xsd:complexType name="UpstreamPlaceHolder">
+        <xsd:complexContent>
+            <xsd:extension base="msgs1_2:UpstreamContentBlock"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TopologyData">
+        <xsd:complexContent>
+            <xsd:extension base="msgs1_2:UpstreamAgentBlock">                
+                <xsd:sequence>
+                    <xsd:element name="node" type="msgs1_2:TopologyDataNode" minOccurs="0" maxOccurs="1"/>
+                </xsd:sequence>
+                <xsd:attribute name="host" type="xsd:string" use="required"/>
+                <xsd:attribute name="ip-address" type="xsd:string" use="optional"/>
+                <xsd:attribute name="os-name" type="xsd:string" use="optional"/>
+                <xsd:attribute name="os-version" type="xsd:string" use="optional"/>
+                <xsd:attribute name="arch" type="xsd:string" use="optional"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TopologyDataNode">
+        <xsd:sequence>
+            <xsd:element name="node" type="msgs1_2:TopologyDataNode" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="value" type="msgs1_2:TopologyDataValue" maxOccurs="unbounded" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attributeGroup ref="msgs1_2:TopologyTimestampAttrs" />
+    </xsd:complexType>
+
+    <xsd:complexType name="TopologyDataValue">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>        
+        <xsd:attribute name="value" type="xsd:double" use="optional"/>
+        <xsd:attribute name="unit" type="xsd:string" use="optional"/>
+        <xsd:attribute name="text" type="xsd:string" use="optional"/>
+        <xsd:attributeGroup ref="msgs1_2:TopologyTimestampAttrs" />
+    </xsd:complexType>
+    
+    <xsd:attributeGroup name="TopologyTimestampAttrs">
+        <xsd:attribute name="timestamp" use="optional">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:long">
+                    <xsd:minInclusive value="0"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="frequency" use="optional">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:long">
+                <xsd:minInclusive value="0"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+
+    <xsd:complexType name="AgentCallbackException">
+        <xsd:annotation>
+            <xsd:documentation>
+                Returned when an agent callback has failed.  Otherwise nothing is returned by an
+                agent callback.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="msgs1_2:UpstreamAgentBlock">
+                <xsd:choice minOccurs="1" maxOccurs="1">
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="AgentCallbackList">
+        <xsd:annotation>
+            <xsd:documentation>
+                A list of agent callbacks, returned in response to a GetAgentCallbackList request.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexContent>
+            <xsd:extension base="msgs1_2:UpstreamAgentBlock">
+                <xsd:choice minOccurs="1" maxOccurs="1">
+                    <xsd:element name="callback" type="msgs1_2:AgentCallback"
+                                 minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="error" type="xsd:string"/>
+                </xsd:choice>
+            </xsd:extension> 
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="DownstreamMessages">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines all DownstreamMessages that can be handled in this schema version
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_1:DownstreamMessages">
+				<xsd:sequence>
+					<xsd:group ref="msgs1_2:DownstreamMessageTypes_v1_0_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs1_2:DownstreamMessageTypes_v1_1_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs1_2:DownstreamMessageTypes_v1_2" maxOccurs="unbounded"
+						   minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	We are defining the DownstreamContentBlock here so that we can identify newly created
+	DownstreamContentBlock in this schema. We need to know this so that we can add the Message to
+	the appropriate DownstreamMessages list
+	-->
+	<xsd:complexType name="DownstreamContentBlock" abstract="true">
+    	<xsd:complexContent>
+    		<xsd:extension base="msgs1_2:ContentBlock"/>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+	<!--
+	We are defining the DownstreamAgentBlock here so that we can identify newly created
+	DownstreamAgentBlock in this schema. We need to know this so that we can add the Message to
+	the appropriate DownstreamMessages list
+	-->
+	<xsd:complexType name="DownstreamAgentBlock" abstract="true">
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_2:DownstreamContentBlock">
+				<xsd:attribute name="agentid" type="msgs1_0:UUID"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.0 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_0_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.0 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		    <xsd:element name="node" type="msgs1_2:TopologyDataNode"
+		        maxOccurs="unbounded" minOccurs="0">
+		    </xsd:element>
+		    <xsd:element name="value" type="msgs1_2:TopologyDataValue" maxOccurs="unbounded" minOccurs="0"/>
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.1 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_1_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.1 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			
+		</xsd:choice>
+	</xsd:group>
+
+
+	<!--
+	Only list elements that are implementing new DownstreamContentBlock messages.
+	-->
+	<xsd:group name="DownstreamMessageTypes_v1_2">
+		<xsd:annotation>
+			<xsd:documentation>
+				List new DownstreamContentBlock messages that have been added to the 1.2 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="data-service-config" type="msgs1_2:DataServiceRetention"/>
+            <xsd:element name="invoke-agent-callback" type="msgs1_2:InvokeAgentCallback"/>
+            <xsd:element name="list-agent-callbacks" type="msgs1_2:ListAgentCallbacks"/>
+			<xsd:element name="create-agent" type="msgs1_2:CreateAgent" />
+			<xsd:element name="properties-change"  type="msgs1_2:AgentPropertyChange"/>
+			<xsd:element name="discovery-agent-property-query-response"
+						 type="msgs1_2:AgentPropertyQueryResponse"/>
+			<xsd:element name="set-agent-state"	type="msgs1_2:SetAgentState" />
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:complexType name="Host">
+	  <xsd:annotation>
+	    <xsd:documentation>Extends the msgs1_1:Host</xsd:documentation>
+	  </xsd:annotation>
+	  <xsd:complexContent>
+	    <xsd:extension base="msgs1_1:Host">
+	      <xsd:sequence>
+	        <xsd:element name="concentrators" type="xsd:anyURI" maxOccurs="unbounded" minOccurs="0">
+	          <xsd:annotation>
+	            <xsd:documentation>
+                    List of concentrator URLs for this host. 
+                    Can be empty if the host is not acting as a concentrator. 
+                    Localhost URLs are not included.
+                </xsd:documentation>
+	          </xsd:annotation></xsd:element>
+	      </xsd:sequence>
+	      <xsd:attribute name="jre-version" type="xsd:string">
+	        <xsd:annotation>
+	          <xsd:documentation>
+	            Sets the version of the JRE that is currently installed on that host.
+	          </xsd:documentation>
+	        </xsd:annotation>
+	      </xsd:attribute>
+	    </xsd:extension>
+	  </xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SetAgentState">
+        <xsd:annotation>
+        	<xsd:documentation>
+				Sent from the server when it needs to change the state of an agent. The new state will be
+				listed in the Agent header element associated with this block.
+			</xsd:documentation>
+        </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_2:DownstreamAgentBlock">
+				<xsd:attribute name="state" type="msgs1_0:AgentState" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="InvokeAgentCallback">
+        <xsd:annotation>
+            <xsd:documentation>
+                Sent by the server to execute a callback method defined by an agent.  Once the
+                method finishes an AgentCallbackResult will be returned to the server that includes
+                either the exception thrown by the method or whatever the method returned.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="msgs1_2:DownstreamAgentBlock">
+                <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element name="parameter" type="msgs1_2:AgentCallbackPrimitive"/>
+                </xsd:sequence>
+                <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ListAgentCallbacks">
+        <xsd:annotation>
+            <xsd:documentation>
+                Sent by the server to retrieve a list of agent callbacks.  An AgentCallbackList will
+                be sent in return.  If there are no callbacks the list will be empty, but it will
+                still be returned.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexContent>
+            <xsd:extension base="msgs1_2:DownstreamAgentBlock"/> 
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="DataServiceRetention">
+		<xsd:annotation>
+			<xsd:documentation>
+				The FMS DataService maintains a configurable window for determining the age of
+				received metric data that it will accept. Data that is too old or too new will be
+				discarded.
+				This message will send down the max age for both past and future timestamps for
+				stored sample data. These values are passed to the StaleDataFilter and used to
+				deterimine whether a sample should be added to the MessageCentre cache.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_2:DownstreamContentBlock">
+				<xsd:attribute name="max-past" type="xsd:long" use="optional" default="3600000">
+					<xsd:annotation>
+						<xsd:documentation>
+							The max age expressed in milliseconds that a sample may be inorder for
+							it to be added to the Outbound message queue.
+							For example a value of 3600000 will allow samples that where collected
+							upto 1 hour ago to remain in the message queue.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="max-future" type="xsd:long" use="optional" default="600000">
+					<xsd:annotation>
+						<xsd:documentation>
+							The max future age expressed in milliseconds that a sample may be
+							inorder for	it to be added to the Outbound message queue.
+							For example a value of 600000 will allow samples that where collected
+							with a timestamp that is 10 minutes ahead of the current time to be
+							added to the message queue.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="disable" type="xsd:boolean" use="optional" default="false">
+					<xsd:annotation>
+						<xsd:documentation>
+							Set this attribute to true to disable this feature. When set to true
+							all messages will be cached until they can be delivered.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+    <xsd:simpleType name="AgentCallbackType">
+        <xsd:annotation>
+            <xsd:documentation>
+                The type represented by an agent callback primitive.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="string"/>
+            <xsd:enumeration value="int"/>
+            <xsd:enumeration value="long"/>
+            <xsd:enumeration value="double"/>
+            <xsd:enumeration value="boolean"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="AgentCallbackPrimitive">
+        <xsd:annotation>
+            <xsd:documentation>
+                A primitive value used in an agent callback.  This can be either a parameter passed
+                into the callback itself or something returned from the callback.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="type" type="msgs1_2:AgentCallbackType"/>
+        <xsd:attribute name="value" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="AgentCallback">
+        <xsd:sequence>
+            <xsd:element name="parameter-type" type="msgs1_2:AgentCallbackType"
+                         minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The method name of the callback.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="collectorAware" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Set to true to denote this callback as implementing the CollectorAware
+					interface.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="SpiProperties">
+		<xsd:sequence>
+			<xsd:element name="primaryasp" type="msgs1_2:PrimaryASP" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="secondaryasp" type="msgs1_2:SecondaryASP" minOccurs="0"
+						 maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PrimaryASP">
+		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="property">
+				<xsd:complexType>
+					<xsd:attribute name="name" type="xsd:string" use="required"/>
+					<xsd:attribute name="value" type="xsd:string" use="required"/>
+					<xsd:attribute name="type" type="msgs1_0:MsgPropertyTypes" use="required"/>
+					<xsd:attributeGroup ref="msgs1_2:PropertyMetaData"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SecondaryASP">
+		<xsd:annotation>
+			<xsd:documentation>
+				This version adds support for sending meta data for properties down to the FglAM
+				host to be used within the ASPService to validate property changes.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="meta" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="field">
+							<xsd:complexType>
+								<xsd:attribute name="name" type="xsd:string" use="required" />
+								<xsd:attribute name="type" type="msgs1_0:MsgPropertyTypes"
+											   use="required" />
+								<xsd:attribute name="multi-level" type="xsd:boolean" use="optional"
+											   default="false" />
+								<xsd:attributeGroup ref="msgs1_2:PropertyMetaData"/>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="rows" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="row">
+							<xsd:complexType>
+								<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+									<xsd:element name="data">
+										<xsd:complexType>
+											<xsd:attribute name="value" type="xsd:string"
+														   use="required" />
+										</xsd:complexType>
+									</xsd:element>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The name of the SecondaryASP (aka 'sharing_name')
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="parent" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					The 'sharing_name' of the parent SecondaryASP that this multilevel asp is
+					bound to
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="column-ref" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					The name of the column in the meta data of the parent secondary asp that hold
+					this property
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:attributeGroup name="PropertyMetaData">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines a common set of meta data attributes that can be applied to an ASP
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="encrypted" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Encrypts the property value
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="required" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					This property value must always be set
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="readOnly" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Property value cannot be changed
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="equalToZero" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Applied to numeric properties; value must be equal to zero
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="notEqualToZero" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Applied to numeric properties; value must not be equal to zero
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="greaterThanZero" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Applied to numeric properties; value must be great than zero
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="lessThanZero" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Applied to numeric properties; value must be less than zero
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="maxLength" type="xsd:int" use="optional" default="-1">
+			<xsd:annotation>
+				<xsd:documentation>
+					The max length of a string value.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="default" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					Holds the default value for this field.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+
+	<xsd:complexType name="CreateAgent">
+		<xsd:annotation>
+			<xsd:documentation>
+				Creates a new Agent instance
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_2:DownstreamContentBlock">
+				<xsd:sequence minOccurs="1">
+				    <xsd:element name="properties" type="msgs1_2:SpiProperties" />
+				    <xsd:element name="creation-type" maxOccurs="1" minOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Indicates the source of this create agent command.
+"server" comes from the upstream server
+"upgrade" server initiates upgrade to an existing agent instance
+"restore" is from the persisted agent state file
+"precreate" is from a file configured to precreate agents without user intervention.</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+				            <xsd:restriction base="xsd:string">
+				                <xsd:enumeration value="server"></xsd:enumeration>
+								<xsd:enumeration value="upgrade"></xsd:enumeration>
+								<xsd:enumeration value="restore"></xsd:enumeration>
+				                <xsd:enumeration value="precreate"></xsd:enumeration>
+				            </xsd:restriction>
+				        </xsd:simpleType>
+				    </xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="id" type="msgs1_0:UUID" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							Reuse the Agent ID from the existing agent instance
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="state" type="msgs1_0:AgentState" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							The state value to return the upgraded agent to
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attributeGroup ref="msgs1_0:AgentInstanceAttrs"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="AgentPropertyChangeRequest">
+	  <xsd:annotation>
+	    <xsd:documentation>
+	      Called by discovery code to change properties on an agent.
+	    </xsd:documentation>
+	  </xsd:annotation>
+	  <xsd:complexContent>
+	    <xsd:extension base="msgs1_2:UpstreamAgentBlock">
+	      <xsd:choice>
+	        <xsd:element name="primaryasp" type="msgs1_2:PrimaryASP" />
+	        <xsd:element name="secondaryasp" type="msgs1_2:SecondaryASP" />
+	      </xsd:choice>
+	      <xsd:attribute name="disable-change-listener" type="xsd:boolean" default="true">
+	        <xsd:annotation>
+	          <xsd:documentation>
+	            Set attribute to false to receive updated Properties after being persisted on the
+	            server. This is useful when changing the bound list of a SecondaryASP. The default
+	            is to disable the change listener while these property changes are being persisted
+	            as there is no need for the agent to act on the change event initiated from the
+	            Persistence store as the agent already has the latest properties stored locally
+	          </xsd:documentation>
+	        </xsd:annotation>
+	      </xsd:attribute>
+	    </xsd:extension>
+	  </xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="DiscoveryAgentPropertyChangeRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				Called by discovery code to change properties on an agent.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_2:UpstreamContentBlock">
+				<xsd:choice>
+					<xsd:element name="agent" type="msgs1_0:BridgeAgent" />
+					<xsd:element name="primaryasp" type="msgs1_2:PrimaryASP" />
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="AgentPropertyChange">
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_2:DownstreamAgentBlock">
+				<xsd:sequence>
+					<xsd:element name="primaryasp" type="msgs1_2:PrimaryASP" minOccurs="0" />
+					<xsd:element name="secondaryasp" type="msgs1_2:SecondaryASP" minOccurs="0"
+								 maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="AgentPropertyQueryResponse">
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_2:DownstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="agent" type="msgs1_0:BridgeAgent" minOccurs="1" maxOccurs="1" />
+					<xsd:element name="primaryasp" type="msgs1_2:PrimaryASP" minOccurs="1"
+								 maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+</xsd:schema>

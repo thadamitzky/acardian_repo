@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright 2012 Quest Software, Inc.
+  ~ ALL RIGHTS RESERVED.
+  ~
+  ~ This software is the confidential and proprietary information of
+  ~ Quest Software Inc. ("Confidential Information").  You shall not
+  ~ disclose such Confidential Information and shall use it only in
+  ~ accordance with the terms of the license agreement you entered
+  ~ into with Quest Software Inc.
+  ~
+  ~ QUEST SOFTWARE INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  ~ THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  ~ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  ~ NON-INFRINGEMENT. QUEST SOFTWARE SHALL NOT BE LIABLE FOR ANY
+  ~ DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  ~ OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+  -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:X-quest.com:glue/resource.settings.override/1"
+			xmlns="urn:X-quest.com:glue/resource.settings.override/1"
+			elementFormDefault="qualified">
+
+	<xsd:element name="resource-settings-override">
+		<xsd:complexType>
+			<xsd:all>
+				<xsd:element name="upstream-queues" type="UpstreamQueues" minOccurs="0">
+					<xsd:unique name="unique.UpstreamQueue.Type">
+						<xsd:annotation>
+							<xsd:documentation>
+								Ensures that only one type of each Queue can be defined within the document
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:selector xpath="upstream-queue"/>
+						<xsd:field xpath="@type"/>
+					</xsd:unique>
+				</xsd:element>
+				<xsd:element name="jvm-memory" type="JVMMemory" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="jvm-args" type="JVMArgs" minOccurs="0">
+					<xsd:unique name="unique.JVMArg.Value">
+						<xsd:annotation>
+							<xsd:documentation>
+								Constraint to block duplicate JVM args from being declared in the document.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:selector xpath="jvm-arg"/>
+						<xsd:field xpath="@value"/>
+					</xsd:unique>
+				</xsd:element>
+			</xsd:all>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="UpstreamQueue">
+		<xsd:annotation>
+			<xsd:documentation>
+				Configuration parameters for individual upstream queues
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="type" type="UpstreamQueueTypes" use="required"/>
+		<xsd:attribute name="max-queue-size" type="xsd:long" use="required"/>
+		<xsd:attribute name="max-disk-space" type="xsd:long" use="required"/>
+	</xsd:complexType>
+
+	<xsd:simpleType name="UpstreamQueueTypes">
+		<xsd:annotation>
+			<xsd:documentation>
+				Declares the types of upstream queues that are available in the Agent Manager
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="upstream"/>
+			<xsd:enumeration value="upstream-verified"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:attributeGroup name="PreAllocationCount">
+		<xsd:attribute name="pre-allocation-count" use="optional" default="1">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:int">
+					<xsd:minInclusive value="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								When, the value will be used to pre-allocate the associated resource values at deployment.
+								For example, when set on a jvm-memory config, the value will be used as a multiple for
+								calculating additional memory size allocations in order for the out-of-the-box deployment
+								to handle this pre-set agent count.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:minInclusive>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+
+	<xsd:complexType name="JVMArg">
+		<xsd:annotation>
+			<xsd:documentation>
+				Define JVM arguments to pass to the VM upon initialization.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="value" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:simpleType name="JVMMemoryUnits">
+		<xsd:annotation>
+			<xsd:documentation>
+				Units of measure for declared JVM memory settings
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="kilobyte"/>
+			<xsd:enumeration value="megabyte"/>
+			<xsd:enumeration value="gigabyte"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="JVMMemory">
+		<xsd:annotation>
+			<xsd:documentation>
+				Define JVM arguments to pass to the VM upon initialization.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="min" type="xsd:long" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Set the initial/minimum size of the VM Heap. Value is expressed in MB (megabytes)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="max" type="xsd:long" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Set the maxmum size of the VM Heap. Value is expressed in MB (megabytes)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="units" type="JVMMemoryUnits" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Declared units of measure. Default is megabytes
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="JVMMemoryPerAgent">
+		<xsd:annotation>
+			<xsd:documentation>
+				Define JVM arguments to pass to the VM upon initialization.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="JVMMemory">
+				<xsd:attributeGroup ref="PreAllocationCount"/>
+			</xsd:extension>
+		</xsd:complexContent>
+
+	</xsd:complexType>
+
+	<xsd:complexType name="JVMArgs">
+		<xsd:sequence>
+			<xsd:element name="jvm-arg" type="JVMArg" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UpstreamQueues">
+		<xsd:sequence>
+			<xsd:element name="upstream-queue" type="UpstreamQueue" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>

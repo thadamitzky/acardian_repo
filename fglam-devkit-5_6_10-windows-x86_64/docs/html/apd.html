@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Appendix D. urlavailabilityagent-topology.xml Topology Definition for Included Example Agent</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="prev" href="apc.html" title="Appendix C. agent-definition.xml for Included Example Agent"/><link rel="next" href="ape.html" title="Appendix E. URLAvailabilityAgentImpl.java Source Code for Included Example Agent"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix D. urlavailabilityagent-topology.xml Topology Definition for Included Example Agent</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apc.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ape.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="appendix" title="Appendix D. urlavailabilityagent-topology.xml Topology Definition for Included Example Agent"><div class="titlepage"><div><div><h2 class="title"><a id="example-agent-topology"/>Appendix D. urlavailabilityagent-topology.xml Topology Definition for Included Example Agent</h2></div></div></div><div class="abstract" title="Abstract"><div class="titlepage"/><p>
+        This is the urlavailabilityagent-topology.xml file included with the example agent
+      </p></div><p>
+        </p><pre class="literallayout">
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--&gt;
+
+
+&lt;types&gt;
+    &lt;!-- ********************  ROOT DEFINITIONS ******************** --&gt;
+    &lt;type name='MonitoredURLRoot' extends='CollectionModelRoot'&gt;
+        &lt;annotation name="LabelProperty" value='name'/&gt;
+        &lt;property name='name' type='String'  is-identity='true'/&gt;
+        &lt;property name='instances' type='MonitoredURL' is-many='true'/&gt;
+    &lt;/type&gt;
+
+    &lt;type name="MonitoredURL" extends="CollectionModelInstance"&gt;
+        &lt;!-- Ids --&gt;
+        &lt;property name='urlPath' type='URLPath'  is-identity='true'/&gt;
+        &lt;property name='urlServerInstance' type='URLServerInstance'  is-identity='true'/&gt;
+
+        &lt;property name='monitoredHost' type='Host'/&gt;
+        &lt;property name="monitoringAgent" type="Agent" /&gt;
+
+        &lt;!-- Metrics --&gt;
+        &lt;property name='availability' type='Metric' is-containment='true' unit-name='percent'/&gt;
+        &lt;property name='pageGetTime' type='Metric' is-containment='true' unit-name='millisecond'/&gt;
+        &lt;property name='responseTime' type='Metric' is-containment='true' unit-name='millisecond'/&gt;
+        &lt;property name='errorCode' type='Integer'/&gt;
+        &lt;property name="url" type="String"/&gt;
+    &lt;/type&gt;
+
+    &lt;!--
+    Both URLPath and URLServerInstance property types have a property, monitoredURLs. It is a special property called
+    a dynamic property. It is special because agent does not need to submit anything for the property. While referring
+    to such a property, FMS will return the script result as the value of the property. Here, the monitoredURLs is a
+    list of all the url instances associated with the current URLPath returned by the query.
+    --&gt;
+
+    &lt;type name="URLPath" extends="TopologyObject"&gt;
+        &lt;property name='path' type='String'  is-identity='true'/&gt;
+        &lt;property name='protocol' type='String'  is-identity='true'/&gt;         
+        &lt;property name='monitoredURLs' type='MonitoredURL' is-many='true'&gt;
+        &lt;annotation name='DerivationExprType' value='Script'/&gt;
+        &lt;annotation name='DerivationExpression'&gt;
+            &lt;value&gt;
+                &lt;![ CDATA[
+                #!MonitoredURL: urlPath = $scope#.topologyObjects
+                ] ]&gt;
+            &lt;/value&gt;
+        &lt;/annotation&gt;
+        &lt;/property&gt;
+    &lt;/type&gt;
+
+    &lt;type name="URLServerInstance" extends="TopologyObject"&gt;
+        &lt;property name='host' type='Host'  is-identity='true'/&gt;
+        &lt;property name='port' type='Integer' is-identity='true'/&gt;
+
+        &lt;property name='monitoredURLs' type='MonitoredURL' is-many='true'&gt;
+        &lt;annotation name='DerivationExprType' value='Script'/&gt;
+        &lt;annotation name='DerivationExpression'&gt;
+            &lt;value&gt;
+                &lt;![ CDATA[
+                #!MonitoredURL: urlServerInstance = $scope#.topologyObjects
+                ] ]&gt;
+            &lt;/value&gt;
+        &lt;/annotation&gt;
+        &lt;/property&gt;
+    &lt;/type&gt;
+&lt;/types&gt;
+
+        </pre><p>
+      </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apc.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ape.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">Appendix C. agent-definition.xml for Included Example Agent </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> Appendix E. URLAvailabilityAgentImpl.java Source Code for Included Example Agent</td></tr></table></div></body></html>

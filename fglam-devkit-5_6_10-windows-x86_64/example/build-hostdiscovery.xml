@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+
+<project name="HostDiscoveryAgent" default="hostdiscovery-dist" xmlns:fglam="fglam:/ant/macros">
+
+    <!-- Add the external environment and find the FglAM installation -->
+    <property environment="env"/>
+    <property name="fglam.devkit.home" value="${env.FGLAM_DEVKIT_HOME}"/>
+
+    <fail>
+        <condition><not>
+          <and>
+              <available file="${fglam.devkit.home}" type="dir"/>
+              <available file="${fglam.devkit.home}/buildtools/lib/devkit-ant.jar" type="file"/>
+          </and>
+        </not></condition>.
+        The specified FglAM developer's kit location, ${fglam.devkit.home},
+        does not appear to exist as a valid directory or does not contain a
+        recognized FglAM developer's kit.
+    </fail>
+
+    <!-- Define some directories used throughout the build process -->
+    <property name="hostdiscovery.src.dir"         value="${basedir}/hostdiscovery/src"/>
+    <property name="hostdiscovery.config.dir"      value="${basedir}/hostdiscovery/config"/>
+    <property name="hostdiscovery.build.dir"       value="${basedir}/build/hostdiscovery"/>
+    <property name="hostdiscovery.build.test.dir"  value="${hostdiscovery.build.dir}/test"/>
+    <property name="hostdiscovery.tooling.output"  value="${hostdiscovery.build.dir}/tooling"/>
+    <property name="hostdiscovery.dist.dir"        value="${hostdiscovery.build.dir}/dist"/>
+    <property name="hostdiscovery.test.dir"        value="${basedir}/test"/>
+    <property name="hostdiscovery.java.test.dir"   value="${hostdiscovery.test.dir}/java"/>
+
+    <!-- Import the FglAM tools -->
+    <import file="${fglam.devkit.home}/buildtools/fglam-ant-macros.xml"/>
+
+    <target name="hostdiscovery-tooling-artifacts">
+        <fglam:generator agent-definition="${hostdiscovery.config.dir}/agent-definition.xml"
+                        output-dir="${hostdiscovery.tooling.output}"/>
+        <!-- Load the generated agent.manifest to initialize build properties
+             for use in the fglam ant macros -->
+        <fglam:init-agent-manifest-props agent-manifest="${hostdiscovery.tooling.output}/agent.manifest" prefix="hostdiscovery"/>
+    </target>
+
+    <!-- Compile and package the agent binary files -->
+    <target name="hostdiscovery-compile-and-jar" depends="hostdiscovery-tooling-artifacts">
+        <fglam:compile-and-jar build-dir="${hostdiscovery.build.dir}">
+            <compile-options>
+                <src path="${hostdiscovery.tooling.output}/java-gen"/>
+                <src path="${hostdiscovery.src.dir}/java"/>
+                <include name="**/*.java"/>
+            </compile-options>
+            <jar-options>
+                <!-- Adds the LogResources.properties files to the jar file -->
+                <fileset dir="${hostdiscovery.src.dir}/java" includes="**/*.properties"/>
+            </jar-options>
+        </fglam:compile-and-jar>
+        <mkdir dir="${hostdiscovery.build.test.dir}/classes"/>
+        <javac target="1.6" source="1.6"
+            includeantruntime="no" includejavaruntime="no"
+            deprecation="true" debug="true" debuglevel="lines,vars,source"
+            destdir="${hostdiscovery.build.test.dir}/classes">
+            <classpath>
+                <fileset dir="${hostdiscovery.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${fglam.devkit.home}/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${fglam.devkit.home}/buildtools/junit">
+                    <include name="junit*.jar"/>
+                </fileset>
+            </classpath>
+
+            <src path="${hostdiscovery.tooling.output}/java-gen"/>
+            <src path="${hostdiscovery.test.dir}/java"/>
+            <include name="**/hostdiscovery/*.java"/>
+        </javac>
+
+    </target>
+
+    <!-- Creates a distribution which results in a FMS 5.0 deployeable cartridge file -->
+    <target name="hostdiscovery-dist" depends="hostdiscovery-compile-and-jar"
+            description="Builds a deployable cartridge with a GAR installer">
+
+        <!-- create the dist output directory -->
+        <mkdir dir="${hostdiscovery.dist.dir}"/>
+
+        <fglam:gar agent-manifest="${hostdiscovery.tooling.output}/agent.manifest"
+                  agent-lib-dir ="${hostdiscovery.build.dir}/jars"
+                  build-dir="${hostdiscovery.build.dir}"
+                  prefix="hostdiscovery"/>
+
+        <echo>Making topology in ${hostdiscovery.dist.dir}</echo>
+        <echo>CDT file ${hostdiscovery.tooling.output}/cdt.xml</echo>
+        <echo>Topology file ${hostdiscovery.tooling.output}/topology.xml</echo>
+        <echo>Monitoring Policy file ${hostdiscovery.tooling.output}/monitoring-policy.xml</echo>
+        <echo>WCF (input) file ${hostdiscovery.config.dir}/wcf.xml</echo>
+        <car destdir="${hostdiscovery.dist.dir}" buildLocalizableCar="false">
+            <cartridge
+                    name="${hostdiscovery.agent-manifest.name}"
+                    final="true"
+                    version="${hostdiscovery.agent-manifest.ver}"
+                    buildid="${hostdiscovery.agent-manifest.build-id}"
+                    author="FglAM Agent Developers">                
+                <installers
+                    name="${hostdiscovery.agent-manifest.name}-Installers"
+                    version="${hostdiscovery.agent-manifest.ver}">
+                    <installer
+                        name="${hostdiscovery.agent-manifest.name}"
+                        version="${hostdiscovery.agent-manifest.ver}"
+                        file="${hostdiscovery.build.dir}/gar/${hostdiscovery.agent-manifest.name}.gar"
+                        type="fglam-client-pkg">
+                        <!-- This installer contains the following agent types. Each agent
+                             type in the cartridge must be listed here. -->
+                        <agent type="HostDiscovery" version="${hostdiscovery.agent-manifest.ver}" 
+                                                    build="${hostdiscovery.agent-manifest.build-id}"/>
+                    </installer>
+                </installers>
+                <topologytypes
+                    name="${hostdiscovery.agent-manifest.name}-Topology-Types"
+                    version="${hostdiscovery.agent-manifest.ver}"
+                    file="${hostdiscovery.tooling.output}/hostdiscovery-topology.xml"/>
+                <monitoringpolicy
+                    name="${hostdiscovery.agent-manifest.name}-Properties"
+                    version="${hostdiscovery.agent-manifest.ver}"
+                    file="${hostdiscovery.tooling.output}/monitoring-policy.xml"/>
+                <cdt name="hostdiscovery-CDT"
+                    version="${hostdiscovery.agent-manifest.ver}"
+                    adapter="FglAM">
+                        <binding type="HostDiscovery" file="${hostdiscovery.tooling.output}/cdt.xml"/>
+                </cdt>
+            </cartridge>
+        </car>
+
+        <!-- Create a Simulator CAR for this Agent Package -->
+        <fglam:dev-kit-simulator build-dir="${hostdiscovery.build.dir}" output="${hostdiscovery.tooling.output}" input="${hostdiscovery.tooling.output}/simulator/simulator.xml"/>
+
+        <!-- Move the generated simulator car into our dist directory -->
+        <move todir="${hostdiscovery.dist.dir}">
+            <fileset dir="${hostdiscovery.tooling.output}/simulator/dist">
+                <include name="*.car"/>
+            </fileset>
+        </move>
+    </target>
+
+    <target name="hostdiscovery-run" depends="hostdiscovery-dist" description="Launches the Agent Harness app">
+        <fglam:agent-harness agent-file="${hostdiscovery.config.dir}/agent-definition.xml" gar-file="${hostdiscovery.build.dir}/gar/${hostdiscovery.agent-manifest.name}.gar"/>
+    </target>
+
+    <!-- Delete any files generated by the build process -->
+    <target name="hostdiscovery-clean">
+        <delete dir="${hostdiscovery.build.dir}"/>
+    </target>
+
+    <!-- Deploy the created cartridge to a running server -->
+    <target name="hostdiscovery-deploy" depends="hostdiscovery-dist" description="Deploy the created cartridge to a running server">
+        <fglam:redeploy-cartridge name="${hostdiscovery.agent-manifest.name}"
+                                  version="${hostdiscovery.agent-manifest.ver}"
+                                  dir="${hostdiscovery.dist.dir}"/>
+    </target>
+
+    <target name="hostdiscovery-findbugs" depends="hostdiscovery-compile-and-jar">
+        <fglam:findbugs results="${hostdiscovery.build.dir}/results" analyze="com.quest.fglam.example.-">
+            <fglam:findbugs-jars>
+                <fileset dir="${hostdiscovery.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+            </fglam:findbugs-jars>
+
+            <fglam:findbugs-args>
+                <arg value="-sourcepath"/><arg path="${basedir}/src/java"/>
+                <arg value="-sourcepath"/><arg path="${hostdiscovery.build.dir}/tooling/java-gen"/>
+            </fglam:findbugs-args>
+
+            <fglam:findbugs-aux/>
+        </fglam:findbugs>       
+    </target>
+
+    <target name="hostdiscovery-junit" depends="hostdiscovery-compile-and-jar">
+        <fglam:junit results="${hostdiscovery.build.dir}/results">
+            <fglam:jvm-args/>
+
+            <fglam:jars>
+                <fileset dir="${hostdiscovery.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+
+                <pathelement location="${hostdiscovery.build.test.dir}/classes"/>
+            </fglam:jars>
+
+            <fglam:files>
+                <fileset dir="${hostdiscovery.java.test.dir}">
+                    <include name="**/hostdiscovery/Test*.java"/>
+                    <!-- FAM-4752: disabled until the classes can be properly mocked -->
+                    <exclude name="**/hostdiscovery/TestTopologyTreeBuilding.java"/>
+                </fileset>
+            </fglam:files>
+        </fglam:junit>
+    </target>
+
+    <target name="hostdiscovery-tests" depends="hostdiscovery-junit,hostdiscovery-findbugs">
+        <fail message="One or more JUnit tests failed" if="junit.failure"/>
+        <fail message="One ore more of the FindBugs tests failed">
+            <condition>
+                <not><equals arg1="${findbugs.exitcode}" arg2="0"/></not>
+            </condition>
+        </fail>
+    </target>
+</project>

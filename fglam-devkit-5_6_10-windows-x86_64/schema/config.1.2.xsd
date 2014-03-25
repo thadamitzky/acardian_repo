@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="urn:X-quest.com:glue/config/1.2"
+        xmlns:config="urn:X-quest.com:glue/config/1.2"
+		xmlns:common="urn:X-quest.com:glue/common/1.2"
+		elementFormDefault="qualified">
+
+    <!-- Include Agent Config Common types -->
+    <xsd:import namespace="urn:X-quest.com:glue/common/1.2" schemaLocation="common.1.2.xsd"/>
+
+    <xsd:element name="glue-configuration">
+        <xsd:complexType>
+            <xsd:sequence>
+            	<xsd:element name="host-id" type="config:HostId"
+            		minOccurs="1" maxOccurs="1" />
+            	<xsd:element name="host-display-name"
+            		type="config:HostName" minOccurs="1" maxOccurs="1" />
+            	<xsd:element name="secure-launcher"
+            		type="config:SecureLauncher" minOccurs="1" maxOccurs="1" />
+            	<xsd:element name="http-upstreams"
+            		type="config:HttpUpstreams" minOccurs="1" maxOccurs="1" />
+            	<xsd:element name="http-downstreams"
+            		type="config:HttpDownstreams" minOccurs="1" maxOccurs="1" />
+            	<xsd:element name="polling" type="config:Polling"
+            		minOccurs="1" maxOccurs="1" />
+            	<xsd:element name="queue-sizes" type="config:QueueSizes"
+            		minOccurs="1" maxOccurs="1" />
+            	<xsd:element name="time-sync" type="config:ClockSync" maxOccurs="1" minOccurs="0"/>
+                <xsd:element name="jfogbank" type="config:JFogbank" maxOccurs="1" minOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="Documentation">
+        <xsd:restriction base="xsd:string">
+            <xsd:whiteSpace value="preserve"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="HostId">
+        <xsd:sequence>
+            <xsd:element name="documentation" type="config:Documentation"/>
+            <xsd:element name="id" type="common:UUID" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="HostName">
+        <xsd:sequence>
+            <xsd:element name="documentation" type="config:Documentation"/>
+            <xsd:element name="name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="warn-on-difference" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SecureLauncher">
+        <xsd:sequence>
+            <xsd:element name="documentation" type="config:Documentation"/>
+            <xsd:element name="path" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="HttpUpstreams">
+        <xsd:sequence>
+            <xsd:element name="documentation" type="config:Documentation"/>
+            <xsd:element name="http-upstream" type="config:HttpUpstream" minOccurs="0"
+                         maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="HttpUpstream">
+        <xsd:attribute name="url" type="xsd:anyURI" use="required"/>
+        <xsd:attribute name="address" type="xsd:string"/>
+        <xsd:attribute name="proxy" type="xsd:anyURI"/>
+        <xsd:attribute name="proxy-user" type="xsd:string"/>
+        <xsd:attribute name="proxy-ntlm-domain" type="xsd:string"/>
+        <xsd:attribute name="proxy-pass" type="xsd:string"/>
+        <xsd:attribute name="ssl-allow-self-signed" type="xsd:boolean" default="false"/>
+        <xsd:attribute name="ssl-cert-common-name" type="xsd:string"/>
+        <xsd:attribute name="compressed" type="xsd:boolean" default="false"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="HttpDownstreams">
+        <xsd:sequence>
+            <xsd:element name="documentation" type="config:Documentation"/>
+
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element name="http-downstream" type="config:HttpDownstream"/>
+                <xsd:element name="https-downstream" type="config:HttpsDownstream"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="HttpDownstream">
+        <xsd:attribute name="port" type="xsd:unsignedShort" use="required"/>
+        <xsd:attribute name="address" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="HttpsDownstream">
+        <xsd:complexContent>
+            <xsd:extension base="config:HttpDownstream">
+                <xsd:attribute name="key-password" type="xsd:string" use="required"/>
+
+                <xsd:attribute name="keystore" type="xsd:string"/>
+                <xsd:attribute name="keystore-password" type="xsd:string"/>
+                <xsd:attribute name="ssl-key-manager-factory-algorithm" type="xsd:string"/>
+
+                <xsd:attribute name="truststore" type="xsd:string"/>
+                <xsd:attribute name="truststore-type" type="xsd:string"/>
+                <xsd:attribute name="truststore-password" type="xsd:string"/>
+                <xsd:attribute name="ssl-trust-manager-factory-algorithm" type="xsd:string"/>
+
+                <xsd:attribute name="need-client-auth" type="xsd:boolean"/>
+                <xsd:attribute name="want-client-auth" type="xsd:boolean"/>
+
+                <xsd:attribute name="algorithm" type="xsd:string"/>
+                <xsd:attribute name="protocol" type="xsd:string"/>
+                <xsd:attribute name="provider" type="xsd:string"/>
+                <xsd:attribute name="secure-random-algorithm" type="xsd:string"/>
+
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="Polling">
+        <xsd:sequence>
+        	<xsd:element name="documentation"
+        		type="config:Documentation" />
+        	<xsd:element name="min-polling-interval" type="xsd:long" minOccurs="1"
+        		maxOccurs="1" />
+        	<xsd:element name="max-polls-per-minute" type="xsd:long"
+        		minOccurs="1" maxOccurs="1" />
+        	<xsd:element name="max-delay-factor" type="xsd:double"
+        		minOccurs="1" maxOccurs="1" />
+        	<xsd:element name="upstream-offset" type="xsd:double"
+        		maxOccurs="1" minOccurs="1">
+        	</xsd:element>
+        	<xsd:element name="min-polling-timeout" type="xsd:int" 
+        	    maxOccurs="1" minOccurs="1">
+        	</xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="QueueSizes">
+        <xsd:sequence>
+            <xsd:element name="documentation" type="config:Documentation"/>
+            <xsd:element name="upstream" type="config:Queue" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="downstream" type="config:Queue" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Queue">
+        <xsd:attribute name="max-queue-size" type="xsd:integer" use="required"/>
+        <xsd:attribute name="max-disk-space" type="xsd:integer" use="required"/>
+        <xsd:attribute name="max-batch-size" type="xsd:integer" use="required"/>
+    </xsd:complexType>
+
+    <xsd:simpleType name="MemoryThreshold">
+        <xsd:restriction base="xsd:double">
+            <xsd:maxInclusive value="1.0"/>
+            <xsd:minInclusive value="0.0"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:complexType name="ClockSync">
+    	<xsd:sequence>
+    		<xsd:element name="documentation" type="config:Documentation"/>
+    	</xsd:sequence>
+    	<xsd:attribute name="max-allowed-variation">
+    		<xsd:annotation>
+    			<xsd:documentation>
+    				The maximum allowed variation (in ms) in the time
+    				sync (difference between the system time and the
+    				upstream time) before previous values are discarded
+    				and the time synchronization is reset. This defaults
+    				to 5 minutes. If a time difference that is more than
+    				5 minutes different from the previous value is
+    				recorded, then we assume the upstream clock has been
+    				change and we restart the client's time
+    				synchronization.
+    			</xsd:documentation>
+    		</xsd:annotation>
+    		<xsd:simpleType>
+    			<xsd:restriction base="xsd:int">
+    				<xsd:minExclusive value="0"/>
+    			</xsd:restriction>
+    		</xsd:simpleType>
+    	</xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="JFogbank">
+        <xsd:annotation>
+            <xsd:documentation>
+                This sets some default values that the JFogbank server use when it begins accepting
+                connections from legacy Fog4 agents.  The default values should be kept in most
+                cases, but the occasional exceptional system might need timeouts increased if it
+                runs much more slowly or a fixed port is desired.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="documentation" type="config:Documentation"/>
+            <xsd:element name="port" type="xsd:int" default="0"/>
+            <xsd:element name="loginTimeout" type="xsd:int" default="30000"/>
+            <xsd:element name="bridgeTimeout" type="xsd:int" default="30000"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

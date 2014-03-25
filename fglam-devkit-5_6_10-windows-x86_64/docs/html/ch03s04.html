@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>3.4. Dependency Injection</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch03.html" title="Chapter 3. Agent Services"/><link rel="prev" href="ch03s03.html" title="3.3. TopologyDataSubmissionService3"/><link rel="next" href="ch03s05.html" title="3.5. UnitService"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.4. Dependency Injection</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s03.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 3. Agent Services</th><td width="20%" align="right"> <a accesskey="n" href="ch03s05.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="3.4. Dependency Injection"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="agentservices-InjectionService"/>3.4. Dependency Injection</h2></div></div></div><p>
+          Injection of dependencies is a two step process that is done by annotating fields, 
+          methods, and constructors in agent classes with the <code class="varname">@Inject</code> annotation 
+          and then triggering the injection. Both operations (and the limitations on each) are 
+          discussed below.
+        </p><p>
+          While not a separate service, dependecy injection (and dependency lookup) is available 
+          through the <code class="varname">ServiceFactory</code> provided to each agent constructor. This 
+          allows injection of both agent manager provided services as well as agent created services
+          and class instances. The <code class="varname">ServiceFactory</code> instance passed to each
+          agent's contructor should be cached by that agent for later use. This instance is agent
+          specific and should not be cached in a static field. Static fields are shared by all 
+          instances of the agent running on the same agent manager.
+        </p><div class="section" title="3.4.1. Registering Agent Services and Classes"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-InjectionService-registering"/>3.4.1. Registering Agent Services and Classes</h3></div></div></div><p>
+              The injection service provided by <code class="varname">ServiceFactory</code> already has
+              all agent manager services as well as the <code class="varname">ServiceFactory</code> itself registered. 
+              Any time such a service is to be injected into an agent class, the same instance of 
+              the service is used. This is identical to calling 
+              </p><pre class="programlisting">ServiceFactory.getService(AgentManagerService.<strong class="hl-keyword">class</strong>);</pre><p>
+              There is no need to register agent manager provided services with the service factory.              
+            </p><p>
+             For <span class="emphasis"><em>agent provided</em></span> services and class, registration with the
+             service manager is required before injection can be triggered. Registration is done
+             through that <code class="varname">ServiceFactory</code> instance passed to the agent constructor
+             and is done by calling either <code class="function">bind()</code> or <code class="function">bindInstance()</code>.
+            </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><code class="function">bind()</code>: used to bind an interface or class to its 
+                implementing class type. Whenever an injection of the bound class or interface is
+                required a <span class="emphasis"><em>new instance</em></span> of the implementing class type is 
+                created, with its specified dependencies already injected.
+                <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+                  The implementing class must either have a public no-argument constructor or
+                  exactly one contructor annotated with <code class="varname">@Inject</code>, not both.
+                </td></tr></table></div></li><li class="listitem"><code class="function">bindInstance()</code>: used to bind an interface or class to a specific
+                instance that implements/is/subclasses the provided bound class. Whenever an injection 
+                of the bound class or interface is required the <span class="emphasis"><em>exact instance</em></span> 
+                of the implementing class type that was bound will be returned. No injection is
+                done on the implementing class in this case.
+              </li></ul></div><p>
+             Each method requires two arguments, the first is a class or interface that the service
+             will then inject into other classes when requested. This is referred to as the bound 
+             class. The second argument is the class that implements, extends, or is the bound class.
+             This is referred to as the implementing class. The following combinations are allowed.
+            </p><div class="table"><a id="d0e2126"/><p class="title"><strong>Table 3.3. Bound and Implementing Classes when Injecting</strong></p><div class="table-contents"><table summary="Bound and Implementing Classes when Injecting" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead align="center"><tr><th align="center">Bound Class</th><th align="center">Implementing Class</th></tr></thead><tbody><tr><td>interface <code class="varname">InterfaceName</code></td><td>class <code class="varname">ClassName</code> implements <code class="varname">InterfaceName</code></td></tr><tr><td>class <code class="varname">ClassName</code></td><td>class <code class="varname">ClassName</code></td></tr><tr><td>class <code class="varname">ClassName</code></td><td>class <code class="varname">OtherClassName</code> extends <code class="varname">ClassName</code></td></tr></tbody></table></div></div><br class="table-break"/></div><div class="section" title="3.4.2. Recursive Injection"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-InjectionService-recursive"/>3.4.2. Recursive Injection</h3></div></div></div><p>
+              When an agent registered dependency is to be injected, and a new instance must be
+              created to do so, the injection service will also inject any dependencies required
+              by that service. 
+            </p><p>
+              For example, suppose an instance of the service <code class="varname">ClassParent</code> is 
+              requested, and a new instance must be created. The dependency injection service 
+              will first determine what dependencies the <code class="varname">ClassParent</code> service 
+              itself has, then create those dependencies, and then finally create 
+              <code class="varname">ClassParent</code> with its dependencies filled in before returning 
+              it to be used by the agent. 
+            </p><p>
+              If a recursive dependency is encountered during creation, then an exception is generated
+              and injection is halted. An example of a such a recursive dependency would look 
+              like this:
+</p><pre class="programlisting">
+  ClassParent --depends on--&gt; ClassChild --depends on--&gt; ClassGrandchild 
+     ^                                                              |
+     \---------------------------depends on-------------------------/ 
+</pre><p>              
+            </p></div><div class="section" title="3.4.3. Triggering An Injection"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-InjectionService-triggering"/>3.4.3. Triggering An Injection</h3></div></div></div><p>
+              Dependency injection requires a triggering event, simply annotating the class is not
+              sufficient. There are several events that can cause the <code class="varname">ServiceFactory</code>
+              to scan a class for <code class="varname">@Inject</code> annotations. Depending on the triggering
+              event, some annotation may be excluded. If an injection occurs, the injected class will
+              also have its dependencies injected, should a new instance of it be required.
+            </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                The agent manager creates a new instance of a agent by instantiating the agent class
+                the implements the <code class="varname">Agent</code> interface. In this case, field and 
+                method <code class="varname">@Inject</code> annotations are checked but since the only 
+                constructor allowed for this class accepts only the <code class="varname">ServiceFactory</code>, 
+                all constructor annotations are ignored.                                  
+              </li><li class="listitem"><code class="function">ServiceFactory.injectDependencies()</code> is called on an existing class
+                instance. This will only happen as the result of a direct call by agent code. In this
+                case, field and method <code class="varname">@Inject</code> annotations are done but any 
+                constructor annotations are ignored as the class has already been created.
+              </li><li class="listitem"><code class="function">ServiceFactory.getAgentService()</code> is called <span class="emphasis"><em>and</em></span>
+                a new class instance must be instantiated. In this case, field, method and 
+                constructor annotations are scanned for and processed. Classes bound with
+                <code class="function">ServiceFactory.bind()</code> meet this criteria.
+              </li><li class="listitem"><code class="function">ServiceFactory.newInstanceOf()</code> is called. This is a helper
+                method that will create a new instance of a unbound class with all its dependencies 
+                injected. In this case, field, method and constructor annotations are scanned 
+                for and processed.
+              </li></ul></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+              Calling <code class="function">ServiceFactory.getAgentService()</code> when a new instance
+              of the bound class is <span class="emphasis"><em>not</em></span> required is not a triggering event
+              and no dependency injection is done. Specifically, any class instance  bound with
+              <code class="function">ServiceFactory.bindInstance()</code> will not trigger dependency
+              injection when it is requested.
+            </td></tr></table></div></div><div class="section" title="3.4.4. Field Injection"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-InjectionService-fieldInjection"/>3.4.4. Field Injection</h3></div></div></div><p>
+              All fields, except for final fields, are eligible for injection if they included
+              the <code class="varname">@Inject</code> annotation. Fields inherited from a super class
+              are also checked for annoatations. Only fields without a value (null fields) will
+              have values assigned during dependency injection. Injection will never replace
+              an existing value for a field.  
+            </p><div class="table"><a id="d0e2254"/><p class="title"><strong>Table 3.4. Supported Field Injection</strong></p><div class="table-contents"><table summary="Supported Field Injection" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead align="center"><tr><th align="center">Modifier</th><th align="center">Types Supported</th></tr></thead><tbody><tr><td>access</td><td>public, protected, <span class="emphasis"><em>default</em></span>, private</td></tr><tr><td>static</td><td>supported but not recommended</td></tr><tr><td>final</td><td>not supported and will generate a runtime exception</td></tr><tr><td><span class="emphasis"><em>inherited</em></span></td><td>all supported modifiers from parent classes</td></tr></tbody></table></div></div><br class="table-break"/><pre class="programlisting"><strong class="hl-keyword">import</strong> com.quest.glue.api.services.Inject;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.LogService;
+            
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> SampleClass {
+
+<em class="hl-tag" style="color: green">// Agent manager provided service will be injected </em>
+<em><span class="hl-annotation" style="color: gray">@Inject</span></em> <strong class="hl-keyword">private</strong> LogService mLogService; 
+
+<em class="hl-tag" style="color: green">// Agent provided service will be injected</em>
+<em><span class="hl-annotation" style="color: gray">@Inject</span></em> <strong class="hl-keyword">public</strong> MyAgentProvidedClass mMyService;
+
+}</pre></div><div class="section" title="3.4.5. Method Injection"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-InjectionService-methodInjection"/>3.4.5. Method Injection</h3></div></div></div><p>
+              All methods are eligible for injection if they included the <code class="varname">@Inject</code> 
+              annotation. Methods inherited from a super class are also checked for annotations.
+              All parameters for an annotated method will be provided by the injection system.
+              If one or more parameters cannot be resolved, an exception is generated.                
+            </p><div class="table"><a id="d0e2299"/><p class="title"><strong>Table 3.5. Supported Methods Injections</strong></p><div class="table-contents"><table summary="Supported Methods Injections" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead align="center"><tr><th align="center">Modifier</th><th align="center">Types Supported</th></tr></thead><tbody><tr><td>access</td><td>public, protected, <span class="emphasis"><em>default</em></span>, private</td></tr><tr><td>static</td><td>supported but not recommeded</td></tr><tr><td><span class="emphasis"><em>inherited</em></span></td><td>all supported modifiers from parent classes</td></tr></tbody></table></div></div><br class="table-break"/><pre class="programlisting"><strong class="hl-keyword">import</strong> com.quest.glue.api.services.Inject;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.LogService;
+            
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> SampleClass {
+
+<em class="hl-tag" style="color: green">// Agent manager provided service will be injected </em>
+<strong class="hl-keyword">private</strong> LogService mLogService; 
+
+<em class="hl-tag" style="color: green">// Agent provided service will be injected</em>
+<strong class="hl-keyword">public</strong> MyAgentProvidedClass mMyService;
+
+<em><span class="hl-annotation" style="color: gray">@Inject</span></em>
+<strong class="hl-keyword">protected</strong> setValues(LogService logSvc, MyAgentProvidedClass mySvc) {
+    mLogService = logSvc;
+    mMyService = mySvc;
+}
+
+}</pre></div><div class="section" title="3.4.6. Constructor Injection"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-InjectionService-contructorInjection"/>3.4.6. Constructor Injection</h3></div></div></div><p>
+              Contruction injection will only occur when the <code class="varname">ServiceFactory</code> must
+              create a new instance of an implementing class. This happens when the either
+              <code class="function">ServiceFactory.getAgentService()</code> is explicitly called or
+              when a new instance of the implementing class needs to be created to inject it
+              into another class.
+            </p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"/></td><th align="left">Warning</th></tr><tr><td align="left" valign="top">
+              There can only be exactly one constructor in a class that is annotated with 
+              <code class="varname">@Inject.</code></td></tr></table></div><pre class="programlisting">
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.Inject;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.AgentStatusService4;
+            
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> SampleClass {
+
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> AgentStatusService4 mService;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> MyAgentProvidedClass mMyService;
+
+<em><span class="hl-annotation" style="color: gray">@Inject</span></em>
+<strong class="hl-keyword">public</strong> SampleClass(AgentStatusService4 svc, MyAgentProvidedClass mySvc) {
+    mService = svc;
+    mMysService = mySvc;
+}
+
+}</pre></div><div class="section" title="3.4.7. LogService.Logger Special Handling"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-InjectionService-logservice"/>3.4.7. LogService.Logger Special Handling</h3></div></div></div><p>
+            Normally, final fields are not eligible for injection. An attempt to do so will 
+            result in an exception at runtime. There is one allowed case, however. The
+            <code class="varname">LogService.Logger</code> type can be injected into a private final
+            field. The injected instance will be a logger specialized for the declaring class,
+            similar to calling <code class="function">LogService.getLogger(DeclaringClass.class))</code>  
+          </p><p>
+            The <code class="varname">LogService.Logger</code> can be injected via an annotated constructor
+            or an annotated field, but <span class="emphasis"><em>not</em></span> via an annotated method.
+          </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+            Since, at compile time, the Java Compiler does not know that dependency injection
+            will take place later, a value must be assigned to this field in all constructors.
+            For injection the be successful, only <code class="varname">null</code> should be assigned to
+            this field.
+          </td></tr></table></div><pre class="programlisting"><strong class="hl-keyword">import</strong> com.quest.glue.api.services.Inject;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.LogService;
+            
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> SampleClass {
+
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> LogService.Logger mLogger;
+
+<em><span class="hl-annotation" style="color: gray">@Inject</span></em>
+<strong class="hl-keyword">public</strong> SampleClass(LogService.Logger injectedLogger) {
+    mLogger = injectedLogger;
+}
+
+}</pre><pre class="programlisting"><strong class="hl-keyword">import</strong> com.quest.glue.api.services.Inject;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.LogService;
+            
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> SampleClass {
+
+<em><span class="hl-annotation" style="color: gray">@Inject</span></em>
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> LogService.Logger mLogger;
+
+<strong class="hl-keyword">public</strong> SampleClass() {
+    mLogger = null; <em class="hl-tag" style="color: green">// ServiceFactory dependency injection will override this</em>
+}
+
+}</pre></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s03.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s05.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">3.3. TopologyDataSubmissionService3 </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 3.5. UnitService</td></tr></table></div></body></html>

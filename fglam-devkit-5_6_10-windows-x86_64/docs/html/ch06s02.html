@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>6.2. Structured Data Collection</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch06.html" title="Chapter 6. Structured Data Collection and Callbacks"/><link rel="prev" href="ch06.html" title="Chapter 6. Structured Data Collection and Callbacks"/><link rel="next" href="ch06s03.html" title="6.3. Callbacks"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">6.2. Structured Data Collection</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 6. Structured Data Collection and Callbacks</th><td width="20%" align="right"> <a accesskey="n" href="ch06s03.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="6.2. Structured Data Collection"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="structured_data_collection"/>6.2. Structured Data Collection</h2></div></div></div><p>
+            Structured data collection allows agent developers to focus on data
+            collection without having to worry about setting up the appropriate schedules. 
+			The collection schedule is configured in the <span class="emphasis"><em>agent-definition.xml</em></span>
+			of your agent package project. A set of elements has been added that allows you to
+			define collection criteria for an agent. When the values of the elements are processed 
+			by the Developer's Kit during build time, a set of interfaces that extend the
+            <code class="function">com.quest.glue.api.agent.CollectorAware</code> are generated. Your agent
+			implements these interfaces and provides an implementation for each of the declared
+			collection schedules.
+        </p><p>
+            When FglAM loads the agent it searches for all the interfaces implemented by the 
+            agent that extend <code class="function">CollectorAware</code>. Any methods that are defined 
+            in those interfaces and match the supported collector method signature are 
+            scheduled and called at the agent's specified rate when data collection is started 
+            for that agent.
+        </p><p>
+			Using a set of properties that have been added to the agent ASP configuration in the 
+			Administration UI, you can set the runtime configuration of the schedule values. You 
+			can set the collection rate for each schedule and, when saved, the agent will 
+			update the runtime scheduler with the new rate.
+		</p><div class="section" title="6.2.1. Tooling Changes"><div class="titlepage"><div><div><h3 class="title"><a id="structured_data_agentDefinition"/>6.2.1. Tooling Changes</h3></div></div></div><p>
+                The <span class="emphasis"><em>agent-definition.xml</em></span> has been enhanced to support the declaration
+				of the new data scheduling configuration. The <code class="function">dataCollection</code>
+				element is nested within the <code class="function">agent</code> parent node and contains all
+				of the desired collection schedules.
+			</p><p>
+				</p><pre class="programlisting">
+<b class="hl-tag" style="color: #3333FF;">&lt;agent-definition</b> <span class="hl-attribute" style="color: #993399;">xmlns</span>=<span class="hl-value" style="color: #993300">"urn:X-quest.com:glue/agent/definition/1.9"</span>
+      <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span> <span class="hl-attribute" style="color: #993399;">ver</span>=<span class="hl-value" style="color: #993300">"1.0.1"</span> <span class="hl-attribute" style="color: #993399;">allow-asynchronous-access</span>=<span class="hl-value" style="color: #993300">"true"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+
+...
+  <b class="hl-tag" style="color: #3333FF;">&lt;agent</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span> <span class="hl-attribute" style="color: #993399;">package</span>=<span class="hl-value" style="color: #993300">"com.quest.fglam.example.url"</span> <span class="hl-attribute" style="color: #993399;">class-name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgentImpl"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+       <b class="hl-tag" style="color: #3333FF;">&lt;data-collection&gt;</b>
+          <b class="hl-tag" style="color: #3333FF;">&lt;collector</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"metrics"</span> <span class="hl-attribute" style="color: #993399;">method-name</span>=<span class="hl-value" style="color: #993300">"collectMetrics"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"1"</span> <span class="hl-attribute" style="color: #993399;">unit</span>=<span class="hl-value" style="color: #993300">"minutes"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+      <b class="hl-tag" style="color: #3333FF;">&lt;/data-collection&gt;</b>
+
+...
+
+  <b class="hl-tag" style="color: #3333FF;">&lt;/agent&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/agent-definition&gt;</b></pre><p>
+			</p><p>
+				Each data collector that the agent requires will be defined here. The collector
+				<code class="function">name</code> attribute will be used in the UI to refer to this collector.
+			</p><p>
+				The <code class="function">method-name</code> is the method for generating in the code-
+				generated collector interface. This method will be generated with a single long 
+				parameter that can be used to set the expected frequency on any of the sample data 
+				objects that are used within the implementation of this collector callback.
+				<span class="emphasis"><em>Note:</em></span> When exposed on the FMS through the 
+				<code class="function">CallbackService</code>, the collector callback methods will not contain 
+				the long method parameter. This value will be injected by the FglAM scheduler when 
+				the collector callback is received.
+			</p><p>
+                The <code class="function">value</code> and <code class="function">unit</code> attributes define the
+				scheduled rate of the collector callback method. The <code class="function">unit</code> value
+				can be any one of:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Days</li><li class="listitem">Hours</li><li class="listitem">Minutes</li><li class="listitem">Seconds</li><li class="listitem">Milliseconds</li></ul></div><p>
+			</p><div class="section" title="6.2.1.1. CRON Schedules"><div class="titlepage"><div><div><h4 class="title"><a id="structured_data.cron"/>6.2.1.1. CRON Schedules</h4></div></div></div><p>
+					An additional scheduling mode is available for executing collectors on a CRON schedule.
+					To enable this feature you must declare that data collectors are CRON-aware by setting  
+					the <code class="function">enable-cron</code> attribute.
+				</p><p>
+					</p><pre class="programlisting">
+&lt;data-collection enable-cron="true"&gt;
+    &lt;collector name="Normal Collection" method-name="normalCollection" value="* */5 * ? * *" unit="cron"&gt;
+        &lt;fast-mode value="10" unit="seconds" max-count="12"/&gt;
+    &lt;/collector&gt;
+    &lt;collector name="Full Detail" method-name="fullDetailCollection" value="1" unit="hours"/&gt;
+&lt;/data-collection&gt;
+...</pre><p>
+
+				</p><p>
+					When this value is set to <code class="function">true</code>, you may use the <code class="function">cron</code> 
+					value when setting the <code class="function">unit</code> value and the <code class="function">value</code> attribute 
+					to a CRON expression.
+				</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>
+					Enabling CRON expressions changes the underlying datatype of the <code class="function">value</code>
+					attribute from an integer to a string. This change in datatype may cause an existing agent
+					deployment that was not CRON-aware to break should an upgraded CAR that has the CRON extensions 
+					set be deployed to the FMS. In this scenario, you must utilize a form of agent lifecyle
+					maintance when deploying your new CAR to the FMS.
+				</p></td></tr></table></div><p>
+                    When a CRON expression is used to define the collection schedule interval for an agent, the submitted
+                    metric data will set the sample period to 0ms. This zero value allows the FMS to handle these samples
+                    as event-driven callbacks, since CRON expressions can be defined to trigger metric submissions at 
+                    non-uniform times.
+                </p><div class="section" title="6.2.1.1.1. Format"><div class="titlepage"><div><div><h5 class="title"><a id="d0e4741"/>6.2.1.1.1. Format</h5></div></div></div><p>
+                    A CRON expression is a string comprised of 6 or 7 fields separated by 
+                    white space. Fields can contain any of the allowed values, along with 
+                    various combinations of the allowed special characters for that field. 
+                    The fields are as follows:
+                  </p><div class="table"><a id="d0e4746"/><p class="title"><strong>Table 6.1. Cron Fields</strong></p><div class="table-contents"><table summary="Cron Fields" border="1"><colgroup><col width="25%"/><col width="25%"/><col width="25%"/><col width="25%"/></colgroup><thead><tr><th align="left">Field Name</th><th align="left">Mandatory</th><th align="left">Allowed Values</th><th align="left">Allowed Special Characters</th></tr></thead><tbody><tr><td align="left">Seconds</td><td align="left">YES</td><td align="left">0-59</td><td align="left">, - * /</td></tr><tr><td align="left">Minutes</td><td align="left">YES</td><td align="left">0-59</td><td align="left">, - * /</td></tr><tr><td align="left">Hours</td><td align="left">YES</td><td align="left">0-23</td><td align="left">, - * /</td></tr><tr><td align="left">Day of month</td><td align="left">YES</td><td align="left">1-31</td><td align="left">, - * ? / L W</td></tr><tr><td align="left">Month</td><td align="left">YES</td><td align="left">1-12 or JAN-DEC</td><td align="left">, - * /</td></tr><tr><td align="left">Day of week</td><td align="left">YES</td><td align="left">1-7 or SUN-SAT</td><td align="left">, - * ? / L #</td></tr><tr><td align="left">Year</td><td align="left">NO</td><td align="left">empty, 1970-2099</td><td align="left">, - * /</td></tr></tbody></table></div></div><br class="table-break"/><p>
+                    So CRON expressions can be as simple as this: 
+                    <code class="computeroutput">* * * * ? *</code>,
+                    or more complex, like this: 
+                    <code class="computeroutput">0/5 14,18,3-39,52 * ? JAN,MAR,SEP MON-FRI 2002-2010</code>.
+                  </p></div><div class="section" title="6.2.1.1.2. Special Characters"><div class="titlepage"><div><div><h5 class="title"><a id="d0e4832"/>6.2.1.1.2. Special Characters</h5></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><code class="computeroutput">* (all values)</code> - used to select all values. 
+                              For example, "*" in the minute field means every minute.</li><li class="listitem"><code class="computeroutput">? (no specific value)</code> - useful when you need to specify something 
+                              in one, but not the other, of the two fields (day-of-week and day-of-month) in which the 
+                              character is allowed. For example, if I want my trigger to fire on the 10th day of the month, 
+                              but I do not care which day of the week that is, I would put "10" in the 
+                              day-of-month field and "?" in the day-of-week field.</li><li class="listitem"><code class="computeroutput">-</code> - used to specify ranges. For example, "10-12" in the hour field 
+                              means the 10th, 11th and 12th hours.</li><li class="listitem"><code class="computeroutput">,</code> - used to specify additional values. For example, "MON,WED,FRI" in 
+                              the day-of-week field means Monday, Wednesday and Friday.</li><li class="listitem"><code class="computeroutput">/</code> - used to specify increments. For example, "0/15" in the seconds 
+                              field means seconds 0, 15, 30, and 45, and "5/15" in the seconds field means seconds 5, 20, 35, and 50.
+                              You can also specify / after the '' character. In this case '' is equivalent to having 0 before the /. 
+                              "1/3" in the day-of-month field means every 3 days starting on the first day of the month.</li><li class="listitem"><code class="computeroutput">L (last)</code> - has a different meaning in each of the two fields in which 
+                              it is allowed. "L" in the day-of-month field 
+                              means the last day of the month (day 31 for January, day 28 for 
+                              February in a non-leap year, and so on). If used in the day-of-week field by 
+                              itself, "L" is equivalent to "7" or "SAT". However, if used in the day-of-week 
+                              field after a numeric value, it means the last <span class="emphasis"><em>xxx</em></span>day of 
+                              the month. For example, "6L" in the day-of-week field means the last friday 
+                              of the month. You can also specify an offset from the last day of the month. 
+                              "L-3" in the day-of-week field, for example, means the third-to-last day 
+                              of the calendar month. When using the "L" option, it is important not to specify 
+                              lists or ranges of values, because you'll get confusing/unexpected results.</li><li class="listitem"><code class="computeroutput">W (weekday)</code> - used to specify the nearest weekday (Monday-Friday). 
+                              For example, "15W" in the day-of-month field means the nearest 
+                              weekday to the 15th day of the month. In this case, if the 15th is a Saturday, 
+                              the trigger will fire on Friday the 14th. If the 15th is a Sunday, 
+                              the trigger will fire on Monday the 16th. If the 15th is a Tuesday, 
+                              the trigger will fire on Tuesday the 15th. However, if you specify "1W" 
+                              in the day-of-month field and the 1st is a Saturday, the trigger 
+                              will fire on Monday the 3rd, because it will not cross a month boundary. 
+                              The W character can only be specified when the day-of-month is a single day, 
+                              not a range or list of days.
+                              <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">The L and W characters can also be combined into "LW" in the 
+                                    day-of-month field. "LW" means the last weekday of the 
+                                    month.</td></tr></table></div></li><li class="listitem"><code class="computeroutput">#</code> - used to specify the nth <span class="emphasis"><em>xxx</em></span>day 
+                              of the month. For example, a value of "6#3" in the day-of-week field means the third Friday 
+                              of the month (Friday is day 6 and #3 means the 3rd one in the month). 
+                              Other examples: "2#1" means the first Monday of the month and "4#5" means 
+                              the fifth Wednesday of the month. Note that if you specify "#5" and 
+                              there is not 5 of the given day of the week in the month, then no firing 
+                              will occur in that month.
+                              <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">The legal characters and the names of months and days of the 
+                                    week are not case-sensitive. For example, MON is the same as mon.</td></tr></table></div></li></ul></div></div></div><div class="section" title="6.2.1.2. fast-mode"><div class="titlepage"><div><div><h4 class="title"><a id="structured_data.fastmode"/>6.2.1.2. fast-mode</h4></div></div></div><p>
+				Fast-mode, a special sub-type of the defined collection schedule,  
+				allows a temporary override of the base schedule so that 
+				collections	can be made at an alternate rate over a set duration.
+				</p><p>
+				When a fast-mode element is declared, an additional set of
+				attributes is available, and those attributes allow the cartridge developer to define 
+				the frequency and duration at which the method is called when fast-mode collections are 
+				requested. When enabled, this allows data to be collected up to a maximum number of 
+				iterations over a much shorter interval.
+				</p><p>
+				If a fast-mode element is not defined, then the default settings
+				generated for the secondary ASP will be a max-count=0. This translates into a
+				one-time collection should a fast-mode request be made on this collector.
+				At runtime, the properties may be edited to override this default value using the 
+				properties editor.
+				</p><p>
+				A fast-mode collection is triggered through the invocation of a 
+				callback script that is executed on the FMS. When this type of callback is received, 
+				the agent instance immediately overrides the current schedule and sets the collection 
+				interval to the received fast-mode configuration. Once the
+				fast-mode expires, the base schedule is automatically
+				restored.
+				</p><p>
+				To activate the fast-mode collection for a defined collection
+				schedule, the script on the FMS must invoke the collector while the agent is
+				active and collecting data. For example, if your agent defines a collection
+				schedule called <code class="function">normalCollection</code> that has  
+				fast-mode defined for it, then your script should invoke 
+				the <code class="function">normalCollection</code> callback to trigger the increased collection
+				rate.
+				</p><p>
+				See the <a class="link" href="ch06s03.html" title="6.3. Callbacks">Callbacks</a> section for details
+				about creating callback scripts.
+				</p></div><div class="section" title="6.2.1.3. CollectorAware Code Generation"><div class="titlepage"><div><div><h4 class="title"><a id="structured_data.collector_aware_code_gen"/>6.2.1.3. CollectorAware Code Generation</h4></div></div></div><p>
+					The FglAM Developer's Kit will generate the following interface from the defined
+					<code class="varname">data-collection</code> configuration:
+					</p><pre class="programlisting">
+<strong class="hl-keyword">package</strong> com.quest.fglam.example.url;
+
+<strong class="hl-keyword">import</strong> javax.annotation.Generated;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.agent.CollectorAware;
+
+
+<em class="hl-tag" style="color: green">/**
+ * WARNING:  THIS IS GENERATED CODE, DO NOT EDIT
+ *
+ * This interface defines the set of methods that a Cartridge Developer must implement
+ * in order to enable Data Collection.
+ *
+ */</em>
+
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">interface</strong> URLAvailabilityAgentCollectors
+    <strong class="hl-keyword">extends</strong> CollectorAware
+{
+
+
+    <em class="hl-tag" style="color: green">/**
+     * metrics Data Collector
+     *
+     * @param expectedFrequency
+     *     The expected frequency expressed in milliseconds
+     */</em>
+    <strong class="hl-keyword">void</strong> collectMetrics(<strong class="hl-keyword">long</strong> expectedFrequency);
+
+}
+					</pre><p>
+				</p><p>
+					Each of the declared methods in this interface must be implemented within your
+					agent source. Although you are free to implement whatever you need within these
+					methods, it is best that they return quickly so future scheduled calls are not 
+					delayed or missed.
+				</p><p>
+					An example implementation of the <code class="function">collectMetrics</code> from the
+					URLAvailabilityAgent is shown here:
+					</p><pre class="programlisting">
+<em class="hl-tag" style="color: green">/**
+ * The scheduled callback that submits the collected metrics
+ *
+ * @param expectedFrequency collection frequency
+ */</em>
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> collectMetrics(<strong class="hl-keyword">long</strong> expectedFrequency) {
+    mLogger.debug(<strong class="hl-string"><em style="color:red">"Metrics collection begins"</em></strong>);
+    MonitoredURLRoot mRootTopology = <strong class="hl-keyword">new</strong> MonitoredURLRoot(<strong class="hl-string"><em style="color:red">"MonitoredURLRoot"</em></strong>);
+    <strong class="hl-keyword">final</strong> URLServerMap serverMap = <strong class="hl-keyword">new</strong> URLServerMap(<strong class="hl-keyword">this</strong>.mURLAvailabilityAgentProperty.getUrlList());
+    <strong class="hl-keyword">for</strong>(String hostname : serverMap.getHostnameList()) {
+        <strong class="hl-keyword">for</strong>(Integer port : serverMap.getPortList(hostname))	{
+            URLServerInstance webServer = null;
+            <strong class="hl-keyword">try</strong> {
+                webServer = createWebServerInstance(hostname, port);
+            } <strong class="hl-keyword">catch</strong> (InterruptedException e) {
+                mLogger.log(<strong class="hl-string"><em style="color:red">"interruptedException"</em></strong>, e);
+            }
+            <strong class="hl-keyword">if</strong> (webServer != null){
+                <strong class="hl-keyword">for</strong>(UrlList urlEntry : serverMap.getURLList(hostname, port)) {
+                    <em class="hl-tag" style="color: green">// collect url information and compose the topology</em>
+                    mRootTopology.getInstances().add(collectURLTopology(urlEntry, webServer, mAgent));
+                }
+            }
+        }
+    }
+    <strong class="hl-keyword">try</strong> {
+        mFglamHost.submit(mSubmitter, mUnitsService, expectedFrequency, System.currentTimeMillis());
+        mRootTopology.submit(mSubmitter, mUnitsService, expectedFrequency, System.currentTimeMillis());
+    } <strong class="hl-keyword">catch</strong> (TopologyException e) {
+        mLogger.log(<strong class="hl-string"><em style="color:red">"cannotSubmitData"</em></strong>, e);
+    }
+    mLogger.debug(<strong class="hl-string"><em style="color:red">"Metrics collection ends"</em></strong>);
+}
+					</pre><p>
+				</p></div></div><div class="section" title="6.2.2. Migrating to New Data Collectors"><div class="titlepage"><div><div><h3 class="title"><a id="structured_data_collection.remove.timers"/>6.2.2. Migrating to New Data Collectors</h3></div></div></div><p>
+				Existing FglAM agents can easily be moved to the new <code class="function">CollectorAware</code>
+				collection scheduling. By moving away from the previous <code class="function">TimerService</code>-
+				based collection triggering, your agent implementation code will be simpler, because the
+				scheduling of the collections will be done within FglAM instead of by you.
+			</p><p>
+				To begin the migration, you will need to first define <code class="varname">data-collection</code> 
+				blocks within the <span class="emphasis"><em>agent-definition.xml</em></span> of your project.
+				Most agents will only need one <code class="varname">collector</code> declaration here, but if
+				the data that your agent collects incurs some resource expense, then you may want to
+				isolate this data sample into its own collection schedule. This provides you with 
+				more control within your agent, because you can now easily schedule the larger data collection
+				tasks to occur over a longer interval.
+			</p><p>
+				Once the <code class="varname">data-collection</code> is defined, run the code-generation tool
+				to get the new <code class="function">CollectorAware</code> interface for your agent.
+				When editing your agent source, you can replace the <code class="function">Runnable</code> interface
+				with the newly generated <code class="function">CollectorAware</code> interface and begin
+				implementing the new methods. In addition, the <code class="function">run()</code> method can
+				be removed.
+			</p><p>
+				If you used the <code class="function">TimerService</code> to schedule your previous collection 
+				runnable task, and the <code class="function">TimerService</code> reference is not being used 
+				by other tasks within your class, you may remove it.
+			</p><p>
+				The <code class="function">startCollection</code> and <code class="function">stopCollection</code> methods
+				now no longer need to manage the scheduling of the <code class="function">TimerTask</code>, because 
+				the FglAM core will now handle schedule changes received from property change events
+				automatically.
+			</p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch06.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch06s03.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 6. Structured Data Collection and Callbacks </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 6.3. Callbacks</td></tr></table></div></body></html>

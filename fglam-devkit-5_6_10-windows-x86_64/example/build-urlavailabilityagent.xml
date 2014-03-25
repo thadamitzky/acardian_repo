@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+
+<project name="URLAvailabilityAgent" default="urlavailabilityagent-dist" xmlns:fglam="fglam:/ant/macros">
+
+    <!-- Add the external environment and find the FglAM installation -->
+    <property environment="env"/>
+    <property name="fglam.devkit.home" value="${env.FGLAM_DEVKIT_HOME}"/>
+
+    <fail>
+    <condition><not>
+          <and>
+              <available file="${fglam.devkit.home}" type="dir"/>
+              <available file="${fglam.devkit.home}/buildtools/lib/devkit-ant.jar" type="file"/>
+          </and>
+        </not></condition>.
+        The specified FglAM developer's kit location, ${fglam.devkit.home},
+        does not appear to exist as a valid directory or does not contain a
+        recognized FglAM developer's kit.
+    </fail>
+
+    <!-- Define some directories used throughout the build process -->
+    <property name="urlavailabilityagent.src.dir"         value="${basedir}/urlavailabilityagent/src"/>
+    <property name="urlavailabilityagent.config.dir"      value="${basedir}/urlavailabilityagent/config"/>
+    <property name="urlavailabilityagent.build.dir"       value="${basedir}/build/urlavailabilityagent"/>
+    <property name="urlavailabilityagent.build.test.dir"  value="${urlavailabilityagent.build.dir}/test"/>
+    <property name="urlavailabilityagent.tooling.output"  value="${urlavailabilityagent.build.dir}/tooling"/>
+    <property name="urlavailabilityagent.dist.dir"        value="${urlavailabilityagent.build.dir}/dist"/>
+    <property name="urlavailabilityagent.test.dir"        value="${basedir}/test"/>
+    <property name="urlavailabilityagent.java.test.dir"   value="${urlavailabilityagent.test.dir}/java"/>
+
+    <!-- Import the FglAM tools -->
+    <import file="${fglam.devkit.home}/buildtools/fglam-ant-macros.xml"/>
+
+    <target name="urlavailabilityagent-tooling-artifacts">
+        <fglam:generator agent-definition="${urlavailabilityagent.config.dir}/agent-definition.xml"
+                        output-dir="${urlavailabilityagent.tooling.output}"/>
+        <!-- Load the generated agent.manifest to initialize build properties
+             for use in the fglam ant macros -->
+        <fglam:init-agent-manifest-props agent-manifest="${urlavailabilityagent.tooling.output}/agent.manifest" prefix="urlavailabilityagent"/>
+    </target>
+
+    <!-- Compile and package the agent binary files -->
+    <target name="urlavailabilityagent-compile-and-jar" depends="urlavailabilityagent-tooling-artifacts">
+        <fglam:compile-and-jar build-dir="${urlavailabilityagent.build.dir}">
+            <compile-options>
+                <src path="${urlavailabilityagent.tooling.output}/java-gen"/>
+                <src path="${urlavailabilityagent.src.dir}/java"/>
+                <include name="**/*.java"/>
+            </compile-options>
+            <jar-options>
+                <!-- Adds the LogResources.properties files to the jar file -->
+                <fileset dir="${urlavailabilityagent.src.dir}/java" includes="**/*.properties"/>
+            </jar-options>
+        </fglam:compile-and-jar>
+        <mkdir dir="${urlavailabilityagent.build.test.dir}/classes"/>
+        <javac target="1.6" source="1.6"
+            includeantruntime="no" includejavaruntime="no"
+            deprecation="true" debug="true" debuglevel="lines,vars,source"
+            destdir="${urlavailabilityagent.build.test.dir}/classes">
+            <classpath>
+                <fileset dir="${urlavailabilityagent.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${fglam.devkit.home}/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${fglam.devkit.home}/buildtools/junit">
+                    <include name="junit*.jar"/>
+                </fileset>
+            </classpath>
+
+            <src path="${urlavailabilityagent.tooling.output}/java-gen"/>
+            <src path="${urlavailabilityagent.test.dir}/java"/>
+            <include name="**/urlavailabilityagent/*.java"/>
+        </javac>
+    </target>
+
+    <!-- Creates a distribution which results in a FMS 5.0 deployeable cartridge file -->
+    <target name="urlavailabilityagent-dist" depends="urlavailabilityagent-compile-and-jar"
+            description="Builds a deployable cartridge with a GAR installer">
+
+        <!-- create the dist output directory -->
+        <mkdir dir="${urlavailabilityagent.dist.dir}"/>
+
+        <fglam:gar agent-manifest="${urlavailabilityagent.tooling.output}/agent.manifest"
+                  agent-lib-dir ="${urlavailabilityagent.build.dir}/jars"
+                  build-dir="${urlavailabilityagent.build.dir}"
+                  prefix="urlavailabilityagent"/>
+
+        <echo>Making topology in ${urlavailabilityagent.dist.dir}</echo>
+        <echo>CDT file ${urlavailabilityagent.tooling.output}/cdt.xml</echo>
+        <echo>Topology file ${urlavailabilityagent.tooling.output}/topology.xml</echo>
+        <echo>Monitoring Policy file ${urlavailabilityagent.tooling.output}/monitoring-policy.xml</echo>
+        <echo>WCF (input) file ${urlavailabilityagent.config.dir}/wcf.xml</echo>
+        <car destdir="${urlavailabilityagent.dist.dir}" buildLocalizableCar="false">
+            <cartridge
+                    name="${urlavailabilityagent.agent-manifest.name}"
+                    final="true"
+                    version="${urlavailabilityagent.agent-manifest.ver}"
+                    buildid="${urlavailabilityagent.agent-manifest.build-id}"
+                    author="FglAM Agent Developers">
+                <installers
+                    name="${urlavailabilityagent.agent-manifest.name}-Installers"
+                    version="${urlavailabilityagent.agent-manifest.ver}">
+                    <installer
+                        name="${urlavailabilityagent.agent-manifest.name}"
+                        version="${urlavailabilityagent.agent-manifest.ver}"
+                        file="${urlavailabilityagent.build.dir}/gar/${urlavailabilityagent.agent-manifest.name}.gar"
+                        type="fglam-client-pkg">
+                        <!-- This installer contains the following agent types. Each agent
+                             type in the cartridge must be listed here. -->
+                        <agent type="urlavailabilityagent" version="${urlavailabilityagent.agent-manifest.ver}"
+                                                    build="${urlavailabilityagent.agent-manifest.build-id}"/>
+                    </installer>
+                </installers>
+                <topologytypes
+                    name="${urlavailabilityagent.agent-manifest.name}-Topology-Types"
+                    version="${urlavailabilityagent.agent-manifest.ver}"
+                    file="${urlavailabilityagent.tooling.output}/urlavailabilityagent-topology.xml"/>
+                <monitoringpolicy
+                    name="${urlavailabilityagent.agent-manifest.name}-Properties"
+                    version="${urlavailabilityagent.agent-manifest.ver}"
+                    file="${urlavailabilityagent.tooling.output}/monitoring-policy.xml"/>
+                <cdt name="urlavailabilityagent-CDT"
+                    version="${urlavailabilityagent.agent-manifest.ver}"
+                    adapter="FglAM">
+                        <binding type="URLAvailabilityAgent" file="${urlavailabilityagent.tooling.output}/cdt.xml"/>
+                </cdt>
+                <!-- The topology schema in a cartridge can now be localized by deploying a resource bundle.
+                     The cartridge component must use the "topology-localizations" name and the basename must
+                     be the name of your properties file without any locale suffixes or file extensions. If
+                     your properties file is topology-localizations.properties, then the basename would have
+                     to be "topology-localizations". To see the new localized names go to the Schema Browser,
+                     select one of your topology types, and hover over the property name. The page itself should
+                     show the camelCase name, but the hover should show the new localized name. -->
+                <localizations
+                    name="topology-localizations-en"
+                    resource="topology-localizations"
+                    cartridge="${urlavailabilityagent.agent-manifest.name}"
+                    locale="en">
+                    <fileset dir="${urlavailabilityagent.config.dir}/locale">
+                        <include name="topology_en.properties"/>
+                    </fileset>
+                </localizations>
+                <localizations
+                    name="topology-localizations-zh_CN"
+                    resource="topology-localizations"
+                    cartridge="${urlavailabilityagent.agent-manifest.name}"
+                    locale="zh_CN">
+                    <fileset dir="${urlavailabilityagent.config.dir}/locale">
+                        <include name="topology_zh_CN.properties"/>
+                    </fileset>
+                </localizations>
+                <wcf name="urlavailabilityagent_wcf-root"
+                     author="FglAM Agent Developers"
+                     version="${urlavailabilityagent.agent-manifest.ver}"
+                     module="system/urlavailabilityagent"
+                     prefixwcf="true"
+                    >
+                    <fileset dir="${urlavailabilityagent.config.dir}/wcf" includes="wcf.xml"/>
+                    <fileset dir="${urlavailabilityagent.config.dir}/wcf" includes="strings.properties"/>
+                </wcf>
+                <wcfLocalizations
+                    name="strings_zh_CN"
+                    module="system/urlavailabilityagent"
+                    prefixwcf="true"
+                    cartridge="${urlavailabilityagent.agent-manifest.name}"
+                    locale="zh_CN"
+                    >
+                    <fileset file="${urlavailabilityagent.config.dir}/wcf/strings_zh_CN.properties" />
+                </wcfLocalizations>
+            </cartridge>
+        </car>
+
+        <!-- Create a Simulator CAR for this Agent Package -->
+        <fglam:dev-kit-simulator build-dir="${urlavailabilityagent.build.dir}" output="${urlavailabilityagent.tooling.output}" input="${urlavailabilityagent.tooling.output}/simulator/simulator.xml"/>
+
+        <!-- Move the generated simulator car into our dist directory -->
+        <move todir="${urlavailabilityagent.dist.dir}">
+            <fileset dir="${urlavailabilityagent.tooling.output}/simulator/dist">
+                <include name="*.car"/>
+            </fileset>
+        </move>
+    </target>
+
+    <target name="urlavailabilityagent-run" depends="urlavailabilityagent-dist" description="Launches the Agent Harness app">
+        <fglam:agent-harness agent-file="${urlavailabilityagent.config.dir}/agent-definition.xml" gar-file="${urlavailabilityagent.build.dir}/gar/${urlavailabilityagent.agent-manifest.name}.gar"/>
+    </target>
+
+    <!-- Delete any files generated by the build process -->
+    <target name="urlavailabilityagent-clean">
+        <delete dir="${urlavailabilityagent.build.dir}"/>
+    </target>
+
+    <!-- Deploy the created cartridge to a running server -->
+    <target name="urlavailabilityagent-deploy" depends="urlavailabilityagent-dist" description="Deploy the created cartridge to a running server">
+        <fglam:redeploy-cartridge name="${urlavailabilityagent.agent-manifest.name}"
+                                  version="${urlavailabilityagent.agent-manifest.ver}"
+                                  dir="${urlavailabilityagent.dist.dir}"/>
+    </target>
+
+    <target name="urlavailabilityagent-findbugs" depends="urlavailabilityagent-compile-and-jar">
+        <fglam:findbugs results="${urlavailabilityagent.build.dir}/results" analyze="com.quest.fglam.example.-">
+            <fglam:findbugs-jars>
+                <fileset dir="${urlavailabilityagent.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+            </fglam:findbugs-jars>
+
+            <fglam:findbugs-args>
+                <arg value="-sourcepath"/><arg path="${basedir}/src/java"/>
+                <arg value="-sourcepath"/><arg path="${urlavailabilityagent.build.dir}/tooling/java-gen"/>
+            </fglam:findbugs-args>
+
+            <fglam:findbugs-aux/>
+        </fglam:findbugs>        
+    </target>
+
+    <target name="urlavailabilityagent-junit" depends="urlavailabilityagent-compile-and-jar">
+
+        <fglam:junit results="${urlavailabilityagent.build.dir}/results">
+            <fglam:jvm-args/>
+
+            <fglam:jars>
+                <fileset dir="${urlavailabilityagent.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+
+                <pathelement location="${urlavailabilityagent.build.test.dir}/classes"/>
+            </fglam:jars>
+
+            <fglam:files>
+                <fileset dir="${urlavailabilityagent.java.test.dir}">
+                    <include name="**/urlavailabilityagent/Test*.java"/>
+                </fileset>
+            </fglam:files>
+        </fglam:junit>        
+    </target>
+
+    <target name="urlavailabilityagent-tests" depends="urlavailabilityagent-junit,urlavailabilityagent-findbugs">
+        <fail message="One or more JUnit tests failed" if="junit.failure"/>
+        <fail message="One ore more of the FindBugs tests failed">
+            <condition>
+                <not><equals arg1="${findbugs.exitcode}" arg2="0"/></not>
+            </condition>
+        </fail>
+    </target>
+
+</project>

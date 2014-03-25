@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>3.11. MemoryWarningService</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch03.html" title="Chapter 3. Agent Services"/><link rel="prev" href="ch03s10.html" title="3.10. ASPService"/><link rel="next" href="ch03s12.html" title="3.12. Connection Services"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.11. MemoryWarningService</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s10.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 3. Agent Services</th><td width="20%" align="right"> <a accesskey="n" href="ch03s12.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="3.11. MemoryWarningService"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="agentservices-MemoryWarningService"/>3.11. MemoryWarningService</h2></div></div></div><p>
+           The <code class="function">MemoryWarningService</code> can be used to receive notifications about low memory conditions from one or more
+           if the Java VM memory pools. It can also be used to receive notifications when memory has been reclaimed, and 
+           the low memory condition is no longer occurring.
+       </p><div class="section" title="3.11.1. Implement Listener"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-MemoryWarningService-implement-listener"/>3.11.1. Implement Listener</h3></div></div></div><p>
+             Implement the <code class="function">MemoryWarningService</code> listener.
+</p><pre class="programlisting">
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryPoolUsageInfo;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryUsageRecoverySettings;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryWarningService;
+
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> Listener <strong class="hl-keyword">implements</strong> MemoryWarningService.Listener {
+
+  <em><span class="hl-annotation" style="color: gray">@Override</span></em>
+  <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> memoryUsageLow(MemoryPoolUsageInfo usageInfo, MemoryUsageRecoverySettings usageRecoverySettings) {
+      <em class="hl-tag" style="color: green">// code</em>
+  }
+
+  <em><span class="hl-annotation" style="color: gray">@Override</span></em>
+  <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> memoryUsageRecovered(MemoryPoolUsageInfo usageInfo) {
+      <em class="hl-tag" style="color: green">// code</em>
+  }
+
+  <em><span class="hl-annotation" style="color: gray">@Override</span></em>
+  <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> memoryUsageNotRecovered(MemoryPoolUsageInfo usageInfo) {
+      <em class="hl-tag" style="color: green">// code</em>
+  }
+}
+</pre><p>
+         </p></div><div class="section" title="3.11.2. Add Listener"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-MemoryWarningService-add-listener"/>3.11.2. Add Listener</h3></div></div></div><p>
+               There are two ways to add the listener to the <code class="function">MemoryWarningService</code>. The listener can either be added to all
+               available memory pools, or it can be added to a specific pool.
+           </p><p>
+               Add listener to all memory pools.
+</p><pre class="programlisting">
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryWarningService;
+
+  <strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> MemoryWarningService mMemoryWarningService;
+  <strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> MemoryWarningService.Listener mListener;
+
+  mMemoryWarningService.register(mListener, memoryThreshold);
+
+</pre><p>
+           </p><p>
+               Add listener to a specific memory pool.
+</p><pre class="programlisting">
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryWarningService;
+
+  <strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> MemoryWarningService mMemoryWarningService;
+  <strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> MemoryWarningService.Listener mListener;
+
+  List&lt;String&gt; poolNames = mMemoryWarningService.getMemoryPoolNames();
+  <strong class="hl-keyword">if</strong>( poolNames.contains(poolName) ) {
+      mMemoryWarningService.register(mListener, memoryThreshold, poolName);
+  }
+</pre><p>
+           </p></div><div class="section" title="3.11.3. Listener Notification"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-MemoryWarningService-notifications"/>3.11.3. Listener Notification</h3></div></div></div><p>
+               When a low memory notification is received the listener can decide whether or not it wants to be notified when
+               memory recovery has occurred, i.e. the low memory condition has gone away. Alternatively it can simply continue
+               to receive low memory notifications. If the listener decides that it wants to be notified about memory recovery, it must enable the 
+               <code class="function">MemoryUsageRecoverySettings</code> object passed into the <code class="function">memoryUsageLow</code> function. 
+               Only when the recovery settings are enabled will the <code class="function">memoryUsageRecovered</code>, or the 
+               <code class="function">memoryUsageNotRecovered</code> function be called to notify the listener. Memory recovery entails detecting when the memory
+               usage drops below the initial threshold provided when the listener was registered with the <code class="function">MemoryWarningService</code>.
+               While memory recovery is being tracked, the listener will not receive any more <code class="function">memoryUsageLow</code> notifications. 
+               Once notified of memory recovery, the listener will return to its original state, waiting for low memory notifications.
+</p><pre class="programlisting">
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryPoolUsageInfo;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryUsageRecoverySettings;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryWarningService;
+
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> Listener <strong class="hl-keyword">implements</strong> MemoryWarningService.Listener {
+
+  <em><span class="hl-annotation" style="color: gray">@Override</span></em>
+  <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> memoryUsageLow(MemoryPoolUsageInfo usageInfo, MemoryUsageRecoverySettings usageRecoverySettings) {
+      <em class="hl-tag" style="color: green">// notified of low memory, do something</em>
+      <em class="hl-tag" style="color: green">// .</em>
+
+      <strong class="hl-keyword">if</strong>( trackMemoryRecovery ) {
+          <em class="hl-tag" style="color: green">// enable memory recovery for the pool</em>
+          usageRecoverySettings.enable(maxNumGCs, timeoutMillis);
+      }
+  }
+
+  <em><span class="hl-annotation" style="color: gray">@Override</span></em>
+  <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> memoryUsageRecovered(MemoryPoolUsageInfo usageInfo) {
+      <em class="hl-tag" style="color: green">// notified that the low memory condition has gone away, do something</em>
+      <em class="hl-tag" style="color: green">// .</em>
+  }
+
+  <em><span class="hl-annotation" style="color: gray">@Override</span></em>
+  <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> memoryUsageNotRecovered(MemoryPoolUsageInfo usageInfo) {
+      <em class="hl-tag" style="color: green">// notified that the low memory condition has not gone away, after maxNumGCs and/or timeout</em>
+      <em class="hl-tag" style="color: green">// have been exceeded, do something</em>
+      <em class="hl-tag" style="color: green">// .</em>
+  }
+}  
+</pre><p> 
+           </p></div><div class="section" title="3.11.4. Remove Listener"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-MemoryWarningService-remove-listener"/>3.11.4. Remove Listener</h3></div></div></div><p>
+               When no longer needed, the listener can either be removed from all memory pools or from a specific pool.
+           </p><p>
+               Remove listener from all memory pools.
+</p><pre class="programlisting">
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryWarningService;
+
+  mMemoryWarningService.unregister(mListener);
+</pre><p>
+           </p><p>
+             Remove listener from a specific memory pool.
+</p><pre class="programlisting">
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.MemoryWarningService;
+
+  mMemoryWarningService.unregister(mListener, poolName);
+</pre><p>
+           </p></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+           Further details can be found in the Javadoc API in the
+           <code class="function">com.quest.glue.api.services.MemoryWarningService</code> package.
+       </td></tr></table></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s10.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s12.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">3.10. ASPService </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 3.12. Connection Services</td></tr></table></div></body></html>

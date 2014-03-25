@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>2.8. Sample build.xml from the example URLAvailability Agent</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch02.html" title="Chapter 2. Creating Agents"/><link rel="prev" href="ch02s07.html" title="2.7. Submission of Historical Data"/><link rel="next" href="ch02s09.html" title="2.9. Errors and Exceptions in Agents"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.8. Sample build.xml from the example URLAvailability Agent</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s07.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 2. Creating Agents</th><td width="20%" align="right"> <a accesskey="n" href="ch02s09.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="2.8. Sample build.xml from the example URLAvailability Agent"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="build.xml from example agent"/>2.8. Sample build.xml from the example URLAvailability Agent</h2></div></div></div><p>
+        For a sample of a working <span class="emphasis"><em>build.xml</em></span> for the example agent see here:
+        </p><pre class="programlisting"><span class="hl-directive" style="color: maroon">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<em class="hl-tag" style="color: green">&lt;!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--&gt;</em>
+
+
+<b class="hl-tag" style="color: #3333FF;">&lt;project</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span> <span class="hl-attribute" style="color: #993399;">default</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-dist"</span> <span class="hl-attribute" style="color: #993399;">xmlns:fglam</span>=<span class="hl-value" style="color: #993300">"fglam:/ant/macros"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Add the external environment and find the FglAM installation --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">environment</span>=<span class="hl-value" style="color: #993300">"env"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"fglam.devkit.home"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${env.FGLAM_DEVKIT_HOME}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;fail&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;condition&gt;</b><b class="hl-tag" style="color: #3333FF;">&lt;not&gt;</b>
+          <b class="hl-tag" style="color: #3333FF;">&lt;and&gt;</b>
+              <b class="hl-tag" style="color: #3333FF;">&lt;available</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}"</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"dir"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+              <b class="hl-tag" style="color: #3333FF;">&lt;available</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/buildtools/lib/devkit-ant.jar"</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"file"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+          <b class="hl-tag" style="color: #3333FF;">&lt;/and&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/not&gt;</b><b class="hl-tag" style="color: #3333FF;">&lt;/condition&gt;</b>.
+        The specified FglAM developer's kit location, ${fglam.devkit.home},
+        does not appear to exist as a valid directory or does not contain a
+        recognized FglAM developer's kit.
+    <b class="hl-tag" style="color: #3333FF;">&lt;/fail&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Define some directories used throughout the build process --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.src.dir"</span>         <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${basedir}/urlavailabilityagent/src"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.config.dir"</span>      <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${basedir}/urlavailabilityagent/config"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.build.dir"</span>       <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${basedir}/build/urlavailabilityagent"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.build.test.dir"</span>  <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/test"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.tooling.output"</span>  <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/tooling"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.dist.dir"</span>        <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/dist"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.test.dir"</span>        <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${basedir}/test"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.java.test.dir"</span>   <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.test.dir}/java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Import the FglAM tools --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;import</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/buildtools/fglam-ant-macros.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-tooling-artifacts"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:generator</b> <span class="hl-attribute" style="color: #993399;">agent-definition</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.config.dir}/agent-definition.xml"</span>
+                        <span class="hl-attribute" style="color: #993399;">output-dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <em class="hl-tag" style="color: green">&lt;!-- Load the generated agent.manifest to initialize build properties
+             for use in the fglam ant macros --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:init-agent-manifest-props</b> <span class="hl-attribute" style="color: #993399;">agent-manifest</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/agent.manifest"</span> <span class="hl-attribute" style="color: #993399;">prefix</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Compile and package the agent binary files --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-compile-and-jar"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-tooling-artifacts"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:compile-and-jar</b> <span class="hl-attribute" style="color: #993399;">build-dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;compile-options&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;src</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/java-gen"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;src</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.src.dir}/java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"**/*.java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/compile-options&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;jar-options&gt;</b>
+                <em class="hl-tag" style="color: green">&lt;!-- Adds the LogResources.properties files to the jar file --&gt;</em>
+                <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.src.dir}/java"</span> <span class="hl-attribute" style="color: #993399;">includes</span>=<span class="hl-value" style="color: #993300">"**/*.properties"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/jar-options&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:compile-and-jar&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;mkdir</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.test.dir}/classes"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;javac</b> <span class="hl-attribute" style="color: #993399;">target</span>=<span class="hl-value" style="color: #993300">"1.6"</span> <span class="hl-attribute" style="color: #993399;">source</span>=<span class="hl-value" style="color: #993300">"1.6"</span>
+            <span class="hl-attribute" style="color: #993399;">includeantruntime</span>=<span class="hl-value" style="color: #993300">"no"</span> <span class="hl-attribute" style="color: #993399;">includejavaruntime</span>=<span class="hl-value" style="color: #993300">"no"</span>
+            <span class="hl-attribute" style="color: #993399;">deprecation</span>=<span class="hl-value" style="color: #993300">"true"</span> <span class="hl-attribute" style="color: #993399;">debug</span>=<span class="hl-value" style="color: #993300">"true"</span> <span class="hl-attribute" style="color: #993399;">debuglevel</span>=<span class="hl-value" style="color: #993300">"lines,vars,source"</span>
+            <span class="hl-attribute" style="color: #993399;">destdir</span>=<span class="hl-value" style="color: #993300">"${ulavailabilityagent.build.test.dir}/classes"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;classpath&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/jars"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/lib"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/buildtools/junit"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"junit*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/classpath&gt;</b>
+
+            <b class="hl-tag" style="color: #3333FF;">&lt;src</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/java-gen"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;src</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.test.dir}/java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"**/urlavailabilityagent/*.java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/javac&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Creates a distribution which results in a FMS 5.0 deployeable cartridge file --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-dist"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-compile-and-jar"</span>
+            <span class="hl-attribute" style="color: #993399;">description</span>=<span class="hl-value" style="color: #993300">"Builds a deployable cartridge with a GAR installer"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- create the dist output directory --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;mkdir</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.dist.dir}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:gar</b> <span class="hl-attribute" style="color: #993399;">agent-manifest</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/agent.manifest"</span>
+                  <span class="hl-attribute" style="color: #993399;">agent-lib-dir</span> =<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/jars"</span>
+                  <span class="hl-attribute" style="color: #993399;">build-dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}"</span>
+                  <span class="hl-attribute" style="color: #993399;">prefix</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>Making topology in ${urlavailabilityagent.dist.dir}<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>CDT file ${urlavailabilityagent.tooling.output}/cdt.xml<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>Topology file ${urlavailabilityagent.tooling.output}/topology.xml<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>Monitoring Policy file ${urlavailabilityagent.tooling.output}/monitoring-policy.xml<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>WCF (input) file ${urlavailabilityagent.config.dir}/wcf.xml<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;car</b> <span class="hl-attribute" style="color: #993399;">destdir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.dist.dir}"</span> <span class="hl-attribute" style="color: #993399;">buildLocalizableCar</span>=<span class="hl-value" style="color: #993300">"false"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;cartridge</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}"</span>
+                    <span class="hl-attribute" style="color: #993399;">final</span>=<span class="hl-value" style="color: #993300">"true"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                    <span class="hl-attribute" style="color: #993399;">buildid</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.build-id}"</span>
+                    <span class="hl-attribute" style="color: #993399;">author</span>=<span class="hl-value" style="color: #993300">"FglAM Agent Developers"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;installers</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}-Installers"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;installer</b>
+                        <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}"</span>
+                        <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                        <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/gar/${urlavailabilityagent.agent-manifest.name}.gar"</span>
+                        <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"fglam-client-pkg"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <em class="hl-tag" style="color: green">&lt;!-- This installer contains the following agent types. Each agent
+                             type in the cartridge must be listed here. --&gt;</em>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;agent</b> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent"</span> <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                                                    <span class="hl-attribute" style="color: #993399;">build</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.build-id}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/installer&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/installers&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;topologytypes</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}-Topology-Types"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                    <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/urlavailabilityagent-topology.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;monitoringpolicy</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}-Properties"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                    <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/monitoring-policy.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;cdt</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-CDT"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                    <span class="hl-attribute" style="color: #993399;">adapter</span>=<span class="hl-value" style="color: #993300">"FglAM"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;binding</b> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/cdt.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/cdt&gt;</b>
+               <em class="hl-tag" style="color: green">&lt;!-- The topology schema in a cartridge can now be localized by deploying a resource bundle.
+                     The cartridge component must use the "topology-localizations" name and the basename must
+                     be the name of your properties file without any locale suffixes or file extensions. If
+                     your properties file is topology-localizations.properties, then the basename would have
+                     to be "topology-localizations". To see the new localized names go to the Schema Browser,
+                     select one of your topology types, and hover over the property name. The page itself should
+                     show the camelCase name, but the hover should show the new localized name. --&gt;</em>
+                <b class="hl-tag" style="color: #3333FF;">&lt;localizations</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"topology-localizations-en"</span>
+                    <span class="hl-attribute" style="color: #993399;">resource</span>=<span class="hl-value" style="color: #993300">"topology-localizations"</span>
+                    <span class="hl-attribute" style="color: #993399;">cartridge</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}"</span>
+                    <span class="hl-attribute" style="color: #993399;">locale</span>=<span class="hl-value" style="color: #993300">"en"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.config.dir}/locale"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"topology_en.properties"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/localizations&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;localizations</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"topology-localizations-zh_CN"</span>
+                    <span class="hl-attribute" style="color: #993399;">resource</span>=<span class="hl-value" style="color: #993300">"topology-localizations"</span>
+                    <span class="hl-attribute" style="color: #993399;">cartridge</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}"</span>
+                    <span class="hl-attribute" style="color: #993399;">locale</span>=<span class="hl-value" style="color: #993300">"zh_CN"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.config.dir}/locale"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"topology_zh_CN.properties"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/localizations&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;wcf</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent_wcf-root"</span>
+                     <span class="hl-attribute" style="color: #993399;">author</span>=<span class="hl-value" style="color: #993300">"FglAM Agent Developers"</span>
+                     <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                     <span class="hl-attribute" style="color: #993399;">module</span>=<span class="hl-value" style="color: #993300">"system/urlavailabilityagent"</span>
+                     <span class="hl-attribute" style="color: #993399;">prefixwcf</span>=<span class="hl-value" style="color: #993300">"true"</span><b class="hl-tag" style="color: #3333FF;">
+                    &gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.config.dir}/wcf"</span> <span class="hl-attribute" style="color: #993399;">includes</span>=<span class="hl-value" style="color: #993300">"wcf.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.config.dir}/wcf"</span> <span class="hl-attribute" style="color: #993399;">includes</span>=<span class="hl-value" style="color: #993300">"strings.properties"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/wcf&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;wcfLocalizations</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"strings_zh_CN"</span>
+                    <span class="hl-attribute" style="color: #993399;">module</span>=<span class="hl-value" style="color: #993300">"system/urlavailabilityagent"</span>
+                    <span class="hl-attribute" style="color: #993399;">prefixwcf</span>=<span class="hl-value" style="color: #993300">"true"</span>
+                    <span class="hl-attribute" style="color: #993399;">cartridge</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}"</span>
+                    <span class="hl-attribute" style="color: #993399;">locale</span>=<span class="hl-value" style="color: #993300">"zh_CN"</span><b class="hl-tag" style="color: #3333FF;">
+                    &gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.config.dir}/wcf/strings_zh_CN.properties"</span><b class="hl-tag" style="color: #3333FF;"> /&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/wcfLocalizations&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/cartridge&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/car&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- Create a Simulator CAR for this Agent Package --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:dev-kit-simulator</b> <span class="hl-attribute" style="color: #993399;">build-dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}"</span> <span class="hl-attribute" style="color: #993399;">output</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}"</span> <span class="hl-attribute" style="color: #993399;">input</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/simulator/simulator.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- Move the generated simulator car into our dist directory --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;move</b> <span class="hl-attribute" style="color: #993399;">todir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.dist.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/simulator/dist"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.car"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/move&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-run"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-dist"</span> <span class="hl-attribute" style="color: #993399;">description</span>=<span class="hl-value" style="color: #993300">"Launches the Agent Harness app"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:agent-harness</b> <span class="hl-attribute" style="color: #993399;">agent-file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.config.dir}/agent-definition.xml"</span> <span class="hl-attribute" style="color: #993399;">gar-file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/gar/${urlavailabilityagent.agent-manifest.name}.gar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Delete any files generated by the build process --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-clean"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;delete</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Deploy the created cartridge to a running server --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-deploy"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-dist"</span> <span class="hl-attribute" style="color: #993399;">description</span>=<span class="hl-value" style="color: #993300">"Deploy the created cartridge to a running server"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:redeploy-cartridge</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}"</span>
+                                  <span class="hl-attribute" style="color: #993399;">vesion</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                                  <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.dist.dir}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-findbugs"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-compile-and-jar"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:findbugs</b> <span class="hl-attribute" style="color: #993399;">results</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/results"</span> <span class="hl-attribute" style="color: #993399;">analyze</span>=<span class="hl-value" style="color: #993300">"com.quest.fglam.example.-"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;fglam:findbugs-jars&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/jars"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:findbugs-jars&gt;</b>
+
+            <b class="hl-tag" style="color: #3333FF;">&lt;fglam:findbugs-args&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;arg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-sourcepath"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b><b class="hl-tag" style="color: #3333FF;">&lt;arg</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${basedir}/src/java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;arg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-sourcepath"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b><b class="hl-tag" style="color: #3333FF;">&lt;arg</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/tooling/java-gen"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:findbugs-args&gt;</b>
+
+            <b class="hl-tag" style="color: #3333FF;">&lt;fglam:findbugs-aux/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:findbugs&gt;</b>        
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-junit"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-compile-and-jar"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:junit</b> <span class="hl-attribute" style="color: #993399;">results</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/results"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;fglam:jvm-args/&gt;</b>
+
+            <b class="hl-tag" style="color: #3333FF;">&lt;fglam:jars&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/jars"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+
+                <b class="hl-tag" style="color: #3333FF;">&lt;pathelement</b> <span class="hl-attribute" style="color: #993399;">location</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.test.dir}/classes"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:jars&gt;</b>
+
+            <b class="hl-tag" style="color: #3333FF;">&lt;fglam:files&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.java.test.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"**/urlavailabilityagent/Test*.java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:files&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:junit&gt;</b>        
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-tests"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-junit,urlavailabilityagent-findbugs"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fail</b> <span class="hl-attribute" style="color: #993399;">message</span>=<span class="hl-value" style="color: #993300">"One or more JUnit tests failed"</span> <span class="hl-attribute" style="color: #993399;">if</span>=<span class="hl-value" style="color: #993300">"junit.failure"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fail</b> <span class="hl-attribute" style="color: #993399;">message</span>=<span class="hl-value" style="color: #993300">"One ore more of the FindBugs tests failed"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;condition&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;not&gt;</b><b class="hl-tag" style="color: #3333FF;">&lt;equals</b> <span class="hl-attribute" style="color: #993399;">arg1</span>=<span class="hl-value" style="color: #993300">"${findbugs.exitcode}"</span> <span class="hl-attribute" style="color: #993399;">arg2</span>=<span class="hl-value" style="color: #993300">"0"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b><b class="hl-tag" style="color: #3333FF;">&lt;/not&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/condition&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/fail&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+
+<b class="hl-tag" style="color: #3333FF;">&lt;/project&gt;</b></pre><p>
+      </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s07.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s09.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">2.7. Submission of Historical Data </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 2.9. Errors and Exceptions in Agents</td></tr></table></div></body></html>

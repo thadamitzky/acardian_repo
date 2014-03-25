@@ -1,0 +1,24 @@
+2014-03-20 11:26:14.152 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> VERBOSE [AWT-EventQueue-0] com.quest.glue.core.agent.AgentInstance - The log level for this agent has been changed to 1
+2014-03-20 11:26:29.331 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> VERBOSE [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Creating agent
+2014-03-20 11:26:29.425 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> INFO [AgentInstancePanel[11]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Agent SogetiAgentProt (version 1.0.0) created
+2014-03-20 11:26:29.441 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> INFO [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Created agent
+2014-03-20 11:26:29.441 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> VERBOSE [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Starting data collection
+2014-03-20 11:26:29.441 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [AgentInstancePanel[11]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Data collection started
+2014-03-20 11:26:29.456 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> INFO [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Started data collection
+2014-03-20 11:28:18.266 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> VERBOSE [AWT-EventQueue-0] com.quest.glue.core.agent.AgentInstance - The log level for this agent has been changed to 2
+2014-03-20 11:28:22.010 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> VERBOSE [AWT-EventQueue-0] com.quest.glue.core.agent.AgentInstance - The log level for this agent has been changed to 3
+2014-03-20 11:30:00.010 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> DEBUG2 [Quartz[0]-0] com.quest.glue.core.agent.AgentInstance - Acquiring shared lock
+2014-03-20 11:30:00.010 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Normal Collection collector invoked
+2014-03-20 11:30:07.108 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Metrics collection processed
+2014-03-20 11:35:00.009 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> DEBUG2 [Quartz[0]-0] com.quest.glue.core.agent.AgentInstance - Acquiring shared lock
+2014-03-20 11:35:00.009 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Normal Collection collector invoked
+2014-03-20 11:35:05.749 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Metrics collection processed
+2014-03-20 11:40:00.014 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> DEBUG2 [Quartz[0]-0] com.quest.glue.core.agent.AgentInstance - Acquiring shared lock
+2014-03-20 11:40:00.014 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Normal Collection collector invoked
+2014-03-20 11:40:06.363 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Metrics collection processed
+2014-03-20 11:45:00.002 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> DEBUG2 [Quartz[0]-0] com.quest.glue.core.agent.AgentInstance - Acquiring shared lock
+2014-03-20 11:45:00.002 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Normal Collection collector invoked
+2014-03-20 11:45:05.883 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Metrics collection processed
+2014-03-20 11:50:00.007 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test> DEBUG2 [Quartz[0]-0] com.quest.glue.core.agent.AgentInstance - Acquiring shared lock
+2014-03-20 11:50:00.007 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Normal Collection collector invoked
+2014-03-20 11:50:05.842 ECHO    <SogetiAgentProt/1.0.0/SogetiAgentProt/Test-agent> DEBUG [Quartz[0]-0] de.com.aca.sogeti.agent.SogetiAgentProtImpl - Metrics collection processed

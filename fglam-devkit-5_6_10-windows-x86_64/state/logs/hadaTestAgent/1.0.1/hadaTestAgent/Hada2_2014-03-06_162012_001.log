@@ -1,0 +1,5 @@
+2014-03-06 16:20:52.967 ECHO    <hadaTestAgent/1.0.1/hadaTestAgent/Hada2> VERBOSE [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Creating agent
+2014-03-06 16:20:53.030 ECHO    <hadaTestAgent/1.0.1/hadaTestAgent/Hada2-agent> INFO [AgentInstancePanel[11]-0] hadaTestAgent.hadaTestAgentImpl - Agent hadaTestAgent (version 1.0.0) created
+2014-03-06 16:20:53.045 ECHO    <hadaTestAgent/1.0.1/hadaTestAgent/Hada2> INFO [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Created agent
+2014-03-06 16:20:53.045 ECHO    <hadaTestAgent/1.0.1/hadaTestAgent/Hada2> VERBOSE [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Starting data collection
+2014-03-06 16:20:53.045 ECHO    <hadaTestAgent/1.0.1/hadaTestAgent/Hada2> INFO [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Started data collection

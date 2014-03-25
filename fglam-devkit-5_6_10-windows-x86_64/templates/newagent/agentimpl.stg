@@ -1,0 +1,161 @@
+/*
+ * Copyright 2013 Dell Inc.
+ * ALL RIGHTS RESERVED.
+ * 
+ * This software is the confidential and proprietary information of
+ * Dell Inc. ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered
+ * into with Dell Inc.
+ * 
+ * DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ * THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ * NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ * DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ * OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ */
+
+/* copyright.stg automagically imported */
+import "collectors.stg"
+import "callbacks.stg"
+
+/**
+ * The implementation class for this agent. This file uses % as the macro delimiter
+ */ 
+agentimpl(agent) ::= <<
+%copyrightjava(agent.year)%
+
+package %agent.agentPackage%;
+
+import %agent.agentPackage%.samples.*;
+import com.quest.glue.api.services.*;
+
+/**
+ * The core implementation class of the %agent.agentName% agent.
+ */ 
+public class %agent.agentName%Impl implements com.quest.glue.api.agent.Agent,                                                                             
+                                              %if(agent.collectors)%
+                                              %agent.agentName%Collectors,
+                                              %endif% 
+                                              %if(agent.callbacks)%
+                                              %agent.agentName%Callbacks,
+                                              %endif%
+                                              ASPPropertyListener
+{
+
+private final LogService.Logger mLogger;
+private final RegistrationService mRegistrationService;
+private final %agent.agentName%SupportBundle mBundle;
+
+private final %agent.agentName%DataProvider mDataProvider;
+
+/**
+ * Called by FglAM to create a new instance of this agent. This constructor is required
+ * by FglAM and must be present.
+ *
+ * @param serviceFactory Factory used to create services for this agent
+ */
+public %agent.agentName%Impl(ServiceFactory serviceFactory) throws ServiceFactory.ServiceNotAvailableException {
+    this(serviceFactory, new %agent.agentName%DataProviderImpl(serviceFactory)); 
+}
+
+/**
+ * Creates a new instance of this agent using to provided class to collect all
+ * necessary data for submission. This allows the data provided to be swapped out or
+ * mocked up during unit tests.
+ * <p/>
+ * This is an example of one possible way to structure the agent, but it is not the only
+ * way. You are free to change or remove this constructor as you see fit.  
+ *
+ * @param serviceFactory Factory used to create services for this agent
+ * @param dataProvider The class to use to obtain all data for submission.
+ */
+/*pkg*/ %agent.agentName%Impl(ServiceFactory serviceFactory, %agent.agentName%DataProvider dataProvider) 
+                                                throws ServiceFactory.ServiceNotAvailableException {
+    LogService logService = serviceFactory.getService(LogService.class);
+    mLogger = logService.getLogger(%agent.agentName%Impl.class);          
+    
+    mDataProvider = dataProvider;
+    
+    mRegistrationService = serviceFactory.getService(RegistrationService.class);
+    // This will automatically register all the service-related listeners
+    // implemented by this class.
+    mRegistrationService.registerAllListeners(this);
+    
+    // This hooks the %agent.agentName% up to the support bundle framework and
+    // and allows it to contribute information to the support bundle.
+    mBundle = new %agent.agentName%SupportBundle(this);
+    mRegistrationService.registerAllListeners(mBundle);
+    
+    // Log some basic info to indicate that the agent has been created
+    mLogger.log("agentVersion", "%agent.agentName%", "%agent.cartridgeVersion%");
+}
+
+/**
+ * Called by FglAM at the end of the agent's life
+ */
+@Override
+public void destroy() {
+    mRegistrationService.unregisterAllListeners(this);
+    mRegistrationService.unregisterAllListeners(mBundle);
+}
+
+/**
+ * Called by FglAM to begin data collection.
+ * <p/>
+%if(agent.collectors)%
+ * Since there are data collector(s) defined for this agent, taking action as a result
+ * of this method call is optional. Each data collector method will be called by FglAM
+ * when it is scheduled.
+%else%
+ * Since there are no data collectors defined for this agent, it is the agent
+ * developers responsibility to arrange for periodic data collection when this
+ * method is called and cancel is when {@link #stopDataCollection()} is called. 
+%endif% 
+ */
+@Override
+public void startDataCollection() {
+    mLogger.debug("Data collection started");
+}
+
+/**
+ * Called by FglAM when data collection should be stopped.
+ * <p/>
+ %if(agent.collectors)%
+ * Since there are data collector(s) defined for this agent, taking action as a result
+ * of this method call is optional.
+ %else%
+ * Since there are no data collectors defined for this agent, it is the agent
+ * developers responsibility to cancel any periodic data collection(s) that may 
+ * have been scheduled in {@link #startDataCollection()}
+ %endif%
+ */
+@Override
+public void stopDataCollection() {
+    mLogger.debug("Stopping data collection");
+}
+
+/**
+ * Respond to property changes.
+ * <p/>
+ * This method is part of the ASPPropertyListener interface and is not required
+ * by agents that do not implement it.
+ * <p/>
+ * Agents can receive property changes while they are running, and it is up to
+ * the agent developer to ensure that modifications do not break the agent.
+ */
+public void propertiesChanged() {
+    mLogger.debug("Property change notification received");
+}
+
+%if(agent.collectors)%
+%agent.collectors:collectorjava()%
+%endif%
+
+%if(agent.callbacks)%
+%agent.callbacks:callbackjava()%
+%endif%
+}
+>>

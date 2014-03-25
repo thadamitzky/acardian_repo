@@ -1,0 +1,363 @@
+/*
+ * Copyright 2013 Dell Inc.
+ * ALL RIGHTS RESERVED.
+ * 
+ * This software is the confidential and proprietary information of
+ * Dell Inc. ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered
+ * into with Dell Inc.
+ * 
+ * DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ * THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ * NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ * DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ * OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ */
+
+/* copyright.stg automagically imported */
+
+/**
+ * A build.xml file for the agent. This file uses % as the macro delimiter
+ */
+buildxml(agent, prefix) ::= <<
+<?xml version="1.0" encoding="UTF-8"?>
+%copyrightxml(agent.year)% 
+
+<!--
+  This Ant build.xml file requires version 1.7.0 (or later) of Ant.
+  -->
+<project name="%agent.cartridgeName%" default="dist" xmlns:fglam="fglam:/ant/macros">
+
+    <description>
+      This Ant build file can compile, package, test, and deploy the 
+      %agent.cartridgeName%/%agent.agentName% agent.
+    </description>
+
+    <!--
+      Load up a (completely optional) local properties file. You can use this file
+      to override any of the Ant properties in the build file. Or perhaps to
+      specify the location of the FglAM dev kit like this:
+
+         fglam.devkit.home=C:/Quest_Software/FglAM-Dev-Kit
+
+      or to set the location of your server install (for deployment of the cartridge)
+
+         fgl.server.home=C:/Quest_Software/FMS
+    -->
+    <property file="${basedir}/local.build.properties"/>
+
+    <!-- Add the external environment and find the FglAM installation -->
+    <property environment="env"/>
+    <condition property="fglam.devkit.home" value="${env.FGLAM_DEVKIT_HOME}">
+        <isset property="env.FGLAM_DEVKIT_HOME"/>
+    </condition>
+
+    <fail>
+        <condition><not><isset property="fglam.devkit.home"/></not></condition>.
+        The Ant property (fglam.devkit.home) that determines which FglAM dev kit to
+        use has not been set. You can set this as either an Ant property
+        (perhaps in ${basedir}/local.build.properties
+        or on the command line with -Dfglam.devkit.home) or via the environment
+        variable FGLAM_DEVKIT_HOME.
+    </fail> 
+
+    <fail>
+        <condition><not>
+          <and>
+              <available file="${fglam.devkit.home}" type="dir"/>
+              <available file="${fglam.devkit.home}/buildtools/lib/devkit-ant.jar" type="file"/>
+          </and>
+        </not></condition>.
+        The specified FglAM developer's kit location, ${fglam.devkit.home},
+        does not appear to exist as a valid directory or does not contain a
+        recognized FglAM developer's kit.
+    </fail>
+
+    <!-- Import the FglAM tools -->
+    <import file="${fglam.devkit.home}/buildtools/fglam-ant-macros.xml"/>
+
+    <!-- Define some directories used throughout the build process -->
+    <property name="%prefix%.src.dir"         value="${basedir}/src"/>
+    <property name="%prefix%.config.dir"      value="${basedir}/config"/>
+    <property name="%prefix%.build.dir"       value="${basedir}/build"/>
+    <property name="%prefix%.build.test.dir"  value="${%prefix%.build.dir}/test"/>
+    <property name="%prefix%.tooling.output"  value="${%prefix%.build.dir}/tooling"/>
+    <property name="%prefix%.dist.dir"        value="${%prefix%.build.dir}/dist"/>
+    <property name="%prefix%.test.dir"        value="${basedir}/test"/>
+    <property name="%prefix%.java.test.dir"   value="${%prefix%.test.dir}/java"/>
+    %if(agent.extraLibs)%
+    <property name="%prefix%.lib.dir"         value="${basedir}/lib"/>
+    %endif%
+    
+    <!--
+     This just sets a build number based on the current timestamp, you can override
+     this to use an externally supplied build number on the command line
+     with -D%prefix%.build.number=... or put in your own Ant code for generating
+     a build number.    
+      -->
+    <tstamp/>
+    <property name="%prefix%.build.number" value="local-build-${DSTAMP}-${TSTAMP}"/>
+
+    <!-- Generate the source code and related XML files. This will also initialize
+         some Ant properties from the agent manifest. All Ant properties
+         will be prefixed with "%prefix%." -->
+    <target name="tooling-artifacts" unless="%prefix%.artifacts.generated"
+            description="Generate all Java and XML files for the agent">
+        <fglam:generator agent-definition="${%prefix%.config.dir}/agent-definition.xml"
+                         output-dir="${%prefix%.tooling.output}"
+                         build-number="${%prefix%.build.number}"/>
+        <!-- Load the generated agent.manifest to initialize build properties
+             for use in later fglam ant macro calls -->
+        <fglam:init-agent-manifest-props agent-manifest="${%prefix%.tooling.output}/agent.manifest"
+                                         prefix="%prefix%"/>
+        <property name="%prefix%.artifacts.generated" value="true"/>                                 
+    </target>
+    
+    <!-- Compile and package the agent binary files -->
+    <target name="compile-and-jar" depends="tooling-artifacts" unless="%prefix%.compiled"
+            description="Compiles all the Java code and creates the requires jar file(s)">
+        <!-- Main (shipped) code -->
+        <fglam:compile-and-jar build-dir="${%prefix%.build.dir}">
+            <compile-options>
+                <src path="${%prefix%.tooling.output}/java-gen"/>
+                <src path="${%prefix%.src.dir}/java"/>
+                <include name="**/*.java"/>
+                %if(agent.extraLibs)%
+                <classpath>
+                    <fileset dir="${%prefix%.lib.dir}" includes="*.jar"/>
+                </classpath>
+                %endif%
+            </compile-options>
+            <jar-options>
+                <!-- Adds the LogResources.properties files to the jar file -->
+                <fileset dir="${%prefix%.src.dir}/java" includes="**/*.properties"/>
+                %if(agent.extraLibs)%
+                <!-- Add any jar files in the lib directory -->
+                <fileset dir="${%prefix%.lib.dir}" includes="*.jar"/>
+                %endif%
+            </jar-options>
+        </fglam:compile-and-jar>
+
+        <!-- Unit test code -->
+        <mkdir dir="${%prefix%.build.test.dir}/classes"/>
+        <javac target="1.6" source="1.6"
+               includeantruntime="no" includejavaruntime="no"
+               deprecation="true" debug="true" debuglevel="lines,vars,source"
+               destdir="${%prefix%.build.test.dir}/classes">
+            <classpath>
+                <fileset dir="${%prefix%.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+                %if(agent.extraLibs)%
+                <fileset dir="${%prefix%.lib.dir}">
+                    <include name="*.jar"/>
+                </fileset>
+                %endif%
+                <fileset dir="${fglam.devkit.home}/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${fglam.devkit.home}/buildtools/junit">
+                    <include name="junit*.jar"/>
+                </fileset>
+                <fileset dir="${%prefix%.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+
+            <src path="${%prefix%.java.test.dir}"/>
+            <include name="**/*.java"/>
+        </javac>
+        
+        <property name="%prefix%.compiled" value="true"/>
+    </target>
+
+    <!-- Creates a distribution which results in a FMS 5.0 deployeable cartridge file -->
+    <target name="dist" depends="compile-and-jar"
+            description="Builds a deployable cartridge with a GAR installer">
+
+        <!-- create the dist output directory -->
+        <mkdir dir="${%prefix%.dist.dir}"/>
+
+        <fglam:gar agent-manifest="${%prefix%.tooling.output}/agent.manifest"
+                   agent-lib-dir ="${%prefix%.build.dir}/jars"
+                   build-dir="${%prefix%.build.dir}"
+                   prefix="%prefix%">
+            %if(agent.extraLibs)%       
+            <additional-contents>
+                <tarfileset prefix="lib/" dir="${%prefix%.lib.dir}">
+                    <include name="*.jar"/>
+                </tarfileset>
+            </additional-contents>
+            %endif%
+        </fglam:gar>
+
+        <echo level="info">Making topology in ${%prefix%.dist.dir}</echo>
+        <echo level="info">CDT file ${%prefix%.tooling.output}/cdt.xml</echo>
+        %if(agent.topologyFile)%
+        <echo level="info">Topology file ${%prefix%.tooling.output}/%agent.agentName%-topology.xml</echo>
+        %endif%
+        <echo level="info">Monitoring Policy file ${%prefix%.tooling.output}/monitoring-policy.xml</echo>
+        <echo level="info">WCF (input) file ${%prefix%.config.dir}/wcf.xml</echo>
+        <car destdir="${%prefix%.dist.dir}" buildLocalizableCar="false">
+            <cartridge
+                    name="${%prefix%.agent-manifest.name}"
+                    final="true"
+                    version="${%prefix%.agent-manifest.ver}"
+                    buildid="${%prefix%.agent-manifest.build-id}"
+                    author="FglAM Agent Developers">
+                <installers
+                    name="${%prefix%.agent-manifest.name}-Installers"
+                    version="${%prefix%.agent-manifest.ver}">
+                    <installer
+                        name="${%prefix%.agent-manifest.name}"
+                        version="${%prefix%.agent-manifest.ver}"
+                        file="${%prefix%.build.dir}/gar/${%prefix%.agent-manifest.name}.gar"
+                        type="fglam-client-pkg">
+                        <!-- This installer contains the following agent types. Each agent
+                             type in the cartridge must be listed here. -->
+                        <agent type="%prefix%"
+                               version="${%prefix%.agent-manifest.ver}"
+                               build="${%prefix%.agent-manifest.build-id}"/>
+                    </installer>
+                </installers>
+                <monitoringpolicy
+                    name="${%prefix%.agent-manifest.name}-Properties"
+                    version="${%prefix%.agent-manifest.ver}"
+                    file="${%prefix%.tooling.output}/monitoring-policy.xml"/>
+                <cdt name="%prefix%-CDT"
+                    version="${%prefix%.agent-manifest.ver}"
+                    adapter="FglAM">
+                        <binding type="%agent.agentName%" file="${%prefix%.tooling.output}/cdt.xml"/>
+                </cdt>
+                %if(agent.topologyFile)%
+                <topologytypes
+                    name="${%prefix%.agent-manifest.name}-Topology-Types"
+                    version="${%prefix%.agent-manifest.ver}"
+                    file="${%prefix%.tooling.output}/%agent.agentName%-topology.xml"/>
+                <!-- The topology schema in a cartridge can now be localized by deploying a resource bundle.
+                     The cartridge component must use the "topology-localizations" name and the basename must
+                     be the name of your properties file without any locale suffixes or file extensions. If
+                     your properties file is topology-localizations.properties, then the basename would have
+                     to be "topology-localizations". To see the new localized names go to the Schema Browser,
+                     select one of your topology types, and hover over the property name. The page itself should
+                     show the camelCase name, but the hover should show the new localized name. -->
+                <localizations
+                    name="topology-localizations"
+                    cartridge="${%prefix%.agent-manifest.name}"
+                    version="${%prefix%.agent-manifest.ver}"
+                    basename="TopologyLocale">
+                    <fileset dir="${%prefix%.config.dir}/locale">
+                        <include name="**/*.properties"/>
+                    </fileset>
+                </localizations>
+                %endif%
+            </cartridge>
+        </car>
+
+        %if(agent.buildSimulator)%
+        <!-- Create a Simulator CAR for this Agent Package -->
+        <fglam:dev-kit-simulator build-dir="${%prefix%.build.dir}"
+                                 output="${%prefix%.tooling.output}"
+                                 input="${%prefix%.tooling.output}/simulator/simulator.xml"
+                                 build-number="${%prefix%.build.number}"/>
+
+        <!-- Move the generated simulator car into our dist directory -->
+        <move todir="${%prefix%.dist.dir}">
+            <fileset dir="${%prefix%.tooling.output}/simulator/dist">
+                <include name="*.car"/>
+            </fileset>
+        </move>
+        %endif%
+    </target>
+
+    <!--
+      Launches the Agent Harness and loads up the newly compiled agent for testing.    
+      -->
+    <target name="run" depends="dist"
+            description="Launches the Agent Harness app">
+        <fglam:agent-harness agent-file="${%prefix%.config.dir}/agent-definition.xml"
+                             gar-file="${%prefix%.build.dir}/gar/${%prefix%.agent-manifest.name}.gar"/>
+    </target>
+
+    <!-- Deploy the created cartridge to a running server -->
+    <target name="deploy" depends="dist"
+            description="Deploy the created cartridge to a running server">
+        <fglam:redeploy-cartridge name="${%prefix%.agent-manifest.name}"
+                                  version="${%prefix%.agent-manifest.ver}"
+                                  dir="${%prefix%.dist.dir}"/>
+    </target>
+    
+    <!-- Removes all generated and compiled artifacts -->
+    <target name="clean"
+            description="Removes all generated and compiled artifacts">
+        <delete quiet="true" includeemptydirs="true">
+            <fileset dir="${%prefix%.build.dir}" includes="**"/>
+        </delete>        
+    </target>
+
+    <!-- Run Findbugs on the created agent jar file. -->
+    <target name="findbugs" depends="compile-and-jar"
+            description="Run Findbugs on the created agent jar file.">
+        <fglam:findbugs results="${%prefix%.build.dir}/results" analyze="%agent.agentPackage%.-">
+            <fglam:findbugs-jars>
+                <fileset dir="${%prefix%.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+            </fglam:findbugs-jars>
+
+            <fglam:findbugs-args>
+                <arg value="-sourcepath"/><arg path="${basedir}/src/java"/>
+                <arg value="-sourcepath"/><arg path="${%prefix%.build.dir}/tooling/java-gen"/>
+            </fglam:findbugs-args>
+
+            <fglam:findbugs-aux>
+                %if(agent.extraLibs)%
+                <fileset dir="${%prefix%.lib.dir}">
+                    <include name="*.jar"/>
+                </fileset>
+                %endif%
+            </fglam:findbugs-aux>
+        </fglam:findbugs>
+    </target>
+
+    <target name="junit" depends="compile-and-jar"
+            description="Run any JUnit tests provided for the agent">
+        <fglam:junit results="${%prefix%.build.dir}/results">
+            <fglam:jvm-args/>
+
+            <fglam:jars>
+                <fileset dir="${%prefix%.build.dir}/jars">
+                    <include name="*.jar"/>
+                </fileset>
+                %if(agent.extraLibs)%
+                <fileset dir="${%prefix%.lib.dir}">
+                    <include name="*.jar"/>
+                </fileset>
+                %endif%
+
+                <pathelement location="${%prefix%.build.test.dir}/classes"/>
+            </fglam:jars>
+
+            <fglam:files>
+                <fileset dir="${%prefix%.java.test.dir}">
+                    <include name="**/*.java"/>
+                </fileset>
+            </fglam:files>
+        </fglam:junit>
+    </target>
+
+    <target name="tests" depends="junit,findbugs"
+            description="Runs all the tests defined for the %prefix% agent">
+        <fail message="One or more JUnit tests failed" if="junit.failure"/>
+        <fail message="One or more of the FindBugs tests failed">
+            <condition>
+                <not><equals arg1="${findbugs.exitcode}" arg2="0"/></not>
+            </condition>
+        </fail>
+    </target>
+
+</project>
+>>

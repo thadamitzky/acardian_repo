@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>2.3. Agent Resource Negotiation</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch02.html" title="Chapter 2. Creating Agents"/><link rel="prev" href="ch02s02.html" title="2.2. Types of Agents"/><link rel="next" href="ch02s04.html" title="2.4. The Agent Environment"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.3. Agent Resource Negotiation</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s02.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 2. Creating Agents</th><td width="20%" align="right"> <a accesskey="n" href="ch02s04.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="2.3. Agent Resource Negotiation"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="creating-agents-resource-negotiation"/>2.3. Agent Resource Negotiation</h2></div></div></div><p>
+			As part of the continued migration to remove support for Out-of-Process deployments, a new feature has been
+			added to FglAM that will enable an Agent Package deployment to request various resource configuration
+			settings required to effectively run the contained AgentTypes under various conditions.
+		</p><p>
+			Resource settings are defined within the agent-definition.xml of your cartridge project and can be declared
+			as both deployment default and on a per-agent type basis. Declarations within the
+			<span class="emphasis"><em>&lt;runtime&gt;</em></span>
+			element are considered as a baseline for deploying this Agent Package. This means that on deployment, the
+			values set here must be met or exceeded by the current runtime. Per-Agent memory declarations can declare
+			an optional 'pre-allocation-count' value. When set, additional memory settings will be requested to
+			accommodate the number of agent instances declared. The default value for this attribute is one.
+			Config changes negotiated here will be immediately applied and the FglAM instance be restarted.
+		</p><p>
+			Per-Agent config settings are only evaluated at runtime for each agent instance of the declaring AgentType.
+			When a new agent instance is created, the resource config settings will be requested and added to the
+			existing pending config. If a pre-allocation-count was set, on memory, then these sizing values will be
+			transferred from the pre-allocation cache.
+			Once applied, the system will check if the new resources will require a FglAM restart. This evaluation will
+			take into account resource thresholds (for instance, pending memory requests over 10% of current max memory)
+			and determine if a restart is needed. At which point a schedule will be queued to initiate the restart at a
+			future date. Should additional per-agent resource requests come in prior the schedule executing, then these
+			values will be applied to the pending config and the restart task re-scheduled.
+		</p><p>
+			When declaring both
+			<span class="emphasis"><em>&lt;runtime&gt;</em></span>
+			and
+			<span class="emphasis"><em>per-agent</em></span>
+			configuration settings, look to define a baseline config that is needed to support the environment when
+			there are no agent instances. For instance, if the GAR deployment requires additional memory to accommodate
+			a shared library that will be used across all agents within the deployed package.
+			The Per-Agent settings can then set to increase resources on a per-agent basis. If each agent requires 100k
+			of memory, then this amount will be allocated each time an agent instance is
+			created. By following these guide lines, you'll ensure that at deployment FglAM will have allocated enough resources
+			to run a pre-set number of agents and thus limit the number of restarts when running in the
+			expected/intended environment.
+		</p><div class="section" title="2.3.1. How it works"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-resource-negotiation-howitworks"/>2.3.1. How it works</h3></div></div></div><p>
+				When FglAM deploys your Agent Package (i.e. GAR file), the values that are declared within the
+				<span class="emphasis"><em>&lt;runtime&gt;</em></span>
+				will be evaluated and compared to <span class="emphasis"><em>a)</em></span> the current runtime settings,
+				and <span class="emphasis"><em>b)</em></span>
+				incremented with the existing pending requests from other Agent Package deployments in order to
+				determine if the existing configuration meets the resource requirements for this Agent Package.
+			</p><p>
+				For each of the declared resource settings, the deployment process will request that its resource requirements
+				be added to the existing pending control set. Each resource type will be evaluated as on cumulative basis.
+				For instance, if the deployment needs an additional 128(min) 256(max) megabytes added to the JVM heap, these values will
+				be will be added to the pending memory resource count and the cumulative value will be compared
+				to the current configuration. If the pending memory set exceeds 10% (this is configurable) of the
+				currently configured -Xmx heap size, then the new larger heap size requested from the deployment
+				will be set as a pending resource change.
+				A similar process is used when evaluating declared JVM ARGS. Should the deployment request a system
+				property that is not currently set, then this new property will be applied to the pending override
+				config.
+			</p><p>
+				Once all resource settings have been evaluated, any pending override changes will be applied to the
+				current runtime. This application of the pending changes will result in the current FglAM runtime
+				instance shutting down and restarting itself with the new runtime configuration settings.
+			</p></div><div class="section" title="2.3.2. What can I configure"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-resource-negotiation-what-can-i-configure"/>2.3.2. What can I configure</h3></div></div></div><p>
+				In this release, we currently support a handful of resource configurations. We expect that this list may
+				grow overtime, but in this initial offering, the following settings can be controlled via the follow
+				declarations in the agent-definition.xml
+			</p><p>
+				</p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;agent-definition</b> <span class="hl-attribute" style="color: #993399;">xmlns</span>=<span class="hl-value" style="color: #993300">"urn:X-quest.com:glue/agent/definition/1.9.1"</span> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"Example"</span> <span class="hl-attribute" style="color: #993399;">ver</span>=<span class="hl-value" style="color: #993300">"1.0.0"</span> <span class="hl-attribute" style="color: #993399;">allow-asynchronous-access</span>=<span class="hl-value" style="color: #993300">"true"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Deployment runtime configuration overrides. These resource settings will
+          negotiate with the current FglAM runtime during cartridge deployment --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;runtime&gt;</b>
+        <em class="hl-tag" style="color: green">&lt;!-- override default vm heap size --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;jvm-memory</b> <span class="hl-attribute" style="color: #993399;">min</span>=<span class="hl-value" style="color: #993300">"128"</span> <span class="hl-attribute" style="color: #993399;">max</span>=<span class="hl-value" style="color: #993300">"512"</span> <span class="hl-attribute" style="color: #993399;">units</span>=<span class="hl-value" style="color: #993300">"megabyte"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- set system property at startup --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;jvm-args&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;jvm-arg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-Ddefault.connection.timeout.milliseconds=120000"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/jvm-args&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- increase the upstream queue constraints --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;upstream-queues&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;upstream-queue</b> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"upstream"</span> <span class="hl-attribute" style="color: #993399;">max-queue-size</span>=<span class="hl-value" style="color: #993300">"10"</span> <span class="hl-attribute" style="color: #993399;">max-disk-space</span>=<span class="hl-value" style="color: #993300">"1024"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/upstream-queues&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/runtime&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Agent type definition --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;agent</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">""</span> <span class="hl-attribute" style="color: #993399;">package</span>=<span class="hl-value" style="color: #993300">""</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <em class="hl-tag" style="color: green">&lt;!-- adjust vm heap size on a per-agent instance basis, and pre-allocate resources for 5 instances --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;jvm-memory</b> <span class="hl-attribute" style="color: #993399;">min</span>=<span class="hl-value" style="color: #993300">"16"</span> <span class="hl-attribute" style="color: #993399;">max</span>=<span class="hl-value" style="color: #993300">"64"</span> <span class="hl-attribute" style="color: #993399;">units</span>=<span class="hl-value" style="color: #993300">"megabyte"</span> <span class="hl-attribute" style="color: #993399;">pre-allocation-count</span>=<span class="hl-value" style="color: #993300">"5"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- sets a system property when this agent type is created --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;jvm-args&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;jvm-arg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-Dwmi.java.connection.timeout.milliseconds=300000"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/jvm-args&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/agent&gt;</b>
+
+<b class="hl-tag" style="color: #3333FF;">&lt;/agent-definition&gt;</b></pre><p>
+			</p><p>
+				Details on each of these configuration attributes are described in the following table.
+			</p><p>
+				</p><div class="table"><a id="d0e268"/><p class="title"><strong>Table 2.1. Agent Negotiation Settings</strong></p><div class="table-contents"><table summary="Agent Negotiation Settings" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead align="left"><tr><th align="left">Resource Type</th><th align="left">Description</th><th align="left">XML Syntax</th></tr></thead><tbody align="left"><tr><td align="left">JVM Memory</td><td align="left">Sets the min and max size of the VM memory (heap size) on startup. Unit values are one of <span class="emphasis"><em>kilobyte, megabyte, gigabyte</em></span></td><td align="left"><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;runtime</b> <span class="hl-attribute" style="color: #993399;">...&gt;</span>
+    <span class="hl-attribute" style="color: #993399;">&lt;jvm-memory</span> <span class="hl-attribute" style="color: #993399;">min</span>=<span class="hl-value" style="color: #993300">""</span> <span class="hl-attribute" style="color: #993399;">max</span>=<span class="hl-value" style="color: #993300">""</span> <span class="hl-attribute" style="color: #993399;">units</span>=<span class="hl-value" style="color: #993300">""</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b></pre></td></tr><tr><td align="left">JVM Args</td><td align="left"><p>Declares a list of VM system properties to be set on startup. Only one arg value can be declared per element. Additional values must be set individually.</p>
+									<p>Default restrictions apply to -XX properties.</p>
+									<p>Restrictions can be disabled via setting the <span class="emphasis"><em>-Dcom.quest.fglam.resources.jvm.args.disable.restrictions</em></span> property in the config/client.config file prior to startup</p></td><td align="left"><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;runtime</b> <span class="hl-attribute" style="color: #993399;">...&gt;</span>
+    <span class="hl-attribute" style="color: #993399;">&lt;jvm-args&gt;</span>
+       <span class="hl-attribute" style="color: #993399;">&lt;jvm-arg</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">""</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+       ...
+    <b class="hl-tag" style="color: #3333FF;">&lt;/jvm-args&gt;</b></pre></td></tr><tr><td align="left">Upstream Queues</td><td align="left">
+									FglAM maintains two queue configurations for storing and submitting messages to its upstream connection. Each of these queue types can be configured individually. The settings declared here will override values that are declared in the config/fglam-config.xml with respect to each of the upstream and upstream-verified configurations. Calculates the required upstream queue size based on the number of agent instances. Each of the upstream-queue attributes should be expressed as a multiple of the per-agent attribute.
+									<div class="table"><a id="d0e314"/><p class="title"><strong>Table 2.2. Upstream Queue attributes</strong></p><div class="table-contents"><table summary="Upstream Queue attributes" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead align="left"><tr><th align="left">Attribute</th><th align="left">Description</th></tr></thead><tbody align="left"><tr><td align="left">type</td><td align="left">whether the configured queue is <span class="emphasis"><em>upstream</em></span> or <span class="emphasis"><em>upstream-verified</em></span></td></tr><tr><td align="left">max-queue-size</td><td align="left"><p>setting specifies the maximum number of messages that will be stored in the queue per-agent. If the queue overflows then the newest messages will be discarded.</p>
+														<p>-1 means that the queues will be allowed to grow indefinitely.</p>
+														<p>0 (zero) is not allowed and will be rejected if set</p>
+													</td></tr><tr><td align="left">max-disk-space</td><td align="left"><p>indicates how much disk space (in kB) can be used to store messages per-agent</p>
+														<p>-1 means that the file disk cache will be allowed to grow indefinitely.</p>
+														<p>0 (zero) is not allowed and will be rejected if set</p>
+
+													</td></tr></tbody></table></div></div><br class="table-break"/>
+								</td><td align="left"><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;runtime</b> <span class="hl-attribute" style="color: #993399;">...&gt;</span>
+    <span class="hl-attribute" style="color: #993399;">&lt;upstream-queues&gt;</span>
+        <span class="hl-attribute" style="color: #993399;">&lt;upstream-queue</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"upstream"</span> <span class="hl-attribute" style="color: #993399;">max-queue-size</span>=<span class="hl-value" style="color: #993300">""</span> <span class="hl-attribute" style="color: #993399;">max-disk-space</span>=<span class="hl-value" style="color: #993300">""</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;upstream-queue</b> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"upstream-verified"</span> <span class="hl-attribute" style="color: #993399;">max-queue-size</span>=<span class="hl-value" style="color: #993300">""</span> <span class="hl-attribute" style="color: #993399;">max-disk-space</span>=<span class="hl-value" style="color: #993300">""</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/upstream-queues&gt;</b></pre></td></tr><tr><td align="left"><span class="emphasis"><em>Per-Agent Configs</em></span></td><td align="left"> </td><td align="left"> </td></tr><tr><td align="left">JVM Memory</td><td align="left"><p>Calculates the required VM heap size based on the number of agent instances. Unit values are one of <span class="emphasis"><em>kilobyte, megabyte, gigabyte</em></span>. The optional pre-allocation-count value declares the memory size to pre-allocate at deployment.</p></td><td align="left"><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;agent</b> <span class="hl-attribute" style="color: #993399;">...&gt;</span>
+    <span class="hl-attribute" style="color: #993399;">&lt;jvm-memory</span> <span class="hl-attribute" style="color: #993399;">min</span>=<span class="hl-value" style="color: #993300">""</span> <span class="hl-attribute" style="color: #993399;">max</span>=<span class="hl-value" style="color: #993300">""</span> <span class="hl-attribute" style="color: #993399;">units</span>=<span class="hl-value" style="color: #993300">""</span> <span class="hl-attribute" style="color: #993399;">pre-allocation-count</span>=<span class="hl-value" style="color: #993300">""</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b></pre></td></tr><tr><td align="left">JVM Args</td><td align="left"><p>JVM Args that are declared within the &lt;agent&gt; definition will be evaluated when the first agent instance of this type is created.</p>
+									<p>The same restrictions/guidlines exists for jvm-args here as they are outlined above under the &lt;runtime/&gt; section.</p></td><td align="left"><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;agent</b> <span class="hl-attribute" style="color: #993399;">...&gt;</span>
+    <span class="hl-attribute" style="color: #993399;">&lt;jvm-args&gt;</span>
+       <span class="hl-attribute" style="color: #993399;">&lt;jvm-arg</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">""</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+       ...
+    <b class="hl-tag" style="color: #3333FF;">&lt;/jvm-args&gt;</b></pre></td></tr></tbody></table></div></div><p><br class="table-break"/>
+			</p></div><div class="section" title="2.3.3. My Agent is run Out-of-Process, how do I move over to the new Runtime Resource Negotiation?"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-resource-negotiation-migrate-from-oop"/>2.3.3. My Agent is run Out-of-Process, how do I move over to the new Runtime Resource Negotiation?</h3></div></div></div><p>
+				The Runtime Resource Negotiation feature was designed to help facilitate moving existing deployments that needed special FglAM runtime configurations, to be brought back into the Master FglAM instance and run in-progress along side other agent deployments.
+			</p><p>
+				In order to migrate an existing Out-of-Process deployment, all you will need to do is update your projects <span class="emphasis"><em>agent-definition.xml</em></span> with the following changes:
+			</p><p>
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Update the version of the schema to <span class="emphasis"><em>1.9.1</em></span><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;agent-definition</b> <span class="hl-attribute" style="color: #993399;">xmlns</span>=<span class="hl-value" style="color: #993300">"urn:X-quest.com:glue/agent/definition/1.9.1"</span> <span class="hl-attribute" style="color: #993399;">...</span><b class="hl-tag" style="color: #3333FF;"> &gt;</b></pre></li><li class="listitem">Change the <span class="emphasis"><em>out-of-process</em></span> attribute to <span class="emphasis"><em>false</em></span><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;agent-definition</b> <span class="hl-attribute" style="color: #993399;">xmlns</span>=<span class="hl-value" style="color: #993300">"urn:X-quest.com:glue/agent/definition/1.9.1"</span> <span class="hl-attribute" style="color: #993399;">out-of-process</span>=<span class="hl-value" style="color: #993300">"false"</span> <span class="hl-attribute" style="color: #993399;">...&gt;</span></pre></li><li class="listitem">Update the prior <span class="emphasis"><em>&lt;jvm-config/&gt;</em></span> elements to the new <span class="emphasis"><em>&lt;runtime/&gt;</em></span> schema
+						<pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;agent-definition</b> <span class="hl-attribute" style="color: #993399;">...&gt;</span>
+    <span class="hl-attribute" style="color: #993399;">&lt;jvm-config</span> <span class="hl-attribute" style="color: #993399;">ipv6</span>=<span class="hl-value" style="color: #993300">"false"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;jvm-arg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-Dagent.property=1024"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;jvm-arg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-Xms128m"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;jvm-arg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-Xmx512m"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;/jvm-config&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/agent-definition&gt;</b></pre>
+						Will be updated to:
+						<pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;agent-definition</b> <span class="hl-attribute" style="color: #993399;">...&gt;</span>
+    <span class="hl-attribute" style="color: #993399;">&lt;runtime&gt;</span>
+        <span class="hl-attribute" style="color: #993399;">&lt;jvm-memory</span> <span class="hl-attribute" style="color: #993399;">min</span>=<span class="hl-value" style="color: #993300">"128"</span> <span class="hl-attribute" style="color: #993399;">max</span>=<span class="hl-value" style="color: #993300">"512"</span> <span class="hl-attribute" style="color: #993399;">units</span>=<span class="hl-value" style="color: #993300">"megabyte"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;jvm-args&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;jvm-arg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-Dagent.property=1024"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/jvm-args&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/runtime&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/agent-definition&gt;</b></pre>
+						Note that there is now a typed element for setting vm memory sizes. Any <span class="emphasis"><em>-Xms</em></span> or <span class="emphasis"><em>-Xmx</em></span> values set as <span class="emphasis"><em>&lt;jvm-arg ..&gt;</em></span> in prior schemas should be transfered to the new <span class="emphasis"><em>&lt;jvm-memory/&gt;</em></span></li><li class="listitem">
+						Additional resource config settings can now be declared under both the <span class="emphasis"><em>&lt;runtime/&gt;</em></span> and <span class="emphasis"><em>&lt;agent/&gt;</em></span> nodes.
+					</li></ul></div><p>
+			</p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s02.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s04.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">2.2. Types of Agents </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 2.4. The Agent Environment</td></tr></table></div></body></html>

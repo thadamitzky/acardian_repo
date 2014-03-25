@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>8.2. Profiling FglAM using JProbe</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch08.html" title="Chapter 8. Agent Testing and Debugging"/><link rel="prev" href="ch08.html" title="Chapter 8. Agent Testing and Debugging"/><link rel="next" href="apa.html" title="Appendix A. credential-repository.xml Template Included with Example Agent"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">8.2. Profiling FglAM using JProbe</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 8. Agent Testing and Debugging</th><td width="20%" align="right"> <a accesskey="n" href="apa.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="8.2. Profiling FglAM using JProbe"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="fglam-under-jprobe"/>8.2. Profiling FglAM using JProbe</h2></div></div></div><p>
+            Using JProbe to profile FglAM will help discover and diagnose overall system performance issues. Below
+            are the steps on how to connect the JProbe engine to the FglAM.
+
+            </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+                FglAM should be installed and configured, but, not running. JProbe version used here is 8.3.0.
+            </td></tr></table></div><p>
+        </p><div class="section" title="8.2.1. Creating a settings file"><div class="titlepage"><div><div><h3 class="title"><a id="fglam-jprobe-config"/>8.2.1. Creating a settings file</h3></div></div></div><p>
+                The steps to generate a settings file:
+            </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Run the JProbe console from here: &lt;path/to/jprobe_install&gt;/bin/jpconsole</li><li class="listitem">Choose 'Configurations' from the drop down menu and select 'New Configuration'</li><li class="listitem">Select configuration type 'Java Application' and click Next</li><li class="listitem">Select 'Execute a class' and browse to the gluecore.jar file: &lt;path/to/fglam_install&gt;/client/&lt;build_id&gt;/lib/gluecore.jar</li><li class="listitem">From the package explorer select Glue.java as the main class</li><li class="listitem">Select a valid working dir</li></ul></div><p>
+               </p><div align="center"><img src="images/fglam/jprobe/main_class.jpg" align="middle"/></div><p>
+            </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Under the 'MyCode' tab, set the Category/Program Name to "fglam" or something obvious so it will be easy to recognize later. </li><li class="listitem">Under the 'Analysis Type' tab, select Memory, Performance or Coverage analysis as needed</li></ul></div><p>
+               At the end of the wizard click on 'Save and Close' and save the settings file somewhere.
+               </p><div align="center"><img src="images/fglam/jprobe/save_jpl_file.jpg" align="middle"/></div><p>
+            </p></div><div class="section" title="8.2.2. Generating a settings file"><div class="titlepage"><div><div><h3 class="title"><a id="generating-setings_file"/>8.2.2. Generating a settings file</h3></div></div></div><p>
+               At this point the settings file would be suitable for jplauncher to process but it can't be used,
+               because fglam has its own native launcher. This settings file will have to be preprocessed to
+               create one that is suitable for the jprobe engine to use directly.
+           </p><p>
+                On windows, run the command:
+
+               <span class="command"><strong>
+                   &lt;path to JProbe home&gt;\bin\jplauncher.exe -jp_input=&lt;full\path\to\settings file&gt;.jpl
+                   -jp_export_settings=fglam_export.jpl -jp_export_env=bat -jp_is_application=true &gt; fglam_jprobe.bat
+               </strong></span>
+               </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+                   The above jplauncher.exe command should be run twice to make sure windows creates the right short
+                   path names in the exported settings file. Note also that the .jpl files are just Java properties
+                   files, so on Windows, backslashes need to be doubled up
+               </td></tr></table></div><p>
+           </p><p>
+               On UNIX run the command:
+
+               <span class="command"><strong>
+                   &lt;path to JProbe home&gt;/bin/jplauncher -jp_input=&lt;full/path/to/settings file&gt;.jpl
+                   -jp_export_settings=fglam_export.jpl -jp_export_env=sh -jp_is_application=true &gt; fglam_jprobe.sh
+               </strong></span>
+           </p><p>
+               This will generate two files:
+           </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">fglam_export.jpl - a settings file that the JProbe engine can use directly.</li><li class="listitem">fglam_jprobe.[bat|sh] - the JProbe environment settings that the fglam native launcher
+                   will start under.</li></ul></div></div><div class="section" title="8.2.3. Running FglAM with JProbe"><div class="titlepage"><div><div><h3 class="title"><a id="running-fglam-jprobe"/>8.2.3. Running FglAM with JProbe</h3></div></div></div><p>
+               To start fglam with JProbe, update the fglam command line args to include the JProbe jvm args and merge
+               in the JProbe environment variables. The JProbe jvm args are in the settings file (fglam_export.jpl).
+           </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">jvm_args_1=-agentpath:/workspace/unixqa/JProbe_8.3/bin/ia32/libjprobe.so=fglam_export.jpl</li><li class="listitem">jvm_args_2=-Xshare:off</li></ul></div><p>
+               There are usually just one or two of these, but there may be more. For each of the jvm_args_&lt;N&gt;
+               above, add a -j argument to FglAM command line. Eg.:
+           </p><span class="command"><strong>
+               ./fglam -j -agentpath:/workspace/unixqa/JProbe_8.3/bin/ia32/libjprobe.so=&lt;full/path/to/fglam_export&gt;.jpl
+               -j -Xshare:off
+           </strong></span><p>
+               Finally, merge in the environment variables in fglam_jprobe.[bat|sh] with the
+               environment fglam is started with. At this point, fglam should be able to start with
+               JProbe from the command line. JProbe messages should display in the fglam stdout/stderr.
+               </p><div align="center"><img src="images/fglam/jprobe/fglam_jprobe_startup.jpg" align="middle"/></div><p>
+           </p></div><div class="section" title="8.2.4. Attach Session"><div class="titlepage"><div><div><h3 class="title"><a id="attach-session"/>8.2.4. Attach Session</h3></div></div></div><p>
+               In the JProbe console, select Session from the drop-down menu and click on 'Attach to Session..' menu item
+               and there should be a "fglam" entry (or whatever the Category/Program Name was set to).
+
+               </p><div align="center"><img src="images/fglam/jprobe/attach_to_session.jpg" align="middle"/></div><p>
+
+               If the JProbe settings need to be changed, the exported settings file can be edited with a text editor.
+               jplauncher -jp_help will provide some help on the options. Or the entire process described above can be
+               repeated again with a new JProbe settings file. This will be a better method, if changing from memory
+               analysis to performance analysis, for instance. The FglAM is now successfully running under JProbe.
+
+               </p><div align="center"><img src="images/fglam/jprobe/running_session.jpg" align="middle"/></div><p>
+           </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch08.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="apa.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 8. Agent Testing and Debugging </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> Appendix A. credential-repository.xml Template Included with Example Agent</td></tr></table></div></body></html>

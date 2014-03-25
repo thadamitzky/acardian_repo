@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<config:glue-configuration xmlns:config="urn:X-quest.com:glue/config/1.6" xmlns:ns2="urn:X-quest.com:glue/config/1.5" xmlns:ns3="urn:X-quest.com:glue/config/1.4" xmlns:ns4="urn:X-quest.com:glue/config/1.3" xmlns:ns5="urn:X-quest.com:glue/config/1.2" xmlns:ns6="urn:X-quest.com:glue/config/1.1" xmlns:ns7="urn:X-quest.com:glue/config/1.0">
+    <config:host-id>
+        <config:documentation>
+            This required setting provides a unique identifier for this FglAM
+            instance. It is generated during the installation of FglAM and
+            should not normally be changed.
+
+            Using an arbitrary UUID instead of this machine's host name allows:
+            - Multiple instances to run on one machine simultaneously
+            - This machine can be uniquely identified even if the host name is
+              changed
+
+            If this value is commented out FglAM will replace it with a randomly
+            generated ID and re-read the file.
+        </config:documentation>
+        <config:id>a0ae8491-e739-4e3f-a196-545e3e51528c</config:id>
+    </config:host-id>
+    <config:host-display-name>
+        <config:documentation>
+            Set the host name reported by this FglAM instance. This name will be
+            used for all metrics recorded by a this instance of the Foglight Agent
+            Monitor.
+
+            If it is not provided it will be automatically detected. If a
+            machine is configured with multiple IP addresses or hostnames,
+            there is no way to know which will be automatically selected.
+            Setting the hostname property specifically in the case is
+            recommended.
+        </config:documentation>
+        <config:name>pc-tshy (C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\state)</config:name>
+        <config:warn-on-difference>true</config:warn-on-difference>
+    </config:host-display-name>
+    <config:secure-launcher>
+        <config:documentation>
+            A few agents require more permissions that FglAM is ideally granted
+            to perform their instrumentation.  In those few cases a separate
+            application (usually configured during installation) can be used to
+            selectively grant the required permission to those agents.
+        </config:documentation>
+        <config:path></config:path>
+    </config:secure-launcher>
+    <config:http-upstreams>
+        <config:documentation>
+            HTTP upstream connection information is specified using a list of
+            http-upstream elements.  Each element contains the following
+            attributes:
+
+            Required:
+            ---------
+               url         URL of the upstream host or FglAM concentrator
+
+            Optional:
+            ---------
+               address     Address specifies a local network interface
+                           that will be used for upstream connections.
+                           If it is not provided then the OS is free
+                           to decide which local interface to use.
+
+               proxy       URL of the proxy server to use when connecting to
+                           the specified URL.
+
+               proxy-user  Username to use when authenticating with the proxy
+                           server.
+
+               proxy-pass  Password to use then authentication with the proxy
+                           server. Passwords will be encrypted and written back
+                           to this file. To change a password, simply replace the
+                           encrypted value with the new, unencrypted, password and 
+                           restart FglAM.
+
+               proxy-ntlm-domain Windows domain to use for NTLM proxy authentication.
+                           If your Windows user name is 'WORKGROUP\\user' then you
+                           would set proxy-user to 'user' and proxy-ntlm-domain to
+                           'WORKGROUP'. The proxy-user cannot also contain the
+                           Windows domain.
+
+               ssl-allow-self-signed 'true' if self-signed SSL certificates
+                           will be accepted and 'false' if they are not. The
+                           default, if not specified, is 'false'. When set, only
+                           the host name of the server's SSL certificate is
+                           checked, the certificate chain and signer are *not*
+                           checked. 'self-signed' in this case refers to an
+                           SSL certificate signed by an unknown Certificate
+                           Authority. i.e., one that you signed youself.
+
+               ssl-cert-common-name 'hostname' If provided, the SSL certificate
+                           from the server will be validate against this host
+                           name, rather than the name of the server FglAM
+                           connected to. This can be used when the certificate
+                           on the server does not match the host name of the
+                           server as viewed from the client.  You should not
+                           normally have to set this field.
+
+                compressed 'true' if GZIP compression should be used for server
+                           communications.  This can often reduce the amount of
+                           bandwidth required, at the cost of higher CPU and
+                           memory usage.  The default, if not specified, is true.
+
+            FglAM will attempt to connect to the first http-upstream in the
+            list. If that fails then FglAM will iterate through the list from
+            the beginning and try to find a connection.
+
+            Installing New Root Certificates
+            --------------------------------
+
+            If a SSL certificate signed by a private Certificate Authority (CA) is used, 
+            and must be checked for a valid signer, then a new Certificate Authority 
+            must be added to the Agent Manager. The Agent Manager command line options
+
+              --list-certificates
+              --add-certificate
+              --delete-certificate
+
+            can be used to add and remove CA certificates while the Agent Manager is 
+            running.
+
+            **NOTE:** The certificate file to be imported should be the public certificate
+            for the Certificate Authority that signed the server's SSL certificate, not the
+            SSL certificate itself. Also, once you have imported the Certificate Authority,
+            you should set 'ssl-allow-self-signed' to false as the certificate from the server
+            is no longer considered signed by a private certificate authority.
+
+			An example child element of the http-upstreams parent node might be:
+
+			http-upstream url="http://localhost:8080"
+                       address="127.0.0.1"
+                       proxy="http://proxy.example.com:9000"
+                       proxy-user="username"
+                       proxy-ntlm-domain="WORKGROUP"
+                       proxy-pass="password"
+                       ssl-allow-self-signed="true"
+                       ssl-cert-common-name="server-name-as-seen-by-client"
+                       
+            Excluding Specific SSL Ciphers
+            ------------------------------
+            
+            If you need to exclude one or more ciphers from the SSL encryption used
+            for SSL connections, you can do so using one or more excluded-ssl-cipher
+            elements. Common reasons for this include excluding lower encryption strength
+            ciphers, or excluding ciphers with security vulnerabilities until they can
+            be patched.
+            
+            For example:
+            
+            http-upstream url="https://some.secure.system:8443"
+               excluded-ssl-cipher name="SSL_RSA_WITH_RC4_128_MD5"
+               excluded-ssl-cipher name="SSL_RSA_EXPORT_WITH_DES40_CBC_SHA"
+               excluded-ssl-cipher name="SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA"
+
+		</config:documentation>
+        <config:http-upstream url="http://localhost:8080"/>
+    </config:http-upstreams>
+    <config:http-downstreams>
+        <config:documentation>
+            HTTP downstream connection information specified the addresses that
+            this FglAM instance will listen on for downstream FglAM clients.
+            This allows FglAM instances to act as concentrators.
+
+            The addresses specify a 'port' that will accept incoming FglAM
+            connections and an optional 'address' that will specify which
+            network interface will be listened to.
+
+            Most FglAM clients do not need this setting.
+
+			Example child elements of the http-downstreams parent node includes:
+
+			http-downstream port="9090"
+
+			or
+
+			http-downstream port="9090" address="127.0.0.1"
+
+            FglAM also supports configuring HTTPS/SSL downstream connections by
+            configuring one or more https-downstream elements.  These support
+            the port and address attributes from the http-downstream element
+            as well the following additional attributes:
+
+            Required:
+            ---------
+               key-password The password required to access the private key
+                           contained in the keystore. This will be automatically
+                           encrypted if needed.
+
+            Optional:
+            ---------
+               keystore    Path to the file containing the keystore to use.  If
+                           this is a relative path it will be resolved from
+                           this FglAM instance's state directory.
+
+               keystore-password The password for the keystore itself.  This is
+                           typically the same as the value of key-password and
+                           only needs to be specified if the passwords differ.
+                           This will be automatically encrypted if needed.
+
+               ssl-key-manager-factory-algorithm The algorithm used by the
+                           keystore to manage keys.  This does not normally
+                           need to be set.
+
+               truststore  Path to the file containing the set of trusted
+                           certificates.  These are the certificates that are
+                           checked when downstream clients provide their own
+                           certificates during authentication.
+
+                           If this is a relative path it will be resolved from
+                           this FglAM instance's state directory.
+
+               truststore-type The type of truststore.  This does not normally
+                           need to be explicitly set.
+
+               truststore-password The password used to access the truststore.
+                           This will be automatically encrypted if needed.
+
+               ssl-trust-manager-factory-algorithm The algorithm used by the
+                           truststore to manage keys.  This does not normally
+                           need to be set.
+
+               need-client-auth 'true' if downstream clients connecting to this
+                           FglAM instance are required to authenticate
+                           themselves, 'false' otherwise.  If not specified the
+                           default is 'false'.
+
+               want-client-auth 'true' if the server should request that
+                           downstream clients authenticate themselves.  Unlike
+                           need-client-auth, if the downstream client does not
+                           authenticate itself it will still be allowed to
+                           connect to this FglAM instance.  If not specified
+                           the default is 'false'.
+
+               algorithm   The encryption algorithm used to generate keys in
+                           the keystore.  This does not normally need to be
+                           set.
+
+               protocol    Secure protocol supported, either SSL or TLS.  This
+                           does not normally need to be set.
+
+               provider    The cryptographic algorithm provider.  This does not
+                           normally need to be set.
+
+               secure-random-algorithm The name of the random number generation
+                           algorithm to use.  This does not normally need to be
+                           set.
+                           
+           Password Security:
+           ------------------
+               The passwords required for the key-password, keystore-password, and 
+               truststore-password will be encrypted automatically when this file is
+               read by FglAM. The encrypted versions will then be written over top of
+               the unencrypted version.
+               
+               If you need to change any of these passwords, you can simply replace the
+               encrypted password with the new, unencrypted value and restart FglAM.
+               
+           Excluding Specific SSL Ciphers
+           ------------------------------
+            
+               If you need to exclude one or more ciphers from the SSL encryption used
+               for SSL connections, you can do so using one or more excluded-ssl-cipher
+               elements. Common reasons for this include excluding lower encryption strength
+               ciphers, or excluding ciphers with security vulnerabilities until they can
+               be patched.
+            
+               For example:
+            
+               https-downstream port="8443"
+                   excluded-ssl-cipher name="SSL_RSA_WITH_RC4_128_MD5"
+                   excluded-ssl-cipher name="SSL_RSA_EXPORT_WITH_DES40_CBC_SHA"
+                   excluded-ssl-cipher name="SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA"                   
+        </config:documentation>
+    </config:http-downstreams>
+    <config:polling>
+        <config:documentation>
+            These settings control how often this installation will instruct
+            downstream hosts and agents to connect and poll for messages. The
+            more hosts that are connected, the less often they will be
+            instructed to poll.
+
+            Changing these settings is only recommended when instructed to do
+            so by Quest support.  Most FglAM clients do not need to change these
+            settings.
+
+            The polling rate is controlled by the following elements:
+
+               min-polling-interval The minimum polling interval, in seconds.
+
+               max-polls-per-minute The maximum number of polls per minute. Client
+                           polling intervals will be adjusted to adhere to this.
+
+               max-delay-factor The multiplier for the maximum delay, based on
+                           the computed minimum delay.
+
+               upstream-offset The offset used for upstream polling. The client is
+                           given a min. and max. value for when to connect to the
+                           upstream server. If there are upstream messages pending,
+                           we always connect at the minimum time. If there are no
+                           messages pending, then we connect at the max interval
+                           minus this offset. The offset should be large enough that
+                           the client does not miss the max. polling interval because
+                           of a slow connection.
+               min-polling-timeout A fudge factor (in seconds) that will be added to
+                           the time we wait before a host is considered disconnected.
+                           This is used to account for clock skews and changes in
+                           timing typically seen on heavily loaded VMWare images.
+
+        </config:documentation>
+        <config:min-polling-interval>5</config:min-polling-interval>
+        <config:max-polls-per-minute>500</config:max-polls-per-minute>
+        <config:max-delay-factor>3.5</config:max-delay-factor>
+        <config:upstream-offset>10.0</config:upstream-offset>
+        <config:min-polling-timeout>60</config:min-polling-timeout>
+    </config:polling>
+    <config:queue-sizes>
+        <config:documentation>
+            FglAM accumulates messages that are destined to be sent either upstream or
+            downstream in queues between connections.  This prevents messages from
+            getting lost in the event of a disconnection.
+
+            The 'MaxQueueSize' setting specifies the maximum number of messages that
+            will be stored in the queue.  If the queue overflows then the newest messages
+            will be discarded.  Zero  means no messages will be queued, -1 means that the
+            queues will be allowed to grow indefinitely.
+
+            'MaxDiskSpace' indicates how much disk space (in kB) can be used to store
+            messages.  If zero then messages will never be written to disk, -1 means no
+            limit.
+
+            'MaxBatchSize' is the number of messages that will be sent from the queue when
+            a connection has successfully been made.  -1 means every available message will
+            be included in each batch.
+
+            Changing these settings is only recommended when instructed to do so by Quest
+            support.  Most FglAM clients will use the default settings.
+            
+            The upstream verified queue includes additional restrictions on the values.
+            In particular, the 'MaxQueueSize' can never be 0, and the 'MaxDiskSpace' can
+            never be 0. 
+        </config:documentation>
+        <config:upstream max-queue-size="-1" max-disk-space="1024" max-batch-size="500" allow-runtime-change="true"/>
+        <config:upstream-verified max-queue-size="-1" max-disk-space="512" max-batch-size="250" allow-runtime-change="true"/>
+        <config:downstream max-queue-size="-1" max-disk-space="1024" max-batch-size="500" allow-runtime-change="true"/>
+    </config:queue-sizes>
+    <config:time-sync max-allowed-variation="300000">
+        <config:documentation>
+    		The maximum allowed variation (in ms) in the time sync (difference between the 
+    		system time and the upstream time) before previous values are discarded and 
+    		the time synchronization is reset. This defaults to 5 minutes. If a time 
+    		difference that is more than 5 minutes different from the previous value 
+    		is recorded, then we assume the upstream clock has been change and we 
+    		restart the client's time synchronization.
+    	</config:documentation>
+    </config:time-sync>
+    <config:jfogbank>
+        <config:documentation>
+            Sets some default values that the JFogbank server use when it begins accepting con
+            connections from legacy Fog4 agents.  The default values should be kept in most
+            cases, but the occasional exceptional system might need timeouts increased if it
+            runs much more slowly or a fixed port is desired.
+
+            Changing these settings is only recommended when instructed to do so by Quest
+            support.  Most FglAM clients will use the default settings.
+        </config:documentation>
+        <config:port>0</config:port>
+        <config:loginTimeout>30000</config:loginTimeout>
+        <config:bridgeTimeout>120000</config:bridgeTimeout>
+    </config:jfogbank>
+    <config:kerberos>
+        <config:documentation>
+			Configures the location of the configuration files used by Kerberos to locate
+			the Key Distribution Center (KDC) and perform login.  If the krb5-config
+			element is missing or empty then FglAM will search for a suitable file on the
+			host filesystem.  The following locations will be searched, in order:
+			- %WINDIR%/krb5.ini
+			- /etc/krb5.conf
+			- /etc/krb5/krb5.conf
+
+			If a file cannot be located then FglAM will attempt to generate one using
+			guessed values and will store it in the config directory.  This element will
+			be updated.
+
+			Relative paths are resolved according to FglAM's state directory.
+
+			This value can be overridden at runtime using the following command line switch:
+			-Djava.security.krb5.conf=/path/to/file
+		</config:documentation>
+        <config:krb5-config-file></config:krb5-config-file>
+        <config:login-config-file></config:login-config-file>
+        <config:subject-creds-only>false</config:subject-creds-only>
+        <config:debug>false</config:debug>
+    </config:kerberos>
+</config:glue-configuration>

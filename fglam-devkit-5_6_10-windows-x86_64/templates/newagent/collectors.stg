@@ -1,0 +1,53 @@
+/*
+ * Copyright 2013 Dell Inc.
+ * ALL RIGHTS RESERVED.
+ * 
+ * This software is the confidential and proprietary information of
+ * Dell Inc. ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered
+ * into with Dell Inc.
+ * 
+ * DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ * THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ * NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ * DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ * OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ */
+
+/**
+ * Expands the collectors for the agent. This file uses % as the macro delimiter
+ *
+ * The argument is a single collector object
+ */
+collectorxml(c) ::= <<  
+<collector name="%c.name%" method-name="%c.methodName%" value="%c.value%" unit="%c.unit.value%">
+    %fastmode(c)%
+</collector>
+>>
+
+/**
+ * Dumps out a fast mode line. The argument is a single Collector.fastmode element
+ */
+fastmode(f) ::= <<
+<!-- fast mode goes here -->
+>>
+
+/**
+ * Dumps out the Java method that corresponds to a named collector.
+ */
+collectorjava(c) ::= <<
+
+/**
+ * %c.name% Data Collector
+ * 
+ * @param collectionFreqInMs the collection frequency for this collector, in ms.
+ */
+@Override
+public void %c.methodName%(long collectionFreqInMs) {
+    mLogger.debug("%c.name% collector invoked");
+}
+
+>>

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Chapter 8. Agent Testing and Debugging</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="prev" href="ch07.html" title="Chapter 7. Agent Harness"/><link rel="next" href="ch08s02.html" title="8.2. Profiling FglAM using JProbe"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 8. Agent Testing and Debugging</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch07.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch08s02.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="chapter" title="Chapter 8. Agent Testing and Debugging"><div class="titlepage"><div><div><h2 class="title"><a id="agent_testing_debugging"/>Chapter 8. Agent Testing and Debugging</h2></div><div><p class="pubdate">2013-09-23</p></div></div></div><div class="toc"><p><strong>Table of Contents</strong></p><dl><dt><span class="section"><a href="ch08.html#unit_testing">8.1. Unit Testing</a></span></dt><dd><dl><dt><span class="section"><a href="ch08.html#ut_overview">8.1.1. Overview</a></span></dt><dt><span class="section"><a href="ch08.html#ut_example">8.1.2. Unit Test Usage Examples</a></span></dt></dl></dd><dt><span class="section"><a href="ch08s02.html">8.2. Profiling FglAM using JProbe</a></span></dt><dd><dl><dt><span class="section"><a href="ch08s02.html#fglam-jprobe-config">8.2.1. Creating a settings file</a></span></dt><dt><span class="section"><a href="ch08s02.html#generating-setings_file">8.2.2. Generating a settings file</a></span></dt><dt><span class="section"><a href="ch08s02.html#running-fglam-jprobe">8.2.3. Running FglAM with JProbe</a></span></dt><dt><span class="section"><a href="ch08s02.html#attach-session">8.2.4. Attach Session</a></span></dt></dl></dd></dl></div><div class="section" title="8.1. Unit Testing"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="unit_testing"/>8.1. Unit Testing</h2></div></div></div><div class="section" title="8.1.1. Overview"><div class="titlepage"><div><div><h3 class="title"><a id="ut_overview"/>8.1.1. Overview</h3></div></div></div><p> Agents hosted in FglAM are typically tightly coupled with the FglAM runtime. They
+                acquire services such as loggers, topology submitters, and property accessors in their
+                constructor and depend on those services when running. This can make unit testing
+                of the agent code difficult, since those services are unavailable when running a
+                test harness like JUnit.
+            </p><p>
+                Initially to facilitate unit testing a set of mock API implementations were provided for services via the <span class="emphasis"><em>glueapimockimpl.jar</em></span> library included in the 
+                FglAM Developer's Kit. However, with the emergence of Java mock libraries this mock API implementation library is no longer required. The mock API implementation library 
+                will still be provided, but will no longer be maintained.
+            </p><p> To facilitate unit testing, Java mock libraries can be used eg. <a class="ulink" href="http://code.google.com/p/mockito/" target="_top"><code class="function">Mockito</code></a>.
+                The mock library can be used to mock implementations of the services that FglAM provides to agents 
+                through the <span class="emphasis"><em>glueapi.jar</em></span>. When these libraries are included in an agent's unit 
+                test classpath, agents can be initialized and they can run the same code paths they 
+                would run when hosted in a live FglAM runtime. </p><p>
+                The mock of the services can allow agent code to execute. They can be pre-configured as part of a unit test, but they do not provide an exact FglAM runtime. 
+                Instead, they will allow agent developers to test (error handling, parsing, and so on) their agent code without 
+                requirig the FglAM runtime. The behavior of the mock libraries can be controlled and 
+                well-known/expected values can be returned from their stubbed-out methods (see the <a class="link" href="ch08.html#ut_example" title="8.1.2. Unit Test Usage Examples">examples</a>
+                that follow). They will act as placeholders which implement the interface with simple implementations 
+                and do not provide any real service. For this reason, they should not be used to explore the FglAM DevKit's 
+                features and functionality. This ensures that any unit test failures can be traced directly to the class under
+                test. In essence, it removes the dependency on the FglAM runtime so that the agent's unit
+                tests can be executed. For exploration of the real service, the  <a class="link" href="ch07.html" title="Chapter 7. Agent Harness">Agent Harness</a> should be used.
+            </p></div><div class="section" title="8.1.2. Unit Test Usage Examples"><div class="titlepage"><div><div><h3 class="title"><a id="ut_example"/>8.1.2. Unit Test Usage Examples</h3></div></div></div><p>
+                The <code class="function">Mockito</code> library will be used for the examples for writing unit tests for agents.
+            </p><p> The following example shows how to test an agent using mocked classes. Once an agent instance
+                has been created, writing unit tests for the agent's functionality should be trivial.
+            </p><p>
+              Here is a sample agent that executes a command using an ssh connection.
+            </p><pre class="programlisting">
+        <strong class="hl-keyword">import</strong> com.quest.glue.api.services.*;
+        <strong class="hl-keyword">import</strong> com.quest.glue.api.agent.*;
+        
+        <strong class="hl-keyword">public</strong> <strong class="hl-keyword">static</strong> <strong class="hl-keyword">class</strong> ExecCommandAgent <strong class="hl-keyword">implements</strong> Agent, ExecCommandAgentCollectors {
+            <strong class="hl-keyword">private</strong> LogService.Logger mLogger;
+            <strong class="hl-keyword">private</strong> ExecCommandAgentPropertyWrapper mProperties;
+            <strong class="hl-keyword">private</strong> SSHConnectionService2 mSSHConnectionService;
+            
+            <strong class="hl-keyword">public</strong> ExecCommandAgent(ServiceFactory services) <strong class="hl-keyword">throws</strong> ServiceFactory.ServiceNotAvailableException {
+                LogService logService = services.getService(LogService.<strong class="hl-keyword">class</strong>);
+                mLogger = logService.getLogger(ExecCommandAgent.<strong class="hl-keyword">class</strong>);
+                
+                ASPService3 aspService = services.getService(ASPService3.<strong class="hl-keyword">class</strong>);
+                mProperties = <strong class="hl-keyword">new</strong> ExecCommandAgentPropertyWrapper(aspService);
+                
+                mSSHConnectionService = services.getService(SSHConnectionService2.<strong class="hl-keyword">class</strong>);
+            }
+        
+            <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> destroy() {
+                mLogger.debug(<strong class="hl-string"><em style="color:red">"Destroying agent"</em></strong>);
+            }
+        
+            <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> startDataCollection() {
+                mLogger.debug(<strong class="hl-string"><em style="color:red">"Starting Data Collection"</em></strong>);
+            }
+        
+            <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> stopDataCollection() {
+                mLogger.debug(<strong class="hl-string"><em style="color:red">"Stopping Data Collection"</em></strong>);
+            }
+        
+            <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> executeCommand(<strong class="hl-keyword">long</strong> frequency) {
+                SSHConnection2 ssh = null;
+                <strong class="hl-keyword">try</strong> {
+                    String host = mProperties.getHost();
+                    <strong class="hl-keyword">int</strong> port = mProperties.getPort();
+                    <strong class="hl-keyword">long</strong> timeout = mProperties.getTimeout();
+                    String command = mProperties.getExecCommand();
+                    
+                    mLogger.log( <strong class="hl-string"><em style="color:red">"Connecting"</em></strong>, host, String.valueOf(port), String.valueOf(timeout) );
+                    ssh = mSSHConnectionService.establish( host, port, <strong class="hl-string"><em style="color:red">"purpose"</em></strong>, timeout );
+                    
+                    mLogger.log( <strong class="hl-string"><em style="color:red">"Executing command"</em></strong>, command );
+                    ByteArrayOutputStream out = <strong class="hl-keyword">new</strong> ByteArrayOutputStream();
+                    ByteArrayOutputStream err = <strong class="hl-keyword">new</strong> ByteArrayOutputStream();
+                    ssh.execute(command, out, err, timeout);
+                    
+                    mLogger.log(<strong class="hl-string"><em style="color:red">"stdOut"</em></strong>, out.toString());
+                    mLogger.log(<strong class="hl-string"><em style="color:red">"stdErr"</em></strong>, out.toString());
+                } <strong class="hl-keyword">catch</strong>(Exception e) {
+                    mLogger.log(<strong class="hl-string"><em style="color:red">"connectionFailed"</em></strong>, e);
+                } <strong class="hl-keyword">finally</strong> {
+                    mSSHConnectionService.release(ssh);
+                }
+            }
+        }
+        </pre><p>
+                Any of the services in <code class="function">com.quest.glue.api.services</code> can be requested
+                using the <code class="function">getService()</code> factory method. Using <code class="function">Mockito</code> a minimally mocked up implementation of
+                the service can be returned for unit testing. However, in most cases it will be necessary to provide customized implementations.
+            </p><p>
+                To unit test the sample agent above, the services used by the agent will have to be mocked to return required values.
+                </p><pre class="programlisting">
+        <strong class="hl-keyword">import</strong> <strong class="hl-keyword">static</strong> org.mockito.Mockito.*;
+        <strong class="hl-keyword">import</strong> <strong class="hl-keyword">static</strong> org.mockito.Matchers.*;
+        
+        <strong class="hl-keyword">import</strong> com.quest.glue.api.services.*;
+        <strong class="hl-keyword">import</strong> com.quest.glue.api.agent.*;
+        
+        <strong class="hl-keyword">import</strong> org.junit.Before;
+        <strong class="hl-keyword">import</strong> org.junit.Test;
+        
+        <strong class="hl-keyword">private</strong> ServiceFactory mFactory;
+        
+        <em><span class="hl-annotation" style="color: gray">@Before</span></em>
+        <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> setup() <strong class="hl-keyword">throws</strong> ServiceFactory.ServiceNotAvailableException {
+            mFactory = mock(ServiceFactory.<strong class="hl-keyword">class</strong>);
+            
+            <em class="hl-tag" style="color: green">// create mocked log service and add to service factory</em>
+            LogService.Logger logger = mock(LogService.Logger.<strong class="hl-keyword">class</strong>);
+            LogService logService = mock(LogService.<strong class="hl-keyword">class</strong>);
+            when(logService.getLogger(ExecCommandAgent.<strong class="hl-keyword">class</strong>)).thenReturn(logger);
+            when(mFactory.getService(LogService.<strong class="hl-keyword">class</strong>)).thenReturn(logService);
+        }
+
+        <em><span class="hl-annotation" style="color: gray">@Test</span></em>
+        <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> testLsCommand() <strong class="hl-keyword">throws</strong> Exception {
+            String hostName = <strong class="hl-string"><em style="color:red">"localhost"</em></strong>;
+            <strong class="hl-keyword">int</strong> portNumber = <span class="hl-number">22</span>;
+            String command = <strong class="hl-string"><em style="color:red">"ls"</em></strong>;
+            
+            <em class="hl-tag" style="color: green">// create mocked asp service and add to service factory</em>
+            ASPService3 aspService = mock(ASPService3.<strong class="hl-keyword">class</strong>);
+            when(aspService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"host"</em></strong>)).thenReturn(hostName);
+            when(aspService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"port"</em></strong>)).thenReturn(<strong class="hl-keyword">new</strong> Integer(portNumber));
+            when(aspService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"timeout"</em></strong>)).thenReturn(<strong class="hl-keyword">new</strong> Integer(<span class="hl-number">60000</span>));
+            when(aspService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"execCommand"</em></strong>)).thenReturn(command);
+            when(mFactory.getService(ASPService3.<strong class="hl-keyword">class</strong>)).thenReturn(aspService);
+            
+            <em class="hl-tag" style="color: green">// create mocked ssh connection</em>
+            SSHConnection2 sshConnection = mock(SSHConnection2.<strong class="hl-keyword">class</strong>);
+            <em class="hl-tag" style="color: green">// adjust execute method if required</em>
+            ...
+            
+            <em class="hl-tag" style="color: green">// create mocked ssh connection service to return mocked ssh connection, and add to service factory</em>
+            SSHConnectionService2 sshConnectionService = mock(SSHConnectionService2.<strong class="hl-keyword">class</strong>);
+            when(sshConnectionService.establish(eq(<strong class="hl-string"><em style="color:red">"localhost"</em></strong>), eq(<span class="hl-number">22</span>), anyString(), anyLong(), (String[])anyVararg())).thenReturn(sshConnection);
+            when(mFactory.getService(SSHConnectionService2.<strong class="hl-keyword">class</strong>)).thenReturn(sshConnectionService);
+            
+            ExecCommandAgent agent = <strong class="hl-keyword">new</strong> ExecCommandAgent(mFactory);
+            <em class="hl-tag" style="color: green">// unit tests</em>
+        }
+         </pre><p>
+                </p><p>
+                    The agent will now use the fake services that were mocked and can successfully be unit tested without requiring the FglAM runtime.
+                </p><p>
+                    It may also be necessary to unit test the execution path for exceptions. This is particularly true when unit testing connections. 
+                    Exception scenarios can be mocked as follows, using the previous example for the ssh connection.
+                </p><pre class="programlisting">
+        <em><span class="hl-annotation" style="color: gray">@Test</span></em>
+        <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> testLsCommandWithExecuteException() <strong class="hl-keyword">throws</strong> Exception {
+            String hostName = <strong class="hl-string"><em style="color:red">"localhost"</em></strong>;
+            <strong class="hl-keyword">int</strong> portNumber = <span class="hl-number">22</span>;
+            String command = <strong class="hl-string"><em style="color:red">"ls"</em></strong>;
+            
+            <em class="hl-tag" style="color: green">// create mocked asp service and add to factory</em>
+            ASPService3 aspService = mock(ASPService3.<strong class="hl-keyword">class</strong>);
+            when(aspService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"host"</em></strong>)).thenReturn(hostName);
+            when(aspService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"port"</em></strong>)).thenReturn(<strong class="hl-keyword">new</strong> Integer(portNumber));
+            when(aspService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"timeout"</em></strong>)).thenReturn(<strong class="hl-keyword">new</strong> Integer(<span class="hl-number">60000</span>));
+            when(aspService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"execCommand"</em></strong>)).thenReturn(command);
+            when(mFactory.getService(ASPService3.<strong class="hl-keyword">class</strong>)).thenReturn(aspService);
+            
+            SSHConnection2 sshConnection = mock(SSHConnection2.<strong class="hl-keyword">class</strong>);
+            <em class="hl-tag" style="color: green">// throw exception when executing command for ssh connection</em>
+            doThrow(ConnectionBrokenException.<strong class="hl-keyword">class</strong>).when(sshConnection).execute(eq(command), any(OutputStream.<strong class="hl-keyword">class</strong>), any(OutputStream.<strong class="hl-keyword">class</strong>), anyLong());
+            
+            <em class="hl-tag" style="color: green">// create mocked ssh connection service and return mocked ssh connection</em>
+            SSHConnectionService2 sshConnectionService = mock(SSHConnectionService2.<strong class="hl-keyword">class</strong>);
+            when(sshConnectionService.establish(eq(<strong class="hl-string"><em style="color:red">"localhost"</em></strong>), eq(portNumber), anyString(), anyLong(), (String[])anyVararg())).thenReturn(sshConnection);
+            when(mFactory.getService(SSHConnectionService2.<strong class="hl-keyword">class</strong>)).thenReturn(sshConnectionService);
+            
+            ExecCommandAgent agent = <strong class="hl-keyword">new</strong> ExecCommandAgent(mFactory);
+            <em class="hl-tag" style="color: green">// unit tests</em>
+        }
+                </pre><p>
+                The agent will now use the fake ssh connection and throw the specified exception when <code class="function">execute</code> is finally called with the <code class="function">ls</code> command
+                on the ssh connection, allowing the exception handling by the agent tested.
+            </p><p>
+                More details about the <code class="function">Mockito</code> library can be found <a class="ulink" href="http://code.google.com/p/mockito/" target="_top">here</a>.
+            </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+                There are alternative Java mock libraries eg. <a class="ulink" href="http://www.jmock.org" target="_top"><code class="function">jMock</code></a> etc., that can be used instead of <code class="function">Mockito</code>.
+            </td></tr></table></div><p>
+                For the convenience of agent developers, macros for the unit tests are provided in the
+                <span class="emphasis"><em>fglam-ant-macro.xml</em></span> file (which can be found in
+                <span class="emphasis"><em>$FGLAM_DEVKIT_HOME/buildtools</em></span>).
+                </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+                    Use of the FglAM macro is optional and if it does not meet all of the requirements,
+                    then the Ant scripts can be written from scratch by advanced users.
+                </td></tr></table></div><p>
+                The macrodef is below:
+
+            </p><pre class="programlisting">
+        <em class="hl-tag" style="color: green">&lt;!-- Helper macro for running the junit tests --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;macrodef</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"junit"</span> <span class="hl-attribute" style="color: #993399;">uri</span>=<span class="hl-value" style="color: #993300">"fglam:/ant/macros"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;attribute</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"results"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+            <b class="hl-tag" style="color: #3333FF;">&lt;element</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"jvm-args"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;element</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"jars"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;element</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"files"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+            <b class="hl-tag" style="color: #3333FF;">&lt;sequential&gt;</b>
+                <em class="hl-tag" style="color: green">&lt;!-- delete and re-create the directories that hold these
+                     results to avoid confusion --&gt;</em>
+                <b class="hl-tag" style="color: #3333FF;">&lt;delete</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"@{results}/xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;delete</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"@{results}/html"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;mkdir</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"@{results}/xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;mkdir</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"@{results}/html"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+                <b class="hl-tag" style="color: #3333FF;">&lt;echo</b> <span class="hl-attribute" style="color: #993399;">level</span>=<span class="hl-value" style="color: #993300">"info"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>Running the JUnit tests<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;junit</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"@{results}"</span>
+                       <span class="hl-attribute" style="color: #993399;">fork</span>=<span class="hl-value" style="color: #993300">"true"</span> <span class="hl-attribute" style="color: #993399;">forkMode</span>=<span class="hl-value" style="color: #993300">"once"</span>
+                       <span class="hl-attribute" style="color: #993399;">showOutput</span>=<span class="hl-value" style="color: #993300">"true"</span> <span class="hl-attribute" style="color: #993399;">filterTrace</span>=<span class="hl-value" style="color: #993300">"true"</span> <span class="hl-attribute" style="color: #993399;">printsummary</span>=<span class="hl-value" style="color: #993300">"true"</span>
+                       <span class="hl-attribute" style="color: #993399;">failureproperty</span>=<span class="hl-value" style="color: #993300">"junit.failure"</span> <span class="hl-attribute" style="color: #993399;">haltonfailure</span>=<span class="hl-value" style="color: #993300">"no"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;jvmarg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-Xfuture"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;jvmarg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-ea"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;jvmarg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-esa"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+                    <b class="hl-tag" style="color: #3333FF;">&lt;jvm-args/&gt;</b>
+
+                    <b class="hl-tag" style="color: #3333FF;">&lt;classpath&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/buildtools/junit"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                            <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+
+                        <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/lib"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                            <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+
+                        <b class="hl-tag" style="color: #3333FF;">&lt;jars/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/classpath&gt;</b>
+
+                    <b class="hl-tag" style="color: #3333FF;">&lt;formatter</b> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"xml"</span> <span class="hl-attribute" style="color: #993399;">usefile</span>=<span class="hl-value" style="color: #993300">"true"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+                    <b class="hl-tag" style="color: #3333FF;">&lt;batchtest</b> <span class="hl-attribute" style="color: #993399;">todir</span>=<span class="hl-value" style="color: #993300">"@{results}/xml"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;files/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/batchtest&gt;</b>
+
+                    <em class="hl-tag" style="color: green">&lt;!-- Unit test need to be run in debug mode --&gt;</em>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;sysproperty</b> <span class="hl-attribute" style="color: #993399;">key</span>=<span class="hl-value" style="color: #993300">"quest.debug"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"1"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/junit&gt;</b>
+
+                <b class="hl-tag" style="color: #3333FF;">&lt;echo</b> <span class="hl-attribute" style="color: #993399;">level</span>=<span class="hl-value" style="color: #993300">"info"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>Generating JUnit test report<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;junitreport&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"@{results}/xml"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"TEST-*.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;report</b> <span class="hl-attribute" style="color: #993399;">format</span>=<span class="hl-value" style="color: #993300">"frames"</span> <span class="hl-attribute" style="color: #993399;">todir</span>=<span class="hl-value" style="color: #993300">"@{results}/html"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/junitreport&gt;</b>
+
+                <b class="hl-tag" style="color: #3333FF;">&lt;delete</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${basedir}/TESTS-TestSuites.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/sequential&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/macrodef&gt;</b>
+            </pre><p>
+                A sample target using the FglAM macro is provided below:
+            </p><pre class="programlisting">
+        <b class="hl-tag" style="color: #3333FF;">&lt;project</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"TestAgents"</span> <span class="hl-attribute" style="color: #993399;">default</span>=<span class="hl-value" style="color: #993300">"dist"</span> <span class="hl-attribute" style="color: #993399;">xmlns:fglam</span>=<span class="hl-value" style="color: #993300">"fglam:/ant/macros"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- Import the FglAM tools --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;import</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/buildtools/fglam-ant-macros.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"classes.test.dir"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${build.dir}/test/classes"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"test.dir"</span>         <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${basedir}/test"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"tooling.dir"</span>      <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${build.dir}/tooling"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"test.results.dir"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${build.dir}/results"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"java.test.dir"</span>    <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${test.dir}/java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"junit"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"compile"</span> <span class="hl-attribute" style="color: #993399;">description</span>=<span class="hl-value" style="color: #993300">"Run JUnit tests"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;mkdir</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${classes.test.dir}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;javac</b> <span class="hl-attribute" style="color: #993399;">target</span>=<span class="hl-value" style="color: #993300">"1.6"</span> <span class="hl-attribute" style="color: #993399;">source</span>=<span class="hl-value" style="color: #993300">"1.6"</span>
+                <span class="hl-attribute" style="color: #993399;">includeantruntime</span>=<span class="hl-value" style="color: #993300">"no"</span> <span class="hl-attribute" style="color: #993399;">includejavaruntime</span>=<span class="hl-value" style="color: #993300">"no"</span>
+                <span class="hl-attribute" style="color: #993399;">deprecation</span>=<span class="hl-value" style="color: #993300">"true"</span> <span class="hl-attribute" style="color: #993399;">debug</span>=<span class="hl-value" style="color: #993300">"true"</span> <span class="hl-attribute" style="color: #993399;">debuglevel</span>=<span class="hl-value" style="color: #993300">"lines,vars,source"</span>
+                <span class="hl-attribute" style="color: #993399;">destdir</span>=<span class="hl-value" style="color: #993300">"${classes.test.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;classpath&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${build.dir}/jars"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/lib"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"glueapi.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/buildtools/junit"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/classpath&gt;</b>
+
+                <b class="hl-tag" style="color: #3333FF;">&lt;compilerarg</b> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"-Xlint:unchecked,divzero,cast,empty"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+                <b class="hl-tag" style="color: #3333FF;">&lt;src</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${tooling.dir}/java-gen"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;src</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${test.dir}/java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"**/*.java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/javac&gt;</b>
+
+            <b class="hl-tag" style="color: #3333FF;">&lt;fglam:junit</b> <span class="hl-attribute" style="color: #993399;">results</span>=<span class="hl-value" style="color: #993300">"${test.results.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;fglam:jvm-args/&gt;</b>
+
+                <b class="hl-tag" style="color: #3333FF;">&lt;fglam:jars&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${build.dir}/jars"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;pathelement</b> <span class="hl-attribute" style="color: #993399;">location</span>=<span class="hl-value" style="color: #993300">"${classes.test.dir}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:jars&gt;</b>
+
+                <b class="hl-tag" style="color: #3333FF;">&lt;fglam:files&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${java.test.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"**/Test*.java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:files&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:junit&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;fail</b> <span class="hl-attribute" style="color: #993399;">message</span>=<span class="hl-value" style="color: #993300">"One or more JUnit tests failed"</span> <span class="hl-attribute" style="color: #993399;">if</span>=<span class="hl-value" style="color: #993300">"junit.failure"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+                </pre></div></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch07.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch08s02.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 7. Agent Harness </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 8.2. Profiling FglAM using JProbe</td></tr></table></div></body></html>

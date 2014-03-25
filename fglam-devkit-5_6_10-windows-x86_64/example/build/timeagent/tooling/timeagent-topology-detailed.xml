@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+
+<types>
+
+    <type name='TimeAgentLongValue' extends='ObservedValue'>
+        <property name='value' type='Long' is-many='false' is-containment='false'/>
+    </type>
+
+    <!-- New observation types have to extend either the StringObservation or 
+         ComplexObservation type so that the server's persistence service knows how 
+         to handle it. -->
+    <type name='TimeAgentLongObservation' extends='ComplexObservation'>
+        <property name='current' type='TimeAgentLongValue' is-many='false' is-containment='true'/>
+        <property name='latest'  type='TimeAgentLongValue' is-many='false' is-containment='true'/>
+        <property name='history' type='TimeAgentLongValue' is-many='true'  is-containment='true'/>
+    </type>
+
+    <!-- A simple enumeration to indicate whether or not the clock on the
+         agent's host is sync'd to the server's clock. -->
+    <type name="TimeAgentSynced" extends="Enumeration">
+        <instances>
+            <instance>
+                <property-value name="name" value="NO"/>
+                <property-value name="value" value="0"/>
+                <property-value name="index" value="0"/>
+            </instance>
+            <instance>
+                <property-value name="name" value="YES"/>
+                <property-value name="value" value="1"/>
+                <property-value name="index" value="1"/>
+            </instance>
+        </instances>
+    </type>
+
+    <type name='TimeAgentSyncedValue' extends='EnumObservedValue'>
+        <property name='value' type='TimeAgentSynced'/>
+    </type>
+
+    <type name='TimeAgentSyncedObservation' extends='EnumObservation'>
+         <property name='current' type='TimeAgentSyncedValue' is-many='false' is-containment='true'/>
+         <property name='latest'  type='TimeAgentSyncedValue' is-many='false' is-containment='true'/>
+         <property name='history' type='TimeAgentSyncedValue' is-many='true'  is-containment='true'/>
+    </type>
+
+    <type name="TimeAgentDetailedSample" extends="TimeAgentCurrentTime">
+        <property name="samplesSent"    type="TimeAgentLongObservation" is-containment="true" unit-name="count" />
+        <!-- Time difference is a metric so that the server can aggregate (average) the
+             values from multiple samples when it does rollups. -->
+        <property name="timeDifference" type="Metric" is-containment="true" unit-name="millisecond" />
+        <property name="isSynced"       type="TimeAgentSyncedObservation" is-containment="true"/>
+		<property name="event"          type="StringObservation" is-containment="true"/>
+    </type>
+
+</types>

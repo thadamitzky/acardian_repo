@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Appendix B. build.xml for Included Example Agent</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="prev" href="apa.html" title="Appendix A. credential-repository.xml Template Included with Example Agent"/><link rel="next" href="apc.html" title="Appendix C. agent-definition.xml for Included Example Agent"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix B. build.xml for Included Example Agent</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apa.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="apc.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="appendix" title="Appendix B. build.xml for Included Example Agent"><div class="titlepage"><div><div><h2 class="title"><a id="example-build-xml"/>Appendix B. build.xml for Included Example Agent</h2></div></div></div><div class="abstract" title="Abstract"><div class="titlepage"/><p>
+        This is the build.xml file included with the example agent
+      </p></div><p>
+        </p><pre class="literallayout">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--&gt;
+
+
+&lt;project name="FglAMExample" default="timeagent-dist" xmlns:fglam="fglam:/ant/macros"&gt;
+
+    &lt;!-- Add the external environment and find the FglAM installation --&gt;
+    &lt;property environment="env"/&gt;
+    &lt;property name="fglam.devkit.home" value="${env.FGLAM_DEVKIT_HOME}"/&gt;
+
+    &lt;fail&gt;
+        &lt;condition&gt;&lt;not&gt;
+          &lt;and&gt;
+              &lt;available file="${fglam.devkit.home}" type="dir"/&gt;
+              &lt;available file="${fglam.devkit.home}/buildtools/lib/devkit-ant.jar" type="file"/&gt;
+          &lt;/and&gt;
+        &lt;/not&gt;&lt;/condition&gt;.
+        The specified FglAM developer's kit location, ${fglam.devkit.home},
+        does not appear to exist as a valid directory or does not contain a
+        recognized FglAM developer's kit.
+    &lt;/fail&gt;
+
+    &lt;!-- Define some directories used throughout the build process --&gt;
+    &lt;property name="timeagent.src.dir"         value="${basedir}/timeagent/src"/&gt;
+    &lt;property name="timeagent.config.dir"      value="${basedir}/timeagent/config"/&gt;
+    &lt;property name="timeagent.build.dir"       value="${basedir}/build/timeagent"/&gt;
+    &lt;property name="timeagent.build.test.dir"  value="${timeagent.build.dir}/test"/&gt;
+    &lt;property name="timeagent.tooling.output"  value="${timeagent.build.dir}/tooling"/&gt;
+    &lt;property name="timeagent.dist.dir"        value="${timeagent.build.dir}/dist"/&gt;
+    &lt;property name="timeagent.test.dir"        value="${basedir}/test"/&gt;
+    &lt;property name="timeagent.java.test.dir"   value="${timeagent.test.dir}/java"/&gt;
+
+    &lt;!-- Import the FglAM tools --&gt;
+    &lt;import file="${fglam.devkit.home}/buildtools/fglam-ant-macros.xml"/&gt;
+
+    &lt;target name="timeagent-tooling-artifacts"&gt;
+        &lt;fglam:generator agent-definition="${timeagent.config.dir}/agent-definition.xml"
+                        output-dir="${timeagent.tooling.output}"/&gt;
+        &lt;!-- Load the generated agent.manifest to initialize build properties
+             for use in the fglam ant macros --&gt;
+        &lt;fglam:init-agent-manifest-props agent-manifest="${timeagent.tooling.output}/agent.manifest" prefix="timeagent"/&gt;
+    &lt;/target&gt;
+
+    &lt;!-- Compile and package the agent binary files --&gt;
+    &lt;target name="timeagent-compile-and-jar" depends="timeagent-tooling-artifacts"&gt;
+        &lt;fglam:compile-and-jar build-dir="${timeagent.build.dir}"&gt;
+            &lt;compile-options&gt;
+                &lt;src path="${timeagent.tooling.output}/java-gen"/&gt;
+                &lt;src path="${timeagent.src.dir}/java"/&gt;
+                &lt;include name="**/*.java"/&gt;
+            &lt;/compile-options&gt;
+            &lt;jar-options&gt;
+                &lt;!-- Adds the LogResources.properties files to the jar file --&gt;
+                &lt;fileset dir="${timeagent.src.dir}/java" includes="**/*.properties"/&gt;
+            &lt;/jar-options&gt;
+        &lt;/fglam:compile-and-jar&gt;
+        &lt;mkdir dir="${timeagent.build.test.dir}/classes"/&gt;
+        &lt;javac target="1.6" source="1.6"
+            includeantruntime="no" includejavaruntime="no"
+            deprecation="true" debug="true" debuglevel="lines,vars,source"
+            destdir="${timeagent.build.test.dir}/classes"&gt;
+            &lt;classpath&gt;
+                &lt;fileset dir="${timeagent.build.dir}/jars"&gt;
+                    &lt;include name="*.jar"/&gt;
+                &lt;/fileset&gt;
+                &lt;fileset dir="${fglam.devkit.home}/lib"&gt;
+                    &lt;include name="*.jar"/&gt;
+                &lt;/fileset&gt;
+                &lt;fileset dir="${fglam.devkit.home}/buildtools/junit"&gt;
+                    &lt;include name="junit*.jar"/&gt;
+                &lt;/fileset&gt;
+            &lt;/classpath&gt;
+
+            &lt;src path="${timeagent.tooling.output}/java-gen"/&gt;
+            &lt;src path="${timeagent.test.dir}/java"/&gt;
+            &lt;include name="**/time/*.java"/&gt;
+        &lt;/javac&gt;
+    &lt;/target&gt;
+
+    &lt;!-- Creates a distribution which results in a FMS 5.0 deployeable cartridge file --&gt;
+    &lt;target name="timeagent-dist" depends="timeagent-compile-and-jar"
+            description="Builds a deployable cartridge with a GAR installer"&gt;
+
+        &lt;!-- create the dist output directory --&gt;
+        &lt;mkdir dir="${timeagent.dist.dir}"/&gt;
+
+        &lt;fglam:gar agent-manifest="${timeagent.tooling.output}/agent.manifest"
+                   agent-lib-dir ="${timeagent.build.dir}/jars"
+                   build-dir="${timeagent.build.dir}"
+                   prefix="timeagent"/&gt;
+        &lt;echo&gt;Making topology in ${timeagent.dist.dir}&lt;/echo&gt;
+        &lt;echo&gt;CDT file ${timeagent.tooling.output}/cdt.xml&lt;/echo&gt;
+        &lt;echo&gt;Topology file ${timeagent.tooling.output}/topology.xml&lt;/echo&gt;
+        &lt;echo&gt;Monitoring Policy file ${timeagent.tooling.output}/monitoring-policy.xml&lt;/echo&gt;
+        &lt;echo&gt;WCF (input) file ${timeagent.config.dir}/wcf.xml&lt;/echo&gt;
+        &lt;car destdir="${timeagent.dist.dir}" buildLocalizableCar="false"&gt;
+            &lt;cartridge
+                    name="${timeagent.agent-manifest.name}"
+                    final="true"
+                    version="${timeagent.agent-manifest.ver}"
+                    buildid="${timeagent.agent-manifest.build-id}"
+                    author="FglAM Agent Developers"&gt;                
+                &lt;installers
+                    name="${timeagent.agent-manifest.name}-Installers"
+                    version="${timeagent.agent-manifest.ver}"&gt;
+                    &lt;installer
+                        name="${timeagent.agent-manifest.name}"
+                        version="${timeagent.agent-manifest.ver}"
+                        file="${timeagent.build.dir}/gar/${timeagent.agent-manifest.name}.gar"
+                        type="fglam-client-pkg"&gt;
+                        &lt;!-- This installer contains the following agent types. Each agent
+                             type in the cartridge must be listed here. --&gt;
+                        &lt;agent type="TimeAgent" version="${timeagent.agent-manifest.ver}" 
+                                                build="${timeagent.agent-manifest.build-id}"/&gt;
+                    &lt;/installer&gt;
+                &lt;/installers&gt;                
+                &lt;topologytypes
+                    name="${timeagent.agent-manifest.name}-Topology-Types"
+                    version="${timeagent.agent-manifest.ver}"
+                    file="${timeagent.tooling.output}/timeagent-topology.xml"/&gt;
+                &lt;topologytypes 
+                    name="${timeagent.agent-manifest.name}-Detailed-Topology-Types"
+                    version="${timeagent.agent-manifest.ver}"
+                    file="${timeagent.tooling.output}/timeagent-topology-detailed.xml"/&gt;
+                &lt;monitoringpolicy
+                    name="${timeagent.agent-manifest.name}-Properties"
+                    version="${timeagent.agent-manifest.ver}"
+                    file="${timeagent.tooling.output}/monitoring-policy.xml"/&gt;
+                &lt;monitoringpolicy
+                    name="${timeagent.agent-manifest.name}-Rules"
+                    version="${timeagent.agent-manifest.ver}"
+                    file="${timeagent.config.dir}/timeagent-rules.xml"/&gt;
+                &lt;cdt name="example-CDT"
+                    version="${timeagent.agent-manifest.ver}"
+                    adapter="FglAM"&gt;
+                        &lt;binding type="TimeAgent" file="${timeagent.tooling.output}/cdt.xml"/&gt;
+                &lt;/cdt&gt;
+                &lt;!-- The topology schema in a cartridge can now be localized by deploying a resource bundle.
+                     The cartridge component must use the "topology-localizations" name and the basename must
+                     be the name of your properties file without any locale suffixes or file extensions. If
+                     your properties file is topology-localizations.properties, then the basename would have
+                     to be "topology-localizations". To see the new localized names go to the Schema Browser,
+                     select one of your topology types, and hover over the property name. The page itself should
+                     show the camelCase name, but the hover should show the new localized name. --&gt;
+                &lt;localizations
+                    name="topology-localizations"
+                    cartridge="${timeagent.agent-manifest.name}"
+                    version="${timeagent.agent-manifest.ver}"
+                    basename="TopologyLocale"&gt;
+                    &lt;fileset dir="${timeagent.config.dir}/locale"&gt;
+                        &lt;include name="**/*.properties"/&gt;
+                    &lt;/fileset&gt;
+                &lt;/localizations&gt;
+                &lt;wcf name="timeagent_wcf-root"
+                     author="FglAM Agent Developers"
+                     version="${timeagent.agent-manifest.ver}"
+                     module="system/time20agent"
+                     prefixwcf="true"
+                    &gt;
+                    &lt;fileset dir="${timeagent.config.dir}/wcf" includes="**"/&gt;
+                &lt;/wcf&gt;
+            &lt;/cartridge&gt;
+        &lt;/car&gt;
+
+        &lt;!-- Create a Simulator CAR for this Agent Package --&gt;
+        &lt;fglam:dev-kit-simulator build-dir="${timeagent.build.dir}" output="${timeagent.tooling.output}" input="${timeagent.tooling.output}/simulator/simulator.xml"/&gt;        
+
+        &lt;!-- Move the generated simulator car into our dist directory --&gt;
+        &lt;move todir="${timeagent.dist.dir}"&gt;
+            &lt;fileset dir="${timeagent.tooling.output}/simulator/dist"&gt;
+                &lt;include name="*.car"/&gt;
+            &lt;/fileset&gt;
+        &lt;/move&gt;
+    &lt;/target&gt;
+
+    &lt;target name="timeagent-run" depends="timeagent-dist" description="Launches the Agent Harness app"&gt;
+        &lt;fglam:agent-harness agent-file="${timeagent.config.dir}/agent-definition.xml" gar-file="${timeagent.build.dir}/gar/${timeagent.agent-manifest.name}.gar"/&gt;
+    &lt;/target&gt;
+
+    &lt;!-- Delete any files generated by the build process --&gt;
+    &lt;target name="timeagent-clean"&gt;
+        &lt;delete dir="${timeagent.build.dir}"/&gt;
+    &lt;/target&gt;
+
+    &lt;target name="timeagent-export-wcf" description="Exports the WCF module from the FMS"&gt;
+        &lt;fglam:fglcmd-export-wcf module="time20agent" extract-dir="${basedir}/config"/&gt;
+    &lt;/target&gt;
+
+    &lt;!-- Deploy the created cartridge to a running server --&gt;
+    &lt;target name="timeagent-deploy" depends="timeagent-dist" description="Deploy the created cartridge to a running server"&gt;
+        &lt;fglam:redeploy-cartridge name="${timeagent.agent-manifest.name}"
+                                  version="${timeagent.agent-manifest.ver}"
+                                  dir="${timeagent.dist.dir}"/&gt;
+    &lt;/target&gt;
+
+    &lt;target name="timeagent-findbugs" depends="timeagent-compile-and-jar"&gt;
+        &lt;fglam:findbugs results="${timeagent.build.dir}/results" analyze="com.quest.fglam.example.-"&gt;
+            &lt;fglam:findbugs-jars&gt;
+                &lt;fileset dir="${timeagent.build.dir}/jars"&gt;
+                    &lt;include name="*.jar"/&gt;
+                &lt;/fileset&gt;
+            &lt;/fglam:findbugs-jars&gt;
+
+            &lt;fglam:findbugs-args&gt;
+                &lt;arg value="-sourcepath"/&gt;&lt;arg path="${basedir}/src/java"/&gt;
+                &lt;arg value="-sourcepath"/&gt;&lt;arg path="${timeagent.build.dir}/tooling/java-gen"/&gt;
+            &lt;/fglam:findbugs-args&gt;
+
+            &lt;fglam:findbugs-aux/&gt;
+        &lt;/fglam:findbugs&gt;
+    &lt;/target&gt;
+
+    &lt;target name="timeagent-junit" depends="timeagent-compile-and-jar"&gt;
+        &lt;fglam:junit results="${timeagent.build.dir}/results"&gt;
+            &lt;fglam:jvm-args/&gt;
+
+            &lt;fglam:jars&gt;
+                &lt;fileset dir="${timeagent.build.dir}/jars"&gt;
+                    &lt;include name="*.jar"/&gt;
+                &lt;/fileset&gt;
+
+                &lt;pathelement location="${timeagent.build.test.dir}/classes"/&gt;
+            &lt;/fglam:jars&gt;
+
+            &lt;fglam:files&gt;
+                &lt;fileset dir="${timeagent.java.test.dir}"&gt;
+                    &lt;include name="**/time/Test*.java"/&gt;
+                &lt;/fileset&gt;
+            &lt;/fglam:files&gt;
+        &lt;/fglam:junit&gt;
+    &lt;/target&gt;
+
+    &lt;target name="tests" depends="timeagent-junit,timeagent-findbugs"&gt;
+        &lt;fail message="One or more JUnit tests failed" if="junit.failure"/&gt;
+        &lt;fail message="One ore more of the FindBugs tests failed"&gt;
+            &lt;condition&gt;
+                &lt;not&gt;&lt;equals arg1="${findbugs.exitcode}" arg2="0"/&gt;&lt;/not&gt;
+            &lt;/condition&gt;
+        &lt;/fail&gt;
+    &lt;/target&gt;
+&lt;/project&gt;
+
+        </pre><p>
+      </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apa.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="apc.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">Appendix A. credential-repository.xml Template Included with Example Agent </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> Appendix C. agent-definition.xml for Included Example Agent</td></tr></table></div></body></html>

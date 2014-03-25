@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:X-quest.com:glue/messages/5"
+            xmlns:msgs5="urn:X-quest.com:glue/messages/5"
+            xmlns:msgs4="urn:X-quest.com:glue/messages/4"
+            xmlns:msgs1_3="urn:X-quest.com:glue/messages/1.3"
+			xmlns:msgs1_2="urn:X-quest.com:glue/messages/1.2"
+			xmlns:msgs1_1="urn:X-quest.com:glue/messages/1.1"
+			xmlns:msgs1_0="urn:X-quest.com:glue/messages/1.0"
+			elementFormDefault="qualified">
+      
+    <!-- Added in version 5.5.5.1 (??code name??) -->   
+
+	<!-- Import the Message 1.0 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/1.0" schemaLocation="messages.1.0.xsd" />
+	<!-- Import the Message 1.1 XSD -->
+	<xsd:import namespace="urn:X-quest.com:glue/messages/1.1" schemaLocation="messages.1.1.xsd" />
+	<!-- Import the Message 1.2 XSD -->
+	<xsd:import namespace="urn:X-quest.com:glue/messages/1.2" schemaLocation="messages.1.2.xsd" />
+    <!-- Import the Message 1.3 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/1.3" schemaLocation="messages.1.3.xsd" />
+    <!-- Import the Message 4 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/4" schemaLocation="messages.4.xsd" />
+
+	<xsd:element name="downstream-envelope">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="msgs5:Envelope">
+					<xsd:sequence>
+						<xsd:element name="messages" type="msgs5:DownstreamMessages"
+									 maxOccurs="unbounded" minOccurs="0" />
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+    <xsd:element name="upstream-envelope">
+            <xsd:complexType>
+                <xsd:complexContent>
+                    <xsd:extension base="msgs5:Envelope">
+                        <xsd:sequence>
+                            <xsd:element name="messages" type="msgs5:UpstreamMessages"
+                                         maxOccurs="unbounded" minOccurs="0" />
+                        </xsd:sequence>
+                    </xsd:extension>
+                </xsd:complexContent>
+            </xsd:complexType>
+        </xsd:element>
+
+	<xsd:complexType name="Envelope" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="headers" type="msgs1_3:Headers" maxOccurs="1" minOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+		We are defining the ContentBlock here so that we can identify newly created
+		ContentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="ContentBlock" abstract="true" block="restriction">
+		<xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:ContentBlock to denote new Content Blocks that have been
+				added to the v5 schema
+            </xsd:documentation>
+        </xsd:annotation>
+    	<xsd:attribute name="msgid" type="msgs1_0:UUID" use="required"/>
+    	<xsd:attribute name="response-to" type="msgs1_0:UUID" use="optional"/>
+		<xsd:attribute name="sequence-key" use="required" type="xsd:long">
+			<xsd:annotation>
+				<xsd:documentation>
+					When the message center is initialized a sequence key will be generated.
+					This key will be held by the downstream hosts that will process the message. When
+					the downstream hosts see that this value has changed, they will then reset their
+					sequence number counters.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="sequence-number" use="optional" default="1">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sequence number to denote message instance counts. This can be used to help
+					determine if a ordered set of messages is received out of order or if conflicting
+					message 'contents' should process only newer instances.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:long">
+					<xsd:minExclusive value="0"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<!--
+	We are defining the DownstreamContentBlock here so that we can identify newly created
+	DownstreamContentBlock in this schema. We need to know this so that we can add the Message to
+	the appropriate DownstreamMessages list
+	-->
+	<xsd:complexType name="DownstreamContentBlock" abstract="true">
+    	<xsd:complexContent>
+    		<xsd:extension base="msgs5:ContentBlock"/>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+	<!--
+		We are defining the UpstreamContentBlock here so that we can identify newly created
+		UpstreamContentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="UpstreamContentBlock" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:UpstreamContentBlock to denote new Upstream Content Block
+				based messages that have been added to the v5 schema
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+    		<xsd:extension base="msgs5:ContentBlock"/>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+	<!--
+		We are defining the UpstreamAgentBlock here so that we can identify newly created
+		UpstreamAgentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="UpstreamAgentBlock" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:UpstreamAgentBlock to denote new Upstream Agent Block
+				based messages that have been added to the v5 schema
+			</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+			<xsd:extension base="msgs5:UpstreamContentBlock">
+				<xsd:attribute name="agentid" type="msgs1_0:UUID"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="UpstreamMessages">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines all UpstreamMessages that can be handled in this schema version
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:UpstreamMessages">
+				<xsd:sequence>
+					<xsd:group ref="msgs5:UpstreamMessageTypes_v1_0_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+					<xsd:group ref="msgs5:UpstreamMessageTypes_v1_1_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+					<xsd:group ref="msgs5:UpstreamMessageTypes_v1_2_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+                    <xsd:group ref="msgs5:UpstreamMessageTypes_v1_3_Extensions"
+                               maxOccurs="unbounded"
+                               minOccurs="0" />
+                    <xsd:group ref="msgs5:UpstreamMessageTypes_v4_Extensions"
+                               maxOccurs="unbounded"
+                               minOccurs="0" />
+					<xsd:group ref="msgs5:UpstreamMessageTypes_v5"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="DownstreamMessages">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines all DownstreamMessages that can be handled in this schema version
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:DownstreamMessages">
+				<xsd:sequence>
+					<xsd:group ref="msgs5:DownstreamMessageTypes_v1_0_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs5:DownstreamMessageTypes_v1_1_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs5:DownstreamMessageTypes_v1_2_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+                    <xsd:group ref="msgs5:DownstreamMessageTypes_v1_3_Extensions" maxOccurs="unbounded"
+                           minOccurs="0" />
+					<xsd:group ref="msgs5:DownstreamMessageTypes_v4_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs5:DownstreamMessageTypes_v5" maxOccurs="unbounded"
+						   minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.0 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_0_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.0 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.1 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_1_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.1 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.2 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_2_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.2 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+    <!--
+     Only list elements that are extending an existing UpstreamContentBlock from the
+     1.3 messages schema.
+     -->
+    <xsd:group name="UpstreamMessageTypes_v1_3_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List UpstreamContentBlock messages that extend existing 1.2 UpstreamContentBlocks
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+    
+    <!--
+     Only list elements that are extending an existing UpstreamContentBlock from the
+     4 messages schema.
+     -->
+    <xsd:group name="UpstreamMessageTypes_v4_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List UpstreamContentBlock messages that extend existing 1.2 UpstreamContentBlocks
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+	Only list elements that are implementing new UpstreamContentBlock messages.
+	-->
+	<xsd:group name="UpstreamMessageTypes_v5">
+		<xsd:annotation>
+			<xsd:documentation>
+				List new UpstreamContentBlock messages that have been added to the 5 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="installed-agent-types" type="msgs5:InstalledAgentTypes"/>
+            <xsd:element name="topology-data"  type="msgs5:TopologyData"/>
+			<xsd:element name="credential-query" type="msgs5:CredentialQuery"/>
+			<xsd:element name="credential-agent-query" type="msgs5:CredentialAgentQuery"/>
+			<xsd:element name="credential-event" type="msgs5:CredentialEvent"/>
+			<xsd:element name="credential-agent-event" type="msgs5:CredentialAgentEvent"/>
+			<xsd:element name="credential-connection-test-result" type="msgs5:CredentialConnectionTestResult"/>
+        </xsd:choice>
+	</xsd:group>
+
+   <xsd:complexType name="Placeholder">
+       <xsd:complexContent>
+           <xsd:extension base="msgs5:DownstreamContentBlock"/>
+       </xsd:complexContent>
+   </xsd:complexType>
+
+	<xsd:complexType name="InstalledAgentTypes">
+		<xsd:annotation>
+			<xsd:documentation>
+				Core content block definition that lists all agent types installed
+				on a the current Foglight Agent Manager host
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs5:UpstreamContentBlock">
+				<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+					<xsd:element name="agent-type" type="msgs1_0:AgentType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.0 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_0_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.0 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.1 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_1_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.1 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.2 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_2_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.2 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+    <!--
+     Only list elements that are extending an existing DownstreamContentBlock from the
+     1.3 messages schema.
+     -->
+    <xsd:group name="DownstreamMessageTypes_v1_3_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List DownstreamContentBlock messages that extend existing 1.3 DownstreamContentBlock
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+	Only list elements that are implementing new DownstreamContentBlock messages.
+	-->
+	<xsd:group name="DownstreamMessageTypes_v4_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List new DownstreamContentBlock messages that have been added to the v4 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+        </xsd:choice>
+	</xsd:group>
+
+	<!--
+	Only list elements that are implementing new DownstreamContentBlock messages.
+	-->
+	<xsd:group name="DownstreamMessageTypes_v5">
+		<xsd:annotation>
+			<xsd:documentation>
+				List new DownstreamContentBlock messages that have been added to the v5 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+            <xsd:element name="credential-connection-test" type="msgs5:CredentialConnectionTest"/>
+			<xsd:element name="placeholder"    type="msgs5:Placeholder"/>
+        </xsd:choice>
+	</xsd:group>
+
+    <xsd:complexType name="TopologyData">
+        <xsd:complexContent>
+            <xsd:extension base="msgs5:UpstreamAgentBlock">                
+                <xsd:sequence>
+                    <xsd:element name="nodes" type="msgs5:TopologyDataNode" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="host" type="xsd:string" use="required"/>
+                <xsd:attribute name="ip-address" type="xsd:string" use="optional"/>
+                <xsd:attribute name="os-name" type="xsd:string" use="optional"/>
+                <xsd:attribute name="os-version" type="xsd:string" use="optional"/>
+                <xsd:attribute name="arch" type="xsd:string" use="optional"/>
+                <xsd:attribute name="format" type="xsd:string" use="optional"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TopologyDataNode">
+        <xsd:sequence>
+            <xsd:element name="node" type="msgs5:TopologyDataNode" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="value" type="msgs5:TopologyDataValue" maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" />              
+        <xsd:attribute name="id" type="xsd:string" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>
+                   Specifies a free-form ID for this node. The topology processing code in the 
+                   server adapter will cache a reference to this node which can later be referred 
+                   to to with refid.
+
+                   id and refid are mutually exclusive and optional, but the XSD syntax does 
+                   not allow that to be expressed.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="refid" type="xsd:string" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Specifies a free-form reference ID for this node. The topology processing code
+                    on the server will replace this node with the node who's ID is referenced when 
+                    it is processed.
+
+                    id and refid are mutually exclusive and optional, but the XSD syntax does 
+                    not allow that to be expressed.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="type" type="xsd:string" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Provides a hint to the server side processing code as the the
+                    actual topology type this node represents, as opposed to the 
+                    type specified in the topology types XML file.
+                    
+                    If provided, the server will insert a node between this node and
+                    any or it's children named with the type provided. You can contruct
+                    your CDT to handle it like this:
+                    
+                    &lt;node pattern="detail"&gt;
+                      &lt;node&gt;  &lt;-- this is the node that is inserted
+                        &lt;node_name var="$__actualtype__"/&gt;
+                        &lt;obj type="{$__actualtype__}" var="$__name__"/&gt;
+                      &lt;/node&gt;
+                    &lt;/node&gt; 
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="is-identity" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+              The is-identity setting is used to inform that processing code on the
+              server which nodes or values are identity properties in the topology types
+              definition and thus should be passed through to the CDT processing engine 
+              each time they are encountered. 
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="was-processed" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+              Only used to make my life easier when writing server code. You should
+              never set or check this value.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        
+        <xsd:attribute name="replace" type="xsd:boolean" use="optional" >
+          <xsd:annotation>
+            <xsd:documentation>
+                Whether or not the topology object represented by this node should be appended 
+                to (false) to replace (true) any existing values. Only applies to attributes that 
+                are tagged as "is-many" in the topology definition.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>      
+        
+        <xsd:attributeGroup ref="msgs1_2:TopologyTimestampAttrs" />
+    </xsd:complexType>
+    
+    <xsd:complexType name="TopologyDataValue">
+        <xsd:attribute name="name"        type="xsd:string"  use="required"/>        
+        <xsd:attribute name="value"       type="xsd:double"  use="optional"/>
+        <xsd:attribute name="unit"        type="xsd:string"  use="optional"/>
+        <xsd:attribute name="text"        type="xsd:string"  use="optional"/>
+        <xsd:attribute name="is-identity" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+              The is-identity setting is used to inform that processing code on the
+              server which nodes or values are identity properties in the topology types
+              definition and thus should be passed through to the CDT processing engine 
+              each time they are encountered. 
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="was-processed" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+              Only used to make my life easier when writing server code. You should
+              never set or check this value.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        
+        <xsd:attribute name="replace" type="xsd:boolean" use="optional" >
+          <xsd:annotation>
+            <xsd:documentation>
+                Whether or not the topology object represented by this node should be appended 
+                to (false) to replace (true) any existing values. Only applies to attributes that 
+                are tagged as "is-many" in the topology definition.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        
+        <xsd:attributeGroup ref="msgs1_2:TopologyTimestampAttrs" />
+    </xsd:complexType>
+
+	<xsd:complexType name="CredentialConnectionTest">
+		<xsd:annotation>
+			<xsd:documentation>
+				When new credentials are added to the FMS, the Admin may wish to test the
+				authentication parameters of making a connection with the provided credentials.
+				This message contains the complete credential definition and remote host connection
+				URI to validate the credentials on.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs5:DownstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential" type="msgs4:CredentialType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="resource-location" use="required" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>
+							The host or resource to connect to. This will more than likely be a URI
+							but you should be able to tell from the 'type' attribute of the Credential
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+                <xsd:attribute name="agentid" type="msgs1_0:UUID" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialConnectionTestResult">
+		<xsd:annotation>
+			<xsd:documentation>
+				The result from the server initiated credential connection test
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs5:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential-event" type="msgs5:CredentialEventType" maxOccurs="unbounded" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialEvent">
+		<xsd:annotation>
+			<xsd:documentation>
+				A when a credential usage results in an event, this message will be generated
+				by the agent using the credential and report it back to the FMS
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs5:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential-event" type="msgs5:CredentialEventType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialAgentEvent">
+		<xsd:annotation>
+			<xsd:documentation>
+				A when a credential usage results in an event, this message will be generated
+				by the agent using the credential and report it back to the FMS
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs5:UpstreamAgentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential-event" type="msgs5:CredentialEventType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialEventType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A CredentialEventType is used by credential clients for passing parameters of credential-related
+ 				errors to the server.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="properties" type="msgs5:CredentialEventPropertyType" maxOccurs="unbounded" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="error-code" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a well-known code for this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="keychain-id" type="msgs1_0:UUID">
+			<xsd:annotation>
+				<xsd:documentation>
+					The keychain-id associated with this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="credential-id" type="msgs1_0:UUID" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The Credential id associated with this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="policy-id" type="msgs1_0:UUID">
+			<xsd:annotation>
+				<xsd:documentation>
+					The Policy id associated with this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="root-cause" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a plain text message describing the root cause of this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="severity" type="msgs4:CredentialEventSeverity" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the severity of the event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialEventPropertyType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Sets extra event parameters.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="value" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialQueryType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A credential query request that this passed to the FMS.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string" maxOccurs="unbounded" minOccurs="0"/>
+			<xsd:element name="properties" type="msgs5:CredentialQueryPropertyType" maxOccurs="unbounded" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="target-host" type="xsd:string"/>
+		<xsd:attribute name="target-port" type="xsd:int"/>
+		<xsd:attribute name="purpose" type="xsd:string"/>
+		<xsd:attribute name="target-address" type="xsd:string"/>
+		<xsd:attribute name="source-host" type="xsd:string"/>
+		<xsd:attribute name="source-address" type="xsd:string"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialQueryPropertyType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Sets extra query parameters.
+ 				Possible names and value of the extra query parameters are specific to the purpose
+ 				of the required credentials. Refer to server documentation for details.
+ 				This method should not be called if the purpose parameter is not set for this query
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="value" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialQuery">
+		<xsd:annotation>
+			<xsd:documentation>
+				A credential query request that this passed to the FMS.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs5:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="query" type="msgs5:CredentialQueryType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialAgentQuery">
+		<xsd:annotation>
+			<xsd:documentation>
+				A credential agent query request that this passed to the FMS.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs5:UpstreamAgentBlock">
+				<xsd:sequence>
+					<xsd:element name="query" type="msgs5:CredentialQueryType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Headers">
+		<xsd:annotation>
+			<xsd:documentation>
+				Header elements must appear in the order they are
+				defined in the schema. Specifically:
+				   1) an option single "poll"
+				   2) One or more "host"s and
+				   3) Zero or more "agent"s
+				   4) an optional single 'credentialTimestamp'
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="poll" type="msgs1_0:Poll" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="timesync" type="msgs1_0:TimeSync" maxOccurs="1" minOccurs="0"/>
+
+			<!--
+			  Have to support all versions of the host object. This means we lose
+			  the ability to tell the schema that we need one of any host, but I can
+			  live with that.
+			-->
+			<xsd:element name="host10" type="msgs1_0:Host" maxOccurs="unbounded" minOccurs="0"/>
+			<xsd:element name="host11" type="msgs1_1:Host" maxOccurs="unbounded" minOccurs="0"/>
+			<xsd:element name="host12" type="msgs1_2:Host" maxOccurs="unbounded" minOccurs="0"/>
+			<xsd:element name="host13" type="msgs1_3:Host" maxOccurs="unbounded" minOccurs="0"/>
+
+			<!--
+			   Have to support all versions of the agent object
+			-->
+			<xsd:element name="agent10" type="msgs1_0:Agent" maxOccurs="unbounded" minOccurs="0"/>
+			<xsd:element name="agent13" type="msgs1_3:Agent" maxOccurs="unbounded" minOccurs="0"/>
+
+			<!--
+			   An optional credentialTimestamp indicating the last time that credentials found on
+			   the server have changed.  This is used by downstream clients to determine whether
+			   they should discard their credential cache or not
+			   -->
+			<xsd:element name="credentialTimestamp" type="xsd:long" maxOccurs="1" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+
+</xsd:schema>

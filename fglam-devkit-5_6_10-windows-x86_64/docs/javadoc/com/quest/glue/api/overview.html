@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!--
+ Copyright 2013 Dell, Inc.
+ ALL RIGHTS RESERVED.
+
+ This software is the confidential and proprietary information of
+ Dell Inc. ("Confidential Information").  You shall not
+ disclose such Confidential Information and shall use it only in
+ accordance with the terms of the license agreement you entered
+ into with Dell Inc.
+
+ DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+<html>
+  <body>
+  
+    <p>
+      The main component of the developer's kit is the interface jar. 
+      This contains only interfaces and agent developers are expected 
+      to code their agents against these. The FglAM runtime will provide
+      concrete implementations of these interfaces as needed.
+    </p>
+    
+    <p>
+      Agent developers must provide one or more concrete implementations of the
+      {@link com.quest.glue.api.agent.Agent} interface and may use and of the
+      services in the com.quest.glue.api.services package as returned by the
+      {@link com.quest.glue.api.services.ServiceFactory} provided to each 
+      agent instance in it's constructor.
+    
+      Agent developers are forbidden from using any other classes in the 
+      com.quest.glue package hierarchy.
+    </p>
+
+    <p>
+    <strong>Agent developers must not ship the interface jar with their agent.</strong>
+    </p>
+
+    <div style="border: 1px solid #999999; padding: 0.5em; margin-top: 10px; font-size: smaller;">
+    <p>
+    &#169; 2013 Quest Software Inc.<br/>
+    ALL RIGHTS RESERVED.
+    </p>
+    <p>
+        This guide contains proprietary information protected by copyright.   The software 
+        described in this guide is furnished under a software license or nondisclosure agreement.   
+        This software may be used or copied only in accordance with the terms of the applicable 
+        agreement.  No part of this guide may be reproduced or transmitted in any form or by any 
+        means, electronic or mechanical, including photocopying and recording for any purpose 
+        other than the purchaser’s personal use without the written permission of Quest Software Inc.
+    </p>
+    <p>
+        The information in this document is provided in connection with Quest Software products. No license, 
+        express or implied, by estoppel or otherwise, to any intellectual property right is granted 
+        by this document or in connection with the sale of Quest Software products. EXCEPT AS SET FORTH IN 
+        DELL'S TERMS AND CONDITIONS AS SPECIFIED IN THE LICENSE AGREEMENT FOR THIS PRODUCT, DELL 
+        ASSUMES NO LIABILITY WHATSOEVER AND DISCLAIMS ANY EXPRESS, IMPLIED OR STATUTORY WARRANTY 
+        RELATING TO ITS PRODUCTS INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTY OF 
+        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. IN NO EVENT SHALL 
+        QUEST BE LIABLE FOR ANY DIRECT, INDIRECT, CONSEQUENTIAL, PUNITIVE, SPECIAL OR INCIDENTAL
+        DAMAGES (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION 
+        OR LOSS OF INFORMATION) ARISING OUT OF THE USE OR INABILITY TO USE THIS DOCUMENT, EVEN IF 
+        DELL HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. Quest Software makes no representations or
+        warranties with respect to the accuracy or completeness of the contents of this document 
+        and reserves the right to make changes to specifications and product descriptions at any 
+        time without notice. Quest Software does not make any commitment to update the information contained 
+        in this document.
+    </p>
+    <p>    
+      If you have any questions regarding your potential use of this material, contact:
+      <address>
+      Quest Software Inc.<br/>
+      Attn: LEGAL Dept<br/>
+      5 Polaris Way<br/>
+      Aliso Viejo, CA 92656<br/>
+      <a href="http://www.quest.com">www.quest.com</a><br/>
+      email: <a href="mailto:legal@quest.com">legal@quest.com</a><br/>
+      </address>
+      Refer to our Web site for regional and international office information.
+    </p>
+    <p>
+      Quest, Quest Software, the Quest Software logo, Foglight, IntelliProfile, PerformaSure, 
+      Spotlight, StealthCollect, TOAD, Tag and Follow, Vintela Single Sign-on for Java, and 
+      vFoglight are trademarks and registered trademarks of Quest Software Inc in the United 
+      States of America and other countries. For a complete list of Quest Software's trademarks, 
+      please see 
+      <a href="http://www.quest.com/legal/trademark-information.aspx">http://www.quest.com/legal/trademark-information.aspx</a>. 
+      Other trademarks and registered trademarks are property of their respective owners.
+    </p>
+    
+    <p>
+      The Agent Manager contains some third party components. For a complete list, see the 
+      License Credits page in server's online help.
+    </p>
+    
+    </div>
+    
+  </body>
+</html>

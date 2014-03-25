@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+
+<project name="FglAM-DevKit-Build-Tools" default="-no-oops"
+         xmlns:ac="ac:net.sf.antcontrib"
+         xmlns:fglam="fglam:com.quest.build">
+
+    <!-- Used by FglAM developers to debug the agent compiler, please ignore this -->
+    <property name="devkit.vm.debug.flags" value=""/>
+
+	<!-- FglAM Devkit Version Number -->
+	<property name="fglam.devkit.version"      value="5.6.10"/>
+	<property name="fglam.devkit.build.number" value="5.6.10-201309231246-312109-302"/>
+
+    <description>
+        This build file contains portable macrodefs that assist in building
+        and packaging a Glue agent for deployment.
+    </description>
+
+    <fail>
+        <condition><not>
+            <contains string="${java.version}" substring="1.6"/>
+        </not></condition>.
+        This version of the Foglight Agent Manager Developer's Kit targets a version
+        of the Foglight Agent Manager built with Java 6 (JDK 1.6). The JDK used to build
+        agent must also be a Java 6 JDK (found ${java.version}).
+
+        Please ensure that your JAVA_HOME is set correctly.
+    </fail>
+
+    <path id="fglam-addons.class.path">
+        <fileset dir="${fglam.devkit.home}/buildtools/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="fglam.classpath">
+        <fileset dir="${fglam.devkit.home}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <path refid="fglam-addons.class.path"/>
+    </path>
+
+    <taskdef resource="com/quest/build/antlib.xml" format="xml"
+             uri="fglam:com.quest.build">
+        <classpath refid="fglam-addons.class.path"/>
+    </taskdef>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" format="xml"
+             uri="ac:net.sf.antcontrib">
+        <classpath refid="fglam-addons.class.path"/>
+    </taskdef>
+
+    <taskdef name="car" classname="com.quest.nitro.tools.ant.cartridge.Car">
+        <classpath refid="fglam-addons.class.path"/>
+    </taskdef>
+
+    <tstamp>
+        <format property="fglam.build.tstamp" pattern="yyyyMMdd-HHmm"/>
+    </tstamp>
+
+    <!-- Minium version of the Foglight Management Server that is supported -->
+    <property name="min.fms.version" value="5.6.0"/>
+
+    <!-- default build output directories -->
+    <property name="build.dir"      value="${basedir}/build"/>
+    <property name="dist.dir"       value="${build.dir}/dist"/>
+    <property name="tooling.output" value="${build.dir}/tooling"/>
+
+    <available property="platformnames.properties.available"
+               resource="com/quest/build/platformnames.properties">
+        <classpath refid="fglam-addons.class.path"/>
+    </available>
+
+    <fail unless="platformnames.properties.available">.
+        The platformnames.properties file in the
+        ${fglam.devkit.home}/buildtools/lib/devkit-ant.jar is missing.
+    </fail>
+
+    <fglam:platformname property="build.platform"/>
+
+    <!-- Loads the Agent.Manifest xml into ANT as a set of properties.
+
+         By default a property prefix of 'fglam' will be added to the root of
+         the property set.  This can be overridden by setting the 'prefix'
+         attribute when calling this macro.
+
+         To reference agent manifest properties consider the agent.manifest xml
+         as a flatten property key with attributes and child nodes appended to
+         each other with a '.'
+
+         For example:
+
+         <agent-manifest name="oak" ver="1.0.0">
+           <agents>
+             <agent name="red"/>
+           </agents>
+         </agent-manifest>
+
+         In your ANT build file, to reference:
+
+         -the agent name -> ${fglam.agent-manifest.agents.agent.name}
+         -the agent manifest version -> ${fglam.agent-manifest.ver}
+
+         If you have supplied a 'prefix' value of 'foo':
+         -the agent name -> ${foo.agent-manifest.agents.agent.name}
+         -the agent manifest version -> ${foo.agent-manifest.ver}
+
+     -->
+    <macrodef name="init-agent-manifest-props" uri="fglam:/ant/macros">
+        <attribute name="agent-manifest" default="config/manifest/agent.manifest"/>
+        <attribute name="prefix" default="fglam"/>
+        <sequential>
+            <available property="manifest.exists" file="@{agent-manifest}" type="file"/>
+            <fail message="Could not locate agent.manifest: @{agent-manifest}" unless="manifest.exists"/>
+            <xmlproperty file="@{agent-manifest}" prefix="@{prefix}" collapseattributes="true"/>
+            <!-- convert the version to the format used when setting the car file name -->
+            <ac:propertyregex property="@{prefix}.version.car.file.format"
+                input="${@{prefix}.agent-manifest.ver}"
+                regexp="([0-9])\.([0-9])\.([0-9])"
+                replace="\1_\2_\3"/>
+
+            <property name="@{prefix}.build.number" value="${@{prefix}.agent-manifest.ver}-${fglam.build.tstamp}"/>
+
+            <echo level="info">Loaded Agent Manifest &lt;${@{prefix}.agent-manifest.name} ver:${@{prefix}.agent-manifest.ver}&gt; as property set [buildId=${@{prefix}.build.number}]</echo>
+
+        </sequential>
+    </macrodef>
+
+    <macrodef name="dev-kit-simulator" uri="fglam:/ant/macros">
+        <attribute name="build-dir" default="${basedir}/build"/>
+        <attribute name="build-number" default="${fglam.build.number}"/>
+        <attribute name="output" default="${tooling.output}"/>
+        <attribute name="input" default="${tooling.output}/simulator/simulator.xml"/>
+        <sequential>
+            <echo level="info">DevKit Simulator Cartridge Creator</echo>
+
+            <java fork="true" taskname="devkit-simulator" failonerror="true"
+                resultproperty="generator.exitcode" classpathref="fglam.classpath"
+                classname="com.quest.glue.tools.compiler.simulator.DevKitSimulatorBuilder">
+                <sysproperty key="fglam.tooling.cart.buildId" value="@{build-number}"/>
+                <sysproperty key="quest.state.dir" value="${fglam.devkit.home}/state"/>
+                <sysproperty key="quest.debug" value="1"/>
+                <arg line="--output"/>
+                <arg line='"@{output}"'/>
+                <arg line="--input"/>
+                <arg line='"@{input}"'/>
+                <arg line="--build.dir"/>
+                <arg line='"@{build-dir}"'/>
+            </java>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="simulator-builder" uri="fglam:/ant/macros">
+        <attribute name="prefix" default="fglam"/>
+        <attribute name="car" default="${dist.dir}/${@{prefix}.agent-manifest.name}-${@{prefix}.version.car.file.format}.car"/>
+        <attribute name="output" default="${tooling.output}"/>
+        <attribute name="type" default="${@{prefix}.agent-manifest.name}"/>
+        <attribute name="version" default="${@{prefix}.agent-manifest.ver}"/>
+        <attribute name="name" default="${@{prefix}.agent-manifest.name}"/>
+        <attribute name="build-number" default="${fglam.build.number}"/>
+        <sequential>
+            <echo level="warn">The 'simulator-builder' macro-def has been deprecated.</echo>
+            <echo level="warn">Please use the 'dev-kit-simulator' macro-def instead.</echo>
+            <echo level="info">FglAM SimulatorBuilder creating simulator cartridge</echo>
+
+            <java fork="true" taskname="legacy-sim-builder" failonerror="true"
+                resultproperty="generator.exitcode" classpathref="fglam.classpath"
+                classname="com.quest.glue.tools.compiler.simulator.FglAMSimulatorBuilder">
+                <sysproperty key="fglam.tooling.cart.buildId" value="@{build-number}"/>
+                <sysproperty key="quest.state.dir" value="${fglam.devkit.home}/state"/>
+                <sysproperty key="quest.debug" value="1"/>
+                <arg line="--car"/>
+                <arg line='"@{car}"'/>
+                <arg line="--output"/>
+                <arg line='"@{output}"'/>
+                <arg line="--type"/>
+                <arg line="@{type}"/>
+                <arg line="--version"/>
+                <arg line="@{version}"/>
+                <arg line="--name"/>
+                <arg line="@{name}"/>
+            </java>
+        </sequential>
+    </macrodef>
+
+    <!--
+        Wrapper around the AgentCompiler for generating various Glue configuration
+        files
+    -->
+    <macrodef name="generator" uri="fglam:/ant/macros">
+        <attribute name="agent-definition"/>
+        <attribute name="all" default="true"/>
+        <attribute name="cdt" default="false"/>
+        <attribute name="topology" default="false"/>
+
+        <!-- these are the deprecated attribute names, left for compatability -->
+        <attribute name="build-number" default="${fglam.build.number}"/>
+        <attribute name="output-dir" default="${tooling.output}"/>
+        <attribute name="monitoring-policy" default="false"/>
+        <attribute name="asp-wrappers" default="false"/>
+        <attribute name="agent-manifest" default="false"/>
+        <attribute name="topology-submitter" default="false"/>
+        <attribute name="callback-interface" default="false"/>
+        <attribute name="data-collector-interface" default="false"/>
+               
+        <sequential>
+            <ac:var name="cmdLn" value='-o "@{output-dir}"'/>
+            <ac:if>
+                <equals arg1="@{all}" arg2="true"/>
+                <ac:then>
+                    <ac:var name="cmdLn" value="${cmdLn} --all"/>
+                </ac:then>
+                <ac:else>
+                    <ac:if>
+                        <equals arg1="@{monitoring-policy}" arg2="true"/>
+                        <ac:then>
+                            <ac:var name="cmdLn" value="${cmdLn} --MonitoringPolicy"/>
+                        </ac:then>
+                    </ac:if>
+                    <ac:if>
+                        <equals arg1="@{asp-wrappers}" arg2="true"/>
+                        <ac:then>
+                            <ac:var name="cmdLn" value="${cmdLn} --AspWrappers"/>
+                        </ac:then>
+                    </ac:if>
+                    <ac:if>
+                        <equals arg1="@{topology}" arg2="true"/>
+                        <ac:then>
+                            <ac:var name="cmdLn" value="${cmdLn} --Topology"/>
+                        </ac:then>
+                    </ac:if>
+                    <ac:if>
+                        <equals arg1="@{cdt}" arg2="true"/>
+                        <ac:then>
+                            <ac:var name="cmdLn" value="${cmdLn} --CDT"/>
+                        </ac:then>
+                    </ac:if>
+                    <ac:if>
+                        <equals arg1="@{agent-manifest}" arg2="true"/>
+                        <ac:then>
+                            <ac:var name="cmdLn" value="${cmdLn} --AgentManifest"/>
+                        </ac:then>
+                    </ac:if>
+                    <ac:if>
+                        <equals arg1="@{topology-submitter}" arg2="true"/>
+                        <ac:then>
+                            <ac:var name="cmdLn" value="${cmdLn} --TopologySubmitter"/>
+                        </ac:then>
+                    </ac:if>
+                    <ac:if>
+                        <equals arg1="@{callback-interface}" arg2="true"/>
+                        <ac:then>
+                            <ac:var name="cmdLn" value="${cmdLn} --CallbackInterface"/>
+                        </ac:then>
+                    </ac:if>
+                    <ac:if>
+                        <equals arg1="@{data-collector-interface}" arg2="true"/>
+                        <then>
+                            <ac:var name="cmdLn" value="${cmdLn} --DataCollectorInterface"/>
+                        </then>
+                    </ac:if>
+                </ac:else>
+            </ac:if>
+
+            <!-- only run this stuff if the agent config file has been updated -->
+			<ac:var name="cmdLn" value='${cmdLn} "@{agent-definition}"'/>
+			<echo level="info">Command line: com.quest.glue.tools.AgentCompiler ${cmdLn}</echo>
+			<java fork="true" taskname="fglam-tooling" failonerror="true"
+				resultproperty="generator.exitcode" classpathref="fglam.classpath"
+				classname="com.quest.glue.tools.AgentCompiler">
+				<sysproperty key="fglam.tooling.cart.buildId" value="@{build-number}"/>
+				<sysproperty key="quest.state.dir" value="${fglam.devkit.home}/state"/>
+				<jvmarg line="${devkit.vm.debug.flags}"/>
+				<arg line="${cmdLn}"/>
+			</java>
+        </sequential>
+    </macrodef>
+
+    <!--
+     Simple script used to build pure Java agents.  This is indended to allow
+     cartdevs up and running as quickly as possible.
+
+     Agent-specific settings (such as the addition of 3rd party .jar files) can
+     be added by providing a <compile-options> element when calling this macro.
+     The contents of that element will be passed directly to the <javac> task
+     that is used to compile the agent.  Classpaths, additional files, etc can
+     be provided here.
+
+     For example, if an agent requires additional .jar files found in the
+     property ${lib.dir} they can be included in the classpath:
+
+     <compile-options>
+         <classpath>
+             <fileset dir="${lib.dir}">
+                 <include name="*.jar"/>
+             </fileset>
+         </classpath>
+     </compile-options>
+
+     Similarly, the <jar-options> element can be provided to pass additional
+     parameters along to the <jar> task that packages up the agent.  Again, the
+     contents of this element are passed verbatim along to <jar>.
+    -->
+    <macrodef name="compile-and-jar" uri="fglam:/ant/macros">
+        <attribute name="jar-name"  default="agent.jar"/>
+        <attribute name="build-dir" default="${basedir}/build"/>
+        <attribute name="dist-dir"  default="@{build-dir}/jars"/>
+        <element   name="compile-options" optional="false"/>
+        <element   name="jar-options"     optional="true"/>
+
+        <sequential>
+            <mkdir dir="@{dist-dir}"/>
+            <mkdir dir="@{build-dir}"/>
+            <mkdir dir="@{build-dir}/classes"/>
+            <javac target="1.5"
+                   source="1.5"
+                   includeantruntime="no"
+                   includejavaruntime="no"
+                   deprecation="true"
+                   debug="true"
+                   debuglevel="lines,vars,source"
+                   destdir="@{build-dir}/classes">
+                <classpath>
+                    <fileset dir="${fglam.devkit.home}/lib">
+                        <include name="*.jar"/>
+                    </fileset>
+                </classpath>
+                <compile-options/>
+            </javac>
+
+            <jar jarfile="@{dist-dir}/@{jar-name}">
+                <fileset dir="@{build-dir}/classes">
+                    <include name="**"/>
+                </fileset>
+                <jar-options/>
+            </jar>
+        </sequential>
+    </macrodef>
+
+    <!--
+     Macro that automates the creation of a Glue Agent Archive (GAR).  GARs are
+     deployable archives that contain all the required agent runtime artifacts
+     required by FglAM to execute your agent.
+
+     Two attributes are required:
+
+     The agent-manifest attribute indicates the location of the manifest file
+     that describes the contents of this GAR to FglAM.  This is usually
+     created by the <generator> macro.
+
+     The agent-lib-dir attributes is the directory containing your agents
+     compiled .jar files.  These can be easily created by the calling the
+     <compile-and-jar> macro.
+
+     Additional files can be included in the GAR by using the
+     <additional-contents> macro and embedding one or more <tarfileset>
+     elements in it.  All the files specified in this fileset will be included
+     in the GAR relative to it's root directory.
+
+     For example, to copy 3rd party .jar files located in the ${lib.dir}:
+
+     <additional-contents>
+         <tarfileset prefix="lib/" dir="${lib.dir}">
+             <include name="*.jar"/>
+         </tarfileset>
+     </additional-contents>
+    -->
+    <macrodef name="gar" uri="fglam:/ant/macros">
+        <attribute name="agent-manifest"/>
+        <attribute name="agent-lib-dir"/>
+        <attribute name="build-dir" default="${build.dir}"/>
+        <attribute name="prefix" default="fglam"/>
+        <element name="additional-contents" optional="true"
+                 description="Add additional files and directories to the root of the GAR file. [see 'tarfileset' for detailed settings]"/>
+        <sequential>
+            <!-- build gar top level dir layout -->
+            <mkdir dir="@{build-dir}/gar/contents"/>
+
+            <!-- copy the contents of the agent's lib dir to the gar lib dir -->
+            <mkdir dir="@{build-dir}/gar/contents/lib"/>
+            <copy todir="@{build-dir}/gar/contents/lib">
+                <fileset dir="@{agent-lib-dir}"/>
+            </copy>
+
+            <!-- copy the required layout and the rest of the gar contents -->
+            <copy file="@{agent-manifest}" todir="@{build-dir}/gar/contents"/>
+
+            <tar destfile="@{build-dir}/gar/${@{prefix}.agent-manifest.name}.gar" compression="gzip">
+                <tarfileset dir="@{build-dir}/gar/contents"/>
+                <!-- include any user defined filesets -->
+                <additional-contents/>
+            </tar>
+
+        </sequential>
+    </macrodef>
+    
+    <!--
+      Generate a listing of all the @metric tags in the source code. 
+    
+       - output-file (required) the name of the output file that will be generated
+       - access (optional, default protected) Access mode: one of public, protected, 
+                package, or private
+       - descriptions (optional) Java properties file containting descriptions of metrics.
+                The key for this file should be the same as the metric name in the tag
+       - include-unref (optional, default false) Include metrics that are listed in the 
+                description file, but have no associated @metric tags.
+       - source-location (required) (see below)
+       
+       The location of the source files to be scanned for @metric tags must be
+       specified using the <source-location/> macro and embedding one or more
+       <fileset> elements in it.
+       
+       For example:
+       
+       <source-location>
+           <fileset dir="${java.src.dir}">
+                <include name="com/quest/example/**/*.java"/>
+           </fileset>
+           <fileset dir="${tooling.dir}/java-gen">
+                <include name="com/quest/example/**/*.java"/>
+           </fileset>
+       </source-location>
+    -->
+    <macrodef name="metric-docgen" uri="fglam:/ant/macros">
+        <attribute name="output-file"/>
+        <attribute name="descriptions" default="not-provided"/>
+        <attribute name="include-unref" default="false"/>
+        <attribute name="access" default="protected"/>
+        <element   name="source-location" optional="false"/>
+        <element   name="extra-args" optional="true"/>
+        <sequential>
+            <!-- Alias the Javadoc task to metricdoc so that the output
+                 does not confuse people -->
+            <taskdef name="metricdoc" classname="org.apache.tools.ant.taskdefs.Javadoc"/>
+            
+            <metricdoc destdir="@{output-file}"
+                       access="@{access}">
+                <!--  whether or not to include unreferenced metrics -->
+                <arg value="-unref"/>
+                <arg value="@{include-unref}"/>
+                 
+                <!-- Description file from the user -->
+                <arg value="-desc"/>
+                <arg value="@{descriptions}"/>
+
+                <!-- Extra args the user might want to pass -->
+                <extra-args/>
+                
+                <!-- include the list of packages that users want to scan -->
+                <source-location/>
+                
+                <doclet name="com.quest.glue.tools.metricdoc.MetricDoclet"
+                        pathref="fglam.classpath"/>
+                
+                <classpath refid="fglam.classpath"/>
+            </metricdoc>                     
+        </sequential>
+    </macrodef>
+
+    <!--
+    Launches the AgentHarness app with the gar and agent-definition.xml from this project
+    -->
+    <macrodef name="agent-harness" uri="fglam:/ant/macros">
+        <attribute name="gar-file" default="${build.dir}/gar/${fglam.agent-manifest.name}.gar"/>
+        <attribute name="agent-file" default="${basedir}/config/agent-definition.xml"/>
+		<attribute name="credentials" default="DISABLED"/>
+        <attribute name="jvm-args" default="${devkit.vm.debug.flags}"/>
+        <sequential>
+			<ac:var name="cmdln-args" value='@{jvm-args} --gar-file @{gar-file} --agent-file @{agent-file}'/>
+			<ac:if>
+                <not><equals arg1="@{credentials}" arg2="DISABLED"/></not>
+                <ac:then>
+					<ac:var name="cmdln-args" value="${cmdln-args} --credentials @{credentials}"/>
+				</ac:then>
+			</ac:if>
+            <exec executable="${fglam.devkit.home}/bin/agentharness">
+                <arg line="${cmdln-args}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <!--
+    A convenience method to redeploy a cartridge to the server. This is useful
+    when developing the cartrdige.
+
+    Requires: fgl.server.home set to the location of the running Foglight
+              Management Server installation.
+    -->
+    <macrodef name="redeploy-cartridge" uri="fglam:/ant/macros">
+        <attribute name="name"/>
+        <attribute name="version"/>
+        <attribute name="dir"/>
+        <attribute name="server" default="localhost"/>
+        <attribute name="port" default="8080"/>
+
+        <sequential>
+            <!-- check that the server exists first -->
+            <property name="fgl.server.name" value="default"/>
+            <echo level="info">Deploying adapter cartridge. Server home: ${fgl.server.home}, server name: ${fgl.server.name}</echo>
+
+            <fail>
+                Could not verify the Foglight server home directory: ${fgl.server.home}
+                <condition>
+                    <or>
+                        <not><isset property="fgl.server.home"/></not>
+                        <not><available file="${fgl.server.home}/server/${fgl.server.name}/deploy/foglight.sar"/></not>
+                    </or>
+                </condition>
+            </fail>
+
+            <ac:propertyregex property="@{name}.file.version" input="@{version}" regexp="\." replace="_" global="true"/>
+            <property name="@{name}.file.version" value="unknown"/>
+
+            <antcall target="-fglam-devkit-redeploy-cartridge">
+                <param name="-car.name" value="@{name}"/>
+                <param name="-car.file" value="@{dir}/@{name}-${@{name}.file.version}.car"/>
+                <param name="-car.version" value="@{version}"/>
+                <param name="-server" value="@{server}"/>
+                <param name="-port" value="@{port}"/>
+            </antcall>
+        </sequential>
+    </macrodef>
+
+	<!--
+    A convenience method to export a WCF module from the server.
+
+    Requires: fgl.server.home set to the location of the running Foglight
+              Management Server installation.
+    -->
+	<macrodef name="fglcmd-export-wcf" uri="fglam:/ant/macros">
+        <attribute name="module"/>
+		<attribute name="extract-dir" default="${basedir}/config/wcf"/>
+        <attribute name="server" default="localhost"/>
+        <attribute name="port" default="8080"/>
+        <sequential>
+            <!-- check that the server exists first -->
+            <property name="fgl.server.name" value="default"/>
+            <echo level="info">Server home: ${fgl.server.home}, server name: ${fgl.server.name}</echo>
+
+            <fail>
+                Could not verify the Foglight server home directory: ${fgl.server.home}
+                <condition>
+                    <or>
+                        <not><isset property="fgl.server.home"/></not>
+                        <not><available file="${fgl.server.home}/server/${fgl.server.name}/deploy/foglight.sar"/></not>
+                    </or>
+                </condition>
+            </fail>
+
+            <antcall target="-fglcmd-export-wcf">
+                <param name="-server" value="@{server}"/>
+                <param name="-port" value="@{port}"/>
+                <param name="-module" value="@{module}"/>
+				<param name="-extract.dir" value="@{extract-dir}"/>
+            </antcall>
+        </sequential>
+    </macrodef>
+
+	<!-- Helper macro for running the junit tests -->
+    <macrodef name="junit" uri="fglam:/ant/macros">
+        <attribute name="results"/>
+
+        <element name="jvm-args"/>
+        <element name="jars"/>
+        <element name="files"/>
+
+        <sequential>
+            <!-- delete and re-create the directories that hold these
+                 results to avoid confusion -->
+            <delete dir="@{results}/xml"/>
+            <delete dir="@{results}/html"/>
+            <mkdir dir="@{results}/xml"/>
+            <mkdir dir="@{results}/html"/>
+
+            <echo level="info">Running the JUnit tests</echo>
+            <junit dir="@{results}"
+                   fork="true" forkMode="once"
+                   showOutput="true" filterTrace="true" printsummary="true"
+                   failureproperty="junit.failure" haltonfailure="no">
+                <jvmarg value="-Xfuture"/>
+                <jvmarg value="-ea"/>
+                <jvmarg value="-esa"/>
+
+                <jvm-args/>
+
+                <classpath>
+                    <fileset dir="${fglam.devkit.home}/buildtools/junit">
+                        <include name="*.jar"/>
+                    </fileset>
+
+                    <fileset dir="${fglam.devkit.home}/lib">
+                        <include name="*.jar"/>
+                    </fileset>
+
+                    <jars/>
+                </classpath>
+
+                <formatter type="xml" usefile="true"/>
+
+                <batchtest todir="@{results}/xml">
+                    <files/>
+                </batchtest>
+
+                <!-- Unit test need to be run in debug mode -->
+                <sysproperty key="quest.debug" value="1"/>
+            </junit>
+
+            <echo level="info">Generating JUnit test report</echo>
+            <junitreport>
+                <fileset dir="@{results}/xml">
+                    <include name="TEST-*.xml"/>
+                </fileset>
+                <report format="frames" todir="@{results}/html"/>
+            </junitreport>
+
+            <delete file="${basedir}/TESTS-TestSuites.xml"/>
+        </sequential>
+    </macrodef>
+
+    <!-- Helper macro for running the findbugs inspector -->
+    <macrodef name="findbugs" uri="fglam:/ant/macros">
+        <attribute name="results"/>
+        <attribute name="analyze"/>
+		<attribute name="priority" default="high"/>
+        <attribute name="failOnError" default="true"/>
+        <attribute name="home" default="${fglam.devkit.home}/buildtools/findbugs"/>
+        <attribute name="config" default="@{home}/config"/>
+        <attribute name="exclude" default="@{config}/findbugs_exclude.xml"/>
+        <attribute name="format" default="-html:@{home}/src/xsl/default.xsl"/>
+        <attribute name="outputDir" default="@{results}/findbugs"/>
+        <attribute name="outputFile" default="findbugs.html"/>
+
+        <!-- contains a <path> element listing all the .jar files to analyze -->
+        <element name="findbugs-jars"/>
+
+        <!-- extra options provided to FindBugs.  The usual suspects here are
+             paths to source directories:
+                <arg value="-sourcepath"/><arg path="${basedir}/src/java"/>
+                <arg value="-sourcepath"/><arg path="${build.dir}/tooling/java-gen"/>
+           -->
+        <element name="findbugs-args"/>
+
+        <!-- extra classes that FindBugs needs to know about but should not test.
+             these are typically library .jars that get bundled with the agent
+          -->
+        <element name="findbugs-aux"/>
+
+        <sequential>
+            <!-- Findbugs requires a space separated list of jars on its command line -->
+            <pathconvert property="findbugs.test.classpath" pathsep=" ">
+                <findbugs-jars/>
+            </pathconvert>
+
+            <path id="findbugs.aux.classpath">
+                <fileset dir="${fglam.devkit.home}/lib">
+                    <include name="glueapi.jar"/>
+                    <include name="quest-common-tools.jar"/>
+                </fileset>
+				<fileset dir="@{home}/plugin">
+					<include name="gluefindbugs.jar"/>
+					<include name="quest-common-findbugs.jar"/>
+				</fileset>
+				<fileset dir="@{home}/lib">
+					<include name="*.jar"/>
+					<exclude name="ant.jar"/>
+				</fileset>
+
+                <findbugs-aux/>
+            </path>
+
+            <mkdir dir="@{outputDir}"/>
+
+            <echo level="info">.
+     o Running the @{priority} priority FindBugs tests.
+     o Running the FindBugs tests from @{home}
+     o Using the configuration files in @{config}
+     o Using the exclusion file @{exclude}
+     o Test results will be written to @{outputDir}/@{outputFile}
+     o Analysis filter: @{analyze}
+            </echo>
+            <java fork="true"
+                  taskname="findbugs"
+                  timeout="1200000"
+                  failonerror="false"
+                  resultproperty="findbugs.@{priority}.exitcode"
+                  jar="@{home}/lib/findbugs.jar">
+                <jvmarg value="-Xmx400m"/>
+                <jvmarg value="-Dunittest.config.dir=@{home}/config"/>
+                <jvmarg value="-ea"/>
+                <jvmarg value="-Xdebug"/>
+                <jvmarg value="-Xnoagent"/>
+                <jvmarg value="-Djava.compiler=NONE"/>
+                <!-- <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"/> -->
+                <arg value="-textui"/>
+                <arg value="-home"/><arg file="@{home}"/>
+                <arg value="-effort:max"/>
+                <arg value="-sortByClass"/>
+                <arg value="-timestampNow"/>
+                <arg value="-adjustPriority"/>
+                <arg line="FindUncalledPrivateMethods=raise,FindInconsistentSync2=raise"/>
+                <arg value="-@{priority}"/>
+                <arg value="@{format}"/>
+                <arg value="-exclude"/><arg file="@{exclude}"/>
+                <arg value="-auxclasspath"/><arg pathref="findbugs.aux.classpath"/>
+                <arg value="-outputFile"/><arg path="@{outputDir}/@{outputFile}"/>
+                <arg value="-onlyAnalyze"/><arg value="@{analyze}"/>
+                <arg value="-exitcode"/>
+                <findbugs-args/>
+                <arg line="${findbugs.test.classpath}"/>
+            </java>
+
+			<condition property="findbugs.test.failed">
+				<not>
+					<equals arg1="${findbugs.@{priority}.exitcode}" arg2="0"/>
+				</not>
+			</condition>
+
+            <fail>
+                <condition>
+                    <and>
+                        <isset property="findbugs.test.failed"/>
+                        <equals arg1="@{failOnError}" arg2="true"/>
+                    </and>
+                </condition>
+
+One or more of the FindBugs unit tests failed.
+See file://@{outputDir}/@{outputFile} file for failure details.</fail>
+        </sequential>
+    </macrodef>
+
+    <target name="-fglam-devkit-redeploy-cartridge">
+
+        <echo message="Disabling cartridge ${-car.name}" level="info"/>
+        <fglcmd failonerror="false">
+            <arg line="-srv ${-server}"/>
+            <arg line="-port ${-port}"/>
+            <arg line="-cmd cartridge:disable"/>
+            <arg line="-n ${-car.name}"/>
+            <arg line="-v ${-car.version}"/>
+        </fglcmd>
+
+        <echo message="Uninstalling cartridge ${-car.name}" level="info"/>
+        <fglcmd failonerror="false">
+            <arg line="-srv ${-server}"/>
+            <arg line="-port ${-port}"/>
+            <arg line="-cmd cartridge:uninstall"/>
+            <arg line="-n ${-car.name}"/>
+            <arg line="-v ${-car.version}"/>
+        </fglcmd>
+        <echo message="Installing car file: ${-car.file}" level="info"/>
+        <fglcmd>
+            <arg line="-srv ${-server}"/>
+            <arg line="-port ${-port}"/>
+            <arg line="-cmd cartridge:install"/>
+            <arg line="-f"/>
+            <arg file="${-car.file}"/>
+            <redirector outputproperty="fglcmd.install.err"/>
+        </fglcmd>
+        <property name="fglcmd.install.err" value=""/>
+        <echo message="${fglcmd.install.err}"/>
+
+        <condition property="fglcmd.install.failed">
+            <or>
+                <contains string="${fglcmd.install.err}" substring="Error :"/>
+                <contains string="${fglcmd.install.err}" substring="error"/>
+            </or>
+        </condition>
+
+        <fail if="fglcmd.install.failed" message="Cartridge installation failed!"/>
+    </target>
+
+	<target name="-fglcmd-export-wcf">
+
+		<property name="wcf.export.zip" location="${basedir}/${-module}-wcf.zip"/>
+
+		<delete file="${wcf.export.zip}" failonerror="false"/>
+
+		<echo  message="Exporting WCF module ${-module} to ${wcf.export.zip}" level="info"/>
+		<fglcmd failonerror="false">
+            <arg line="-srv ${-server}"/>
+            <arg line="-port ${-port}"/>
+			<arg line="-cmd util:uiexport"/>
+			<arg line="-f ${wcf.export.zip}"/>
+			<arg line="-m system:${-module}"/>
+		</fglcmd>
+
+		<ac:if>
+			<available file="${wcf.export.zip}"/>
+			<ac:then>
+				<unzip src="${wcf.export.zip}" dest="${-extract.dir}">
+					<mapper type="flatten"/>
+				</unzip>
+				<delete file="${wcf.export.zip}" failonerror="false"/>
+			</ac:then>
+		</ac:if>
+	</target>
+
+
+    <target name="-no-oops">
+        <echo level="error">This build file is not intended to be run standalone.</echo>
+    </target>
+
+	<!-- Sets up the fglcmd for use in the various macro-defs and target -->
+	<condition property="exec.fglcmd.raw" value="${fgl.server.home}/bin/fglcmd.sh">
+		<os family="Unix"/>
+	</condition>
+	<condition property="exec.fglcmd.raw" value="${fgl.server.home}/bin/fglcmd.bat">
+		<os family="Windows"/>
+	</condition>
+	<property name="exec.fglcmd" location="${exec.fglcmd.raw}"/>
+	<property name="fgl.server.user" value="foglight"/>
+	<property name="fgl.server.pwd" value="foglight"/>
+
+	<presetdef name="fglcmd">
+		<exec executable="${exec.fglcmd}">
+			<arg line="-usr ${fgl.server.user}"/>
+			<arg line="-pwd ${fgl.server.pwd}"/>
+		</exec>
+	</presetdef>
+
+</project>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>2.7. Submission of Historical Data</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch02.html" title="Chapter 2. Creating Agents"/><link rel="prev" href="ch02s06.html" title="2.6. Writing Your First Agent"/><link rel="next" href="ch02s08.html" title="2.8. Sample build.xml from the example URLAvailability Agent"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.7. Submission of Historical Data</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s06.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 2. Creating Agents</th><td width="20%" align="right"> <a accesskey="n" href="ch02s08.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="2.7. Submission of Historical Data"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="creating-agents-historical-submission"/>2.7. Submission of Historical Data</h2></div></div></div><p>
+          Should you wish to submit historical data from an agent, then there are certain 
+          restrictions place on the submission by the managment server. The agent manager
+          hosting the agent provides the tools needed to meet these requirements, but does not
+          enforce any of the requirements.
+      </p><p>The key requirements are</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          All submission must be marked as historical by using the <code class="function">setHistoricalData(...)</code>
+          method of the <a class="link" href="ch03s03.html" title="3.3. TopologyDataSubmissionService3">topology data submitter</a>.
+          This informs that management server that the data is historical and no timestamp freshness 
+          checks should be performed on it. This also has implications for which data-based rules
+          and alarms are triggered based on the data. The management server documentation contains
+          more information on this. 
+        </li><li class="listitem">
+          Each metric and observation <span class="emphasis"><em>must</em></span> be submitted in reverse chronological
+          (newest to oldest) order. If a metric value that is marked as historical is received by the 
+          management server, and is newer than <span class="emphasis"><em>any</em></span> existing value for that 
+          metric, it will be unconditionally discarded.
+        </li></ul></div><p>
+        Marking a submission as historical is easy, but it is the responsibility of the agent
+        to ensure that no historical data submission is sent out of order. Since both the agent
+        manager and the management server will try to process multiple data submission in parallel,
+        only one historical submission for an agent can be in-progress at any one time. To ensure
+        this, agent's must use the verified data submission
+        support provided by the <a class="link" href="ch03s03.html" title="3.3. TopologyDataSubmissionService3">topology data submitter</a>.
+        This can be used to ensure that a previous historical data submission has been received 
+        and accepted by the server before the next one is submitted.
+      </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s06.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s08.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">2.6. Writing Your First Agent </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 2.8. Sample build.xml from the example URLAvailability Agent</td></tr></table></div></body></html>

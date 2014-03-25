@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>4.2. Tooling Changes Overview</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch04.html" title="Chapter 4. Agent Tooling"/><link rel="prev" href="ch04.html" title="Chapter 4. Agent Tooling"/><link rel="next" href="ch04s03.html" title="4.3. Agent Definition"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.2. Tooling Changes Overview</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 4. Agent Tooling</th><td width="20%" align="right"> <a accesskey="n" href="ch04s03.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="4.2. Tooling Changes Overview"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="spid-glue-tooling-migration"/>4.2. Tooling Changes Overview</h2></div></div></div><p>
+			A number of tooling changes have been made since the initial Glue-on-SPID 					
+            release. Upgrade your existing build process to support these changes. This  
+            section details the changes.
+		</p><div class="section" title="4.2.1. Schema Changes for the Agent Manifest"><div class="titlepage"><div><div><h3 class="title"><a id="agentManifest"/>4.2.1. Schema Changes for the Agent Manifest</h3></div></div></div><p>
+				There is a new revision of the XSD for the Agent Manifest in this release. If you 
+                are hand-crafting your <span class="emphasis"><em>agent.manifest</em></span>, then you need to update the
+                <code class="code">xmlns</code> that defines the schema to 
+                <span class="markup">xmlns="urn:X-quest.com:glue/agent/manifest/1.6"</span>.
+				Otherwise, the updated schema definition will be inserted for you.
+			</p></div><div class="section" title="4.2.2. agent-config.xml"><div class="titlepage"><div><div><h3 class="title"><a id="agentConfig"/>4.2.2. agent-config.xml</h3></div></div></div><p>
+				The <span class="emphasis"><em>agent-config.xml</em></span> file has been renamed 
+                <span class="emphasis"><em>agent-definition.xml</em></span>.
+				The new name is a better reflection of the file's 
+				content, which is essentially the definition of a FglAM agent.
+			</p><p>
+				Additional changes to <span class="emphasis"><em>agent-definition.xml</em></span> include:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						The root element has been renamed <code class="function">agent-definition</code>.
+					</li><li class="listitem"><p>An updated schema has been defined and needs to be set. 
+                        See <a class="link" href="ch04s03.html" title="4.3. Agent Definition">Agent Definition</a>. 
+                        Specifically, you should now use 
+                        <span class="markup">xmlns="urn:X-quest.com:glue/agent/definition/1.3"</span>.
+                        </p></li></ul></div><p>
+			</p></div><div class="section" title="4.2.3. Glue Renamed FglAM"><div class="titlepage"><div><div><h3 class="title"><a id="fglamRename"/>4.2.3. Glue Renamed FglAM</h3></div></div></div><p>
+				As part of our rebranding of the Glue project to its Foglight Agent Manager 
+                (FglAM) production release name, the tooling code has been revised and all references 
+                to the old name (Glue) have been replaced with the new name (FglAM).
+			</p><p>
+				</p><div class="section" title="1. Build.xml"><div class="titlepage"><div><div><h5 class="title"><a id="buildXml"/>1. Build.xml</h5></div></div></div><p>
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+                                  The namespace definitions in the Ant <span class="emphasis"><em>build.xml</em></span>
+                                   file(s) have been renamed.
+                                </p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;project</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span> <span class="hl-attribute" style="color: #993399;">default</span>=<span class="hl-value" style="color: #993300">"dist"</span>
+                                <span class="hl-attribute" style="color: #993399;">xmlns:fglam</span>=<span class="hl-value" style="color: #993300">"fglam:/ant/macros"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b></pre><p>
+								</p></li><li class="listitem"><p>
+                                   The <span class="emphasis"><em>glue-ant-macros.xml</em></span> file has been renamed 
+                                   <span class="emphasis"><em>fglam-ant-macros.xml</em></span>.
+								   Update the import statement to include the FglAM Ant macros.
+                                   </p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;import</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/buildtools/fglam-ant-macros.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b></pre><p>
+								</p></li><li class="listitem"><p>
+                                  You must use the <span class="emphasis"><em>fglam</em></span> prefix when using the FglAM macros. 
+                                  They are now prefixed with the <span class="emphasis"><em>fglam</em></span> namespace.
+								  </p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;fglam:generator</b> <span class="hl-attribute" style="color: #993399;">agent-definition</span>=<span class="hl-value" style="color: #993300">"${basedir}/config/agent-definition.xml"</span> 
+                 <span class="hl-attribute" style="color: #993399;">outputDir</span>=<span class="hl-value" style="color: #993300">"${tooling.output}"</span> 
+                 <span class="hl-attribute" style="color: #993399;">build.number</span>=<span class="hl-value" style="color: #993300">"${build.number}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b></pre><p>
+								</p></li></ul></div><p>
+					</p></div><p>
+			</p></div><div class="section" title="4.2.4. Single-Pass Tooling"><div class="titlepage"><div><div><h3 class="title"><a id="singlePassTooling"/>4.2.4. Single-Pass Tooling</h3></div></div></div><p>
+				By default, FglAM tooling now generates all tooling artifacts in 
+                a single pass. This means that you no longer have to set 
+                <code class="varname">spi-artifacts</code> and <code class="varname">fms-artifacts</code>
+				in your build process to create the various deployment-specific generator output.
+			</p><p>
+				Now, a single call to the <code class="varname">fglam:generator</code> macro creates all 
+                of the required	tooling artifacts for your project. Simply define your 
+                <code class="varname">agent-definition</code>
+				path, set the <span class="emphasis"><em>outputDir</em></span>, and the tooling will take care of the rest.
+			</p><p>
+				</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">Perform the updated <a class="link" href="ch02s06.html" title="2.6. Writing Your First Agent">tutorial</a> 
+                to see single-pass tooling.</td></tr></table></div><p>
+			</p><p>
+
+			</p></div><div class="section" title="4.2.5. CAR Task Promotion"><div class="titlepage"><div><div><h3 class="title"><a id="carFile"/>4.2.5. CAR Task Promotion</h3></div></div></div><p>
+				The previous iteration of the tooling wrapped the FMS-provided CAR Ant task in a macro-def.
+				In this release, the CAR Ant task has been promoted in our tooling. Now, you can
+				call all of the various subtasks of this cartridge file creation process directly.
+				Refer to the the FMS CAR Ant task definition for more details.
+			</p></div><div class="section" title="4.2.6. TopologyDataSubmissionService"><div class="titlepage"><div><div><h3 class="title"><a id="switchToTopologySubmission"/>4.2.6. TopologyDataSubmissionService</h3></div></div></div><p>
+            The code generated by the tooling now uses the 
+            <a class="link" href="ch03s03.html" title="3.3. TopologyDataSubmissionService3">TopologyDataSubmissionService</a>, 
+            instead of the now deprecated <code class="function">SpidRowDataService</code> or 
+            <code class="function">SpidDataSubmissionService</code>. This requires cartridge and agent developers to 
+            write their own topology types file, and use that as an input for the tooling. Previously, the 
+            <a class="link" href="ch04s03.html" title="4.3. Agent Definition">Agent Definition</a> file contained
+            the topology types specification and the topology types file was generated
+            by the tooling.
+          </p></div><div class="section" title="4.2.7. CDT Customization"><div class="titlepage"><div><div><h3 class="title"><a id="injectCustomCDT"/>4.2.7. CDT Customization</h3></div></div></div><p>
+            It is now possible to insert your own XML code into the generated CDT, or replace 
+            the generated CDT entirely using the <a class="link" href="ch04s05.html#cgCDT" title="4.5.4. CDT">CDT</a>
+            customization support added to the <code class="varname">&lt;topology-types/&gt;</code> 
+            section of the <a class="link" href="ch04s03.html" title="4.3. Agent Definition">Agent Definition</a> file.
+          </p></div><div class="section" title="4.2.8. Simulator Sample Definition"><div class="titlepage"><div><div><h3 class="title"><a id="d0e3770"/>4.2.8. Simulator Sample Definition</h3></div></div></div><p>
+              When building simulator agents, you are now required to specify as part of your
+              agent definition those topology types that will form the root of the simulated
+              sample tree.
+            </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s03.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 4. Agent Tooling </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 4.3. Agent Definition</td></tr></table></div></body></html>

@@ -1,0 +1,3063 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2013 Dell Inc.
+ ALL RIGHTS RESERVED.
+
+ This software is the confidential and proprietary information of
+ Dell Inc. ("Confidential Information"). You shall not
+ disclose such Confidential Information and shall use it only in
+ accordance with the terms of the license agreement you entered
+ into with Dell Inc.
+
+ DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--><foglight-config version="1.0.0" exported-on="2013-09-23T12:51:53.490">
+	<persistable-config-model>
+		<config_id>ab06ee03-3404-3a98-a31b-092bf4e57db1</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>template</config_qualifier>
+		<sharing_name/>
+		<known_name/>
+		<type_id>c780582f-a0f4-34ec-b125-5d4e7956e39d</type_id>
+		<asp name="primary" type="singleitem">
+			<structure>
+				<field name="instanceCount" dataType="INT">
+					<attributes MustEnter="1" PageTitle="HostDiscovery_Simulator Configuration" PageLineNbr="1"/>
+					<prompt>No. instances to create</prompt>
+					<paramdata>1</paramdata>
+				</field>
+				<field name="tables" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="HostDiscovery_Simulator Configuration" PageLineNbr="2"/>
+					<prompt>Tables</prompt>
+					<paramdata>tables</paramdata>
+				</field>
+				<field name="Memory_metric" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Metric Data Configuration" PageLineNbr="1"/>
+					<prompt>Memory Table Metrics</prompt>
+					<paramdata>Memory_metric</paramdata>
+				</field>
+				<field name="Processor_metric" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Metric Data Configuration" PageLineNbr="2"/>
+					<prompt>Processor Table Metrics</prompt>
+					<paramdata>Processor_metric</paramdata>
+				</field>
+				<field name="HostCPUs_metric" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Metric Data Configuration" PageLineNbr="3"/>
+					<prompt>HostCPUs Table Metrics</prompt>
+					<paramdata>HostCPUs_metric</paramdata>
+				</field>
+				<field name="NetworkInterface_metric" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Metric Data Configuration" PageLineNbr="4"/>
+					<prompt>NetworkInterface Table Metrics</prompt>
+					<paramdata>NetworkInterface_metric</paramdata>
+				</field>
+				<field name="HostStorage_metric" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Metric Data Configuration" PageLineNbr="5"/>
+					<prompt>HostStorage Table Metrics</prompt>
+					<paramdata>HostStorage_metric</paramdata>
+				</field>
+				<field name="Host_metric" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Metric Data Configuration" PageLineNbr="6"/>
+					<prompt>Host Table Metrics</prompt>
+					<paramdata>Host_metric</paramdata>
+				</field>
+				<field name="HostNetwork_metric" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Metric Data Configuration" PageLineNbr="7"/>
+					<prompt>HostNetwork Table Metrics</prompt>
+					<paramdata>HostNetwork_metric</paramdata>
+				</field>
+				<field name="HostProcess_metric" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Metric Data Configuration" PageLineNbr="8"/>
+					<prompt>HostProcess Table Metrics</prompt>
+					<paramdata>HostProcess_metric</paramdata>
+				</field>
+				<field name="SecondaryStorage_metric" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Metric Data Configuration" PageLineNbr="9"/>
+					<prompt>SecondaryStorage Table Metrics</prompt>
+					<paramdata>SecondaryStorage_metric</paramdata>
+				</field>
+				<field name="HostDiscoveryData_observation" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Observation Data Configuration" PageLineNbr="1"/>
+					<prompt>HostDiscoveryData Table Observations</prompt>
+					<paramdata>HostDiscoveryData_observation</paramdata>
+				</field>
+				<field name="Memory_observation" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Observation Data Configuration" PageLineNbr="2"/>
+					<prompt>Memory Table Observations</prompt>
+					<paramdata>Memory_observation</paramdata>
+				</field>
+				<field name="Agent_observation" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Observation Data Configuration" PageLineNbr="3"/>
+					<prompt>Agent Table Observations</prompt>
+					<paramdata>Agent_observation</paramdata>
+				</field>
+				<field name="HostCPUs_observation" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Observation Data Configuration" PageLineNbr="4"/>
+					<prompt>HostCPUs Table Observations</prompt>
+					<paramdata>HostCPUs_observation</paramdata>
+				</field>
+				<field name="HostStorage_observation" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Observation Data Configuration" PageLineNbr="5"/>
+					<prompt>HostStorage Table Observations</prompt>
+					<paramdata>HostStorage_observation</paramdata>
+				</field>
+				<field name="HostService_observation" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Observation Data Configuration" PageLineNbr="6"/>
+					<prompt>HostService Table Observations</prompt>
+					<paramdata>HostService_observation</paramdata>
+				</field>
+				<field name="HostProcess_observation" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Simulated Observation Data Configuration" PageLineNbr="7"/>
+					<prompt>HostProcess Table Observations</prompt>
+					<paramdata>HostProcess_observation</paramdata>
+				</field>
+				<field name="Memory_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="1"/>
+					<prompt>Memory Table Properties</prompt>
+					<paramdata>Memory_property</paramdata>
+				</field>
+				<field name="OperatingSystem_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="2"/>
+					<prompt>OperatingSystem Table Properties</prompt>
+					<paramdata>OperatingSystem_property</paramdata>
+				</field>
+				<field name="HostTopMemoryProcessEntry_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="3"/>
+					<prompt>HostTopMemoryProcessEntry Table Properties</prompt>
+					<paramdata>HostTopMemoryProcessEntry_property</paramdata>
+				</field>
+				<field name="Agent_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="4"/>
+					<prompt>Agent Table Properties</prompt>
+					<paramdata>Agent_property</paramdata>
+				</field>
+				<field name="HostTopProcessEntry_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="5"/>
+					<prompt>HostTopProcessEntry Table Properties</prompt>
+					<paramdata>HostTopProcessEntry_property</paramdata>
+				</field>
+				<field name="Processor_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="6"/>
+					<prompt>Processor Table Properties</prompt>
+					<paramdata>Processor_property</paramdata>
+				</field>
+				<field name="HostTopIOProcessEntry_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="7"/>
+					<prompt>HostTopIOProcessEntry Table Properties</prompt>
+					<paramdata>HostTopIOProcessEntry_property</paramdata>
+				</field>
+				<field name="HostProcessInstance_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="8"/>
+					<prompt>HostProcessInstance Table Properties</prompt>
+					<paramdata>HostProcessInstance_property</paramdata>
+				</field>
+				<field name="NetworkInterface_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="9"/>
+					<prompt>NetworkInterface Table Properties</prompt>
+					<paramdata>NetworkInterface_property</paramdata>
+				</field>
+				<field name="StringValue_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="10"/>
+					<prompt>StringValue Table Properties</prompt>
+					<paramdata>StringValue_property</paramdata>
+				</field>
+				<field name="HostTopCPUProcessEntry_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="11"/>
+					<prompt>HostTopCPUProcessEntry Table Properties</prompt>
+					<paramdata>HostTopCPUProcessEntry_property</paramdata>
+				</field>
+				<field name="Host_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="12"/>
+					<prompt>Host Table Properties</prompt>
+					<paramdata>Host_property</paramdata>
+				</field>
+				<field name="HostService_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="13"/>
+					<prompt>HostService Table Properties</prompt>
+					<paramdata>HostService_property</paramdata>
+				</field>
+				<field name="HostBaseObject_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="14"/>
+					<prompt>HostBaseObject Table Properties</prompt>
+					<paramdata>HostBaseObject_property</paramdata>
+				</field>
+				<field name="TopologyEdge_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="15"/>
+					<prompt>TopologyEdge Table Properties</prompt>
+					<paramdata>TopologyEdge_property</paramdata>
+				</field>
+				<field name="DataObject_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="16"/>
+					<prompt>DataObject Table Properties</prompt>
+					<paramdata>DataObject_property</paramdata>
+				</field>
+				<field name="Object_property" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Property Data Configuration" PageLineNbr="17"/>
+					<prompt>Object Table Properties</prompt>
+					<paramdata>Object_property</paramdata>
+				</field>
+			</structure>
+			<valuelist/>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>f14b7a88-103f-337f-814b-1f6eda424b96</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>tables</sharing_name>
+		<known_name>HostDiscovery_Simulator_Tables_Default</known_name>
+		<type_id>4e027431-c314-3abb-9146-843e98479238</type_id>
+		<asp name="tables" knownName="HostDiscovery_Simulator_Tables_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="32">
+					<attributes MustEnter="1"/>
+					<prompt>Table Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="enabled" dataType="BOOL">
+					<attributes MustEnter="1"/>
+					<prompt>Enable Table Collection</prompt>
+					<paramdata>1</paramdata>
+				</field>
+				<field name="freq" dataType="INT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Data Simulation Interval</prompt>
+					<paramdata>60</paramdata>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">HostDiscoveryData</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">LogicalDisk</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">CollectionModelRoot</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">IPAddress</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">Memory</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">OperatingSystem</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostTopMemoryProcessEntry</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">Agent</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostTopProcessEntry</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostTopMemoryProcessTrend</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">Processor</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostTopIOProcessEntry</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostProcessInstance</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostComponent</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostCPUs</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">NetworkInterface</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostStorage</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostModelNetwork</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">PhysicalDisk</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">StringValue</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostTopCPUProcessEntry</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">Host</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">StringObservation</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostTopIOProcessTrend</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostService</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">CollectionModelInstance</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostTopCPUProcessTrend</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">NetworkPath</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostNetwork</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostProcess</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">HostBaseObject</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">SecondaryStorage</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">TopologyEdge</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">DataObject</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+				<row>
+					<value name="name">Object</value>
+					<value name="enabled">true</value>
+					<value name="freq">60</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>35618d47-c668-306b-8a66-476cb3de3fab</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Memory_metric</sharing_name>
+		<known_name>HostDiscovery_Simulator_Memory_Metric_Default</known_name>
+		<type_id>cea031d9-21af-3ad2-bcde-4c3f2df4cecf</type_id>
+		<asp name="Memory_metric" knownName="HostDiscovery_Simulator_Memory_Metric_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">capacity</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">consumed</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">utilization</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">pageInRate</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">pageOutRate</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">virtualMemorySize</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">nonPagedKernelMemory</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">pagedKernelMemory</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">fileSystemCache</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>db8287d2-a7ac-3f89-a43b-3827d4d3f07d</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Processor_metric</sharing_name>
+		<known_name>HostDiscovery_Simulator_Processor_Metric_Default</known_name>
+		<type_id>b216956c-9eb7-3f00-8494-9e046c768acd</type_id>
+		<asp name="Processor_metric" knownName="HostDiscovery_Simulator_Processor_Metric_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">percentUserTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">percentSystemTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">percentIdleTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">utilization</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">usedHz</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">totalHz</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>59692846-0ac3-3b0f-b9aa-6e7e98ae8647</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostCPUs_metric</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostCPUs_Metric_Default</known_name>
+		<type_id>cd1eabcd-5454-33ce-9449-dd437de1a351</type_id>
+		<asp name="HostCPUs_metric" knownName="HostDiscovery_Simulator_HostCPUs_Metric_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">percentUserTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">percentSystemTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">percentIdleTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">utilization</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">usedHz</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">totalHz</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>80b16a84-a023-3d5a-b7c4-65a8f5447af5</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>NetworkInterface_metric</sharing_name>
+		<known_name>HostDiscovery_Simulator_NetworkInterface_Metric_Default</known_name>
+		<type_id>4da59be3-b73c-316f-845d-fd37fd7bdc38</type_id>
+		<asp name="NetworkInterface_metric" knownName="HostDiscovery_Simulator_NetworkInterface_Metric_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">bandwidth</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">utilization</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">packetsSent</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">packetsReceived</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">sendRate</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">receiveRate</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">inboundPacketsDropped</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">outboundPacketsDropped</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">inboundErrors</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">outboundErrors</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">outputQueueLength</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>4e5d07ce-4843-3f47-a38a-fb6579d9c912</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostStorage_metric</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostStorage_Metric_Default</known_name>
+		<type_id>4cca8970-c45a-3a56-a708-42d574d08f55</type_id>
+		<asp name="HostStorage_metric" knownName="HostDiscovery_Simulator_HostStorage_Metric_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">diskUtilization</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">diskReads</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">diskWrites</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">diskBytesRead</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">diskBytesWritten</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">diskTransferRate</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">spaceUsed</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">spaceAvailable</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>b69b5335-3948-3249-805c-c11ee742fbef</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Host_metric</sharing_name>
+		<known_name>HostDiscovery_Simulator_Host_Metric_Default</known_name>
+		<type_id>16ca952a-dc24-354c-a71b-29c3783393ef</type_id>
+		<asp name="Host_metric" knownName="HostDiscovery_Simulator_Host_Metric_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">virtualHostCount</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">numProcesses</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">runQueueLength</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">interrupts</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">contextSwitches</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">availablePagingSpace</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>e9127311-bfdb-3847-95d6-7788090489a5</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostNetwork_metric</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostNetwork_Metric_Default</known_name>
+		<type_id>1071b7a9-fa6e-3e5d-af52-8a055af72545</type_id>
+		<asp name="HostNetwork_metric" knownName="HostDiscovery_Simulator_HostNetwork_Metric_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">utilization</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">packetsSent</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">packetsReceived</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">sendRate</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">receiveRate</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">transferRate</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>3d960a1d-e03e-3e6c-8def-ca0a68cdb736</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostProcess_metric</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostProcess_Metric_Default</known_name>
+		<type_id>fb550e88-272d-32a8-92f1-83029bf6c37c</type_id>
+		<asp name="HostProcess_metric" knownName="HostDiscovery_Simulator_HostProcess_Metric_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">percentProcessorTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">totalProcessorTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">percentMemory</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">virtualSize</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">workingSetSize</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">swapSize</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">pageFaults</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">dataRead</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">dataWritten</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">dataOther</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">dataTransferRate</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">operationsRead</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">operationsWrite</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">operationsOther</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>7b4ad8c3-30f7-3a1c-bcc6-15023352b98a</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>SecondaryStorage_metric</sharing_name>
+		<known_name>HostDiscovery_Simulator_SecondaryStorage_Metric_Default</known_name>
+		<type_id>974006d0-18a4-32b2-87e0-ab58a3133ba3</type_id>
+		<asp name="SecondaryStorage_metric" knownName="HostDiscovery_Simulator_SecondaryStorage_Metric_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">utilization</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">reads</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">writes</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">bytesRead</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">bytesWritten</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">averageReadTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">averageWriteTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">averageTransferTime</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">queueLength</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">spaceUsed</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">spaceAvailable</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">totalSpace</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">capacityUsed</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+				<row>
+					<value name="name">capacityAvailable</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.Double</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>dd7328dd-2086-344c-af07-4e789d934a2d</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostDiscoveryData_observation</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostDiscoveryData_Observation_Default</known_name>
+		<type_id>af0e2fb4-592a-31de-9578-5efe03d94c66</type_id>
+		<asp name="HostDiscoveryData_observation" knownName="HostDiscovery_Simulator_HostDiscoveryData_Observation_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">host</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">HostObservation</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>a5d29e04-50b3-35d1-a11e-77d4aed7e719</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Memory_observation</sharing_name>
+		<known_name>HostDiscovery_Simulator_Memory_Observation_Default</known_name>
+		<type_id>44cf03b2-b58b-34a3-8cb7-1adfaf604338</type_id>
+		<asp name="Memory_observation" knownName="HostDiscovery_Simulator_Memory_Observation_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">topMemoryProcesses</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">HostTopMemoryProcessObservation</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>53c12bed-89f2-3757-ab03-3841a5867309</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Agent_observation</sharing_name>
+		<known_name>HostDiscovery_Simulator_Agent_Observation_Default</known_name>
+		<type_id>99b0d417-4adf-32ff-9a85-1294695e8b54</type_id>
+		<asp name="Agent_observation" knownName="HostDiscovery_Simulator_Agent_Observation_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">runningStateObservation</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.String</value>
+					<value name="values">Unknown,Stopped,Starting,Stopping,Running,Collecting data,Running but not collecting data,Failed to start,Failed to start data collection</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>80d5bdbe-7bf6-3f24-ae18-18f21426b8f2</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostCPUs_observation</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostCPUs_Observation_Default</known_name>
+		<type_id>c0749bc2-365e-3830-8e80-0a12e51929ed</type_id>
+		<asp name="HostCPUs_observation" knownName="HostDiscovery_Simulator_HostCPUs_Observation_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">topCPUProcesses</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">HostTopCPUProcessObservation</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>8946c7e9-729b-3774-9e7f-d6f1ed27b385</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostStorage_observation</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostStorage_Observation_Default</known_name>
+		<type_id>70b38efc-db8a-3b00-a687-654ff15cb352</type_id>
+		<asp name="HostStorage_observation" knownName="HostDiscovery_Simulator_HostStorage_Observation_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">topIOProcesses</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">HostTopIOProcessObservation</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>71c9ccc4-7bc7-34b4-9f94-8f6ce0825043</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostService_observation</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostService_Observation_Default</known_name>
+		<type_id>90a5ffcd-f885-3b01-aad0-5d2f132f753a</type_id>
+		<asp name="HostService_observation" knownName="HostDiscovery_Simulator_HostService_Observation_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">state</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.String</value>
+					<value name="values">Stopped,Start Pending,Stop Pending,Running,Continue Pending,Pause Pending,Paused,Unknown</value>
+				</row>
+				<row>
+					<value name="name">pid</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">java.lang.String</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>ebec1185-e25f-3f2f-aca6-eec299c55415</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostProcess_observation</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostProcess_Observation_Default</known_name>
+		<type_id>9f44616e-1cac-35f7-8e6a-bdc640cf5eef</type_id>
+		<asp name="HostProcess_observation" knownName="HostDiscovery_Simulator_HostProcess_Observation_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Metric Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="simulator" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Type</prompt>
+					<paramdata>random,linear,static</paramdata>
+				</field>
+				<field name="low" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Lowest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="high" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Highest Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="factor" dataType="FLOAT">
+					<attributes MustEnter="1"/>
+					<prompt>Simulator Factor</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="seed" dataType="FLOAT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Starting Value</prompt>
+					<paramdata>0.0</paramdata>
+				</field>
+				<field name="dataType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="values" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Preset Values (Comma delimited)</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">instances</value>
+					<value name="simulator">random</value>
+					<value name="low">0.0</value>
+					<value name="high">100.0</value>
+					<value name="factor">1.0</value>
+					<value name="seed">1.0</value>
+					<value name="dataType">HostProcessInstanceListObservation</value>
+					<value name="values"></value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>dc4064ee-97b5-38fb-8c48-604889ab8dcd</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Memory_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_Memory_Property_Default</known_name>
+		<type_id>6a05edaa-417e-3f44-89ad-278db803c6f2</type_id>
+		<asp name="Memory_property" knownName="HostDiscovery_Simulator_Memory_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">totalMemory</value>
+					<value name="valueType">java.lang.Long</value>
+					<value name="value">0</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>681b4342-0db1-37ff-a942-919d058aeb60</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>OperatingSystem_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_OperatingSystem_Property_Default</known_name>
+		<type_id>6bf9de43-9ff2-3847-af1c-50f6c0f6ee1f</type_id>
+		<asp name="OperatingSystem_property" knownName="HostDiscovery_Simulator_OperatingSystem_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">type</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">type</value>
+				</row>
+				<row>
+					<value name="name">name</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">name</value>
+				</row>
+				<row>
+					<value name="name">architecture</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">architecture</value>
+				</row>
+				<row>
+					<value name="name">version</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">version</value>
+				</row>
+				<row>
+					<value name="name">servicePackMajorVersion</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">servicePackMajorVersion</value>
+				</row>
+				<row>
+					<value name="name">servicePackMinorVersion</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">servicePackMinorVersion</value>
+				</row>
+				<row>
+					<value name="name">buildNumber</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">buildNumber</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>7b4e8157-ce2f-3ed3-b272-e5d71a92b4be</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostTopMemoryProcessEntry_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostTopMemoryProcessEntry_Property_Default</known_name>
+		<type_id>2e846a2f-e2f7-3d2f-93b2-86778bdd5c91</type_id>
+		<asp name="HostTopMemoryProcessEntry_property" knownName="HostDiscovery_Simulator_HostTopMemoryProcessEntry_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">residentSetSize</value>
+					<value name="valueType">java.lang.Float</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">virtualSetSize</value>
+					<value name="valueType">java.lang.Float</value>
+					<value name="value">0</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>e1299a89-d8e8-311f-9c6c-19c0e390b704</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Agent_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_Agent_Property_Default</known_name>
+		<type_id>67987ab3-c545-350e-bc60-816891aabc46</type_id>
+		<asp name="Agent_property" knownName="HostDiscovery_Simulator_Agent_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">name</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">name</value>
+				</row>
+				<row>
+					<value name="name">agentVersion</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">agentVersion</value>
+				</row>
+				<row>
+					<value name="name">agentName</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">agentName</value>
+				</row>
+				<row>
+					<value name="name">agentInstance</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">agentInstance</value>
+				</row>
+				<row>
+					<value name="name">build</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">build</value>
+				</row>
+				<row>
+					<value name="name">cpuCount</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">cpuCount</value>
+				</row>
+				<row>
+					<value name="name">hostName</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">hostName</value>
+				</row>
+				<row>
+					<value name="name">type</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">type</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>8926d6ea-7217-3e23-a317-5bd7d65dd0a9</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostTopProcessEntry_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostTopProcessEntry_Property_Default</known_name>
+		<type_id>e90a66ff-baae-3d21-a4e2-2d6c213e6619</type_id>
+		<asp name="HostTopProcessEntry_property" knownName="HostDiscovery_Simulator_HostTopProcessEntry_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">userName</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">userName</value>
+				</row>
+				<row>
+					<value name="name">command</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">command</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>f632a3e4-3cde-3041-812b-2a58a6f9a8c6</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Processor_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_Processor_Property_Default</known_name>
+		<type_id>5d260b4c-277b-356e-b152-7ef77d829b7d</type_id>
+		<asp name="Processor_property" knownName="HostDiscovery_Simulator_Processor_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">processorType</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">processorType</value>
+				</row>
+				<row>
+					<value name="name">stepping</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">stepping</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>fc6ce0f9-58e1-316f-bc4b-99b7cbbb58ed</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostTopIOProcessEntry_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostTopIOProcessEntry_Property_Default</known_name>
+		<type_id>94c1af68-de46-3e72-80a3-5faf04bacef2</type_id>
+		<asp name="HostTopIOProcessEntry_property" knownName="HostDiscovery_Simulator_HostTopIOProcessEntry_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">ioRate</value>
+					<value name="valueType">java.lang.Float</value>
+					<value name="value">0</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>49033f53-0edd-3241-b6d0-64823f89e4df</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostProcessInstance_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostProcessInstance_Property_Default</known_name>
+		<type_id>d51c2164-ab26-302a-a0c4-148797c865d1</type_id>
+		<asp name="HostProcessInstance_property" knownName="HostDiscovery_Simulator_HostProcessInstance_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">parentPid</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">parentPid</value>
+				</row>
+				<row>
+					<value name="name">percentProcessorTime</value>
+					<value name="valueType">java.lang.Float</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">totalProcessorTime</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">percentMemory</value>
+					<value name="valueType">java.lang.Float</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">virtualSize</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">workingSetSize</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">swapSize</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">pageFaults</value>
+					<value name="valueType">java.lang.Float</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">dataRead</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">dataWritten</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">dataOther</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">operationsRead</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">operationsWrite</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">operationsOther</value>
+					<value name="valueType">java.lang.Double</value>
+					<value name="value">0</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>2828cb3d-f787-346a-b688-a231f7e86d7c</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>NetworkInterface_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_NetworkInterface_Property_Default</known_name>
+		<type_id>a6ad031e-d5b5-33e8-b695-48c6d5ca8b30</type_id>
+		<asp name="NetworkInterface_property" knownName="HostDiscovery_Simulator_NetworkInterface_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">macAddress</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">macAddress</value>
+				</row>
+				<row>
+					<value name="name">interfaceIndex</value>
+					<value name="valueType">java.lang.Integer</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">portNumber</value>
+					<value name="valueType">java.lang.Integer</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">interfaceType</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">interfaceType</value>
+				</row>
+				<row>
+					<value name="name">netmask</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">netmask</value>
+				</row>
+				<row>
+					<value name="name">isLayer2</value>
+					<value name="valueType">java.lang.Boolean</value>
+					<value name="value">true</value>
+				</row>
+				<row>
+					<value name="name">networkSegment</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">networkSegment</value>
+				</row>
+				<row>
+					<value name="name">layer2Segment</value>
+					<value name="valueType">java.lang.Integer</value>
+					<value name="value">0</value>
+				</row>
+				<row>
+					<value name="name">discoveryStatus</value>
+					<value name="valueType">com.quest.fglam.example.hostdiscovery.samples.HostDiscoveryStatus</value>
+					<value name="value">Inactive,Active</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>3eb49206-9cea-3c80-9641-e6601510d3e2</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>StringValue_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_StringValue_Property_Default</known_name>
+		<type_id>1346cccf-faee-3c31-85f1-c48dbecaf3da</type_id>
+		<asp name="StringValue_property" knownName="HostDiscovery_Simulator_StringValue_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">value</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">value</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>f5c99634-2b60-3abc-9466-0ffa8e7551dc</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostTopCPUProcessEntry_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostTopCPUProcessEntry_Property_Default</known_name>
+		<type_id>04807556-5993-3118-8a6b-bcd84f7a9803</type_id>
+		<asp name="HostTopCPUProcessEntry_property" knownName="HostDiscovery_Simulator_HostTopCPUProcessEntry_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">cpuUsage</value>
+					<value name="valueType">java.lang.Float</value>
+					<value name="value">0</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>e2661a51-489a-3d37-b231-d540d5e48b63</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Host_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_Host_Property_Default</known_name>
+		<type_id>d430de7d-dd13-39a6-b09e-2bc6ae0e115e</type_id>
+		<asp name="Host_property" knownName="HostDiscovery_Simulator_Host_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">systemId</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">systemId</value>
+				</row>
+				<row>
+					<value name="name">isHidden</value>
+					<value name="valueType">java.lang.Boolean</value>
+					<value name="value">true</value>
+				</row>
+				<row>
+					<value name="name">localName</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">localName</value>
+				</row>
+				<row>
+					<value name="name">domainName</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">domainName</value>
+				</row>
+				<row>
+					<value name="name">vendor</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">vendor</value>
+				</row>
+				<row>
+					<value name="name">sysObjectId</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">sysObjectId</value>
+				</row>
+				<row>
+					<value name="name">isGateway</value>
+					<value name="valueType">java.lang.Boolean</value>
+					<value name="value">true</value>
+				</row>
+				<row>
+					<value name="name">isBridge</value>
+					<value name="valueType">java.lang.Boolean</value>
+					<value name="value">true</value>
+				</row>
+				<row>
+					<value name="name">discoveryStatus</value>
+					<value name="valueType">com.quest.fglam.example.hostdiscovery.samples.HostDiscoveryStatus</value>
+					<value name="value">Inactive,Active</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>9b2a2650-b749-3155-8953-7fb49a9cf1b8</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostService_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostService_Property_Default</known_name>
+		<type_id>f16c381e-a158-3fb0-aa8a-9f47b0cb61ef</type_id>
+		<asp name="HostService_property" knownName="HostDiscovery_Simulator_HostService_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">displayName</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">displayName</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>29d26e1f-4905-3238-93c1-b68bd070554c</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>HostBaseObject_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_HostBaseObject_Property_Default</known_name>
+		<type_id>9c2f0e77-0e57-3635-aa5e-183f747e89bf</type_id>
+		<asp name="HostBaseObject_property" knownName="HostDiscovery_Simulator_HostBaseObject_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">name</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">name</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>6254d0d2-332c-3180-85d6-88a3f1ce7fe9</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>TopologyEdge_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_TopologyEdge_Property_Default</known_name>
+		<type_id>4ec3e5e8-9782-37d6-b04f-e64f95d0a96e</type_id>
+		<asp name="TopologyEdge_property" knownName="HostDiscovery_Simulator_TopologyEdge_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">name</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">name</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>7e13d74a-4d63-3203-bf21-2da82f4be95f</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>DataObject_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_DataObject_Property_Default</known_name>
+		<type_id>9aeee195-ea2c-3a33-85d0-bc62f37becc9</type_id>
+		<asp name="DataObject_property" knownName="HostDiscovery_Simulator_DataObject_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">uniqueId</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">uniqueId</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>831fd342-f415-3ef9-a16d-be8640a1d589</config_id>
+		<adapter>HostDiscoveryAgent_Simulator</adapter>
+		<agent_type>HostDiscovery_Simulator</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>Object_property</sharing_name>
+		<known_name>HostDiscovery_Simulator_Object_Property_Default</known_name>
+		<type_id>b66a16f2-f534-3fdb-b1c4-9b7e9c3b81a9</type_id>
+		<asp name="Object_property" knownName="HostDiscovery_Simulator_Object_Property_Default" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="valueType" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Value Datatype Reminder (R/O)</prompt>
+					<paramdata/>
+				</field>
+				<field name="value" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Property Value</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">name</value>
+					<value name="valueType">java.lang.String</value>
+					<value name="value">name</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model></foglight-config>

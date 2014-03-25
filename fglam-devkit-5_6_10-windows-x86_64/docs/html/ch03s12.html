@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>3.12. Connection Services</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch03.html" title="Chapter 3. Agent Services"/><link rel="prev" href="ch03s11.html" title="3.11. MemoryWarningService"/><link rel="next" href="ch04.html" title="Chapter 4. Agent Tooling"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.12. Connection Services</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s11.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 3. Agent Services</th><td width="20%" align="right"> <a accesskey="n" href="ch04.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="3.12. Connection Services"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="agentservices-connectionServices"/>3.12. Connection Services</h2></div></div></div><p>
+            Connection services in FglAM allow your agent to connect to a remote system for monitoring purposes. The devkit
+            provides various protocol-level connection types as well as a generic authentication service that allows you to 
+            develop your own customer connection implementation.
+        </p><p>
+            Connections are authenticated through the use of credentials that are defined on the FMS. Credentials are defined
+            with authentication mechanisms in mind. Credential types range from simple username and password to Windows
+            authentication to scripted log-in mechanisms. Associations are applied to a credential by defining
+            resource mappings. The resource mappings allow you to associate a credential with various system resources. For instance,
+            you can define an IP address range that can use a credential, port number, hostname, and so on. The mapping
+            definitions can be as inclusive as required to associate the credential within the monitoring network.
+        </p><p>
+            When working with the connection services, you must provide remote connection details that describe the host
+            or resource your agent intends to monitor. These details are provided as attributes to the connection
+            service methods and are converted into a credential query that is dispatched to the FMS for resolution. The
+            connection attributes provided here are matched on the resource mappings that were applied to the
+            credentials created on the FMS.
+        </p><p>
+            Each connection service defines its own required connection parameters. Should your agent's monitoring
+            requirements need to define a narrower set for the returned credentials, you can include a <code class="varname">CredentialQuery</code>
+            instance that can be provided when invoking the connection service method.
+        </p><div class="section" title="3.12.1. Purpose Registry"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-connectionServices-purposeRegistry"/>3.12.1. Purpose Registry</h3></div></div></div><p>
+                Agents that are using the connection services to monitor resources must declare a purpose value when
+                they want to establish a remote connection. The purpose is a credential attribute that is required when
+                a credential is being defined.
+            </p><p>
+                Purposes are an important part of how the credentials for a particular application are found. The purpose
+                makes it possible to distinguish a credential that might not support the required access to a system that
+                another credential does. For example, a credential for OS monitoring might not have the necessary access
+                for Oracle database monitoring and vice versa. The purpose enables the first credential to be declared as
+                an OS monitoring credential. Agents that perform OS monitoring request credentials with an OS
+                monitoring purpose. Similarly, agents that perform Oracle database monitoring request credentials with an 
+                Oracle database monitoring purpose.
+            </p><p>
+                A Purpose Registry is used to track the purposes each cartridge development team have declared for their
+                agents. The goal of the registry is to prevent duplication of purpose names, where that duplication may
+                cause a conflict (like in the example above), and to allow the reuse of a purpose where appropriate.
+                Reuse must always be discussed and agreed upon by the agent teams and product management involved.
+            </p></div><div class="section" title="3.12.2. SSHConnectionService"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-connectionServices-ssh"/>3.12.2. SSHConnectionService</h3></div></div></div><p>
+                The <code class="function">SSHConnection</code> and <code class="function">SSHConnectionService</code> allow remote connection to 
+                hosts. The following guidelines and examples are from the <span class="emphasis"><em>UnixAgentImpl.java</em></span> file from the 
+                <code class="function">RemoteOSAgent</code> repository.
+            </p><div class="section" title="3.12.2.1. Establish a connection"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-connectionServices-ssh-Establish-Connection"/>3.12.2.1. Establish a connection</h4></div></div></div><p>
+                    Establish a connection with a given host/port using the <code class="function">SSHConnection</code> service.
+
+    </p><pre class="programlisting">
+    <strong class="hl-keyword">import</strong> com.quest.glue.api.services.SSHConnection2;
+    <strong class="hl-keyword">import</strong> com.quest.glue.api.services.SSHConnectionService2;
+
+    <strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> TestAgent {
+
+    <strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> SSHConnectionService2 mSSHConnectionService;
+
+    SSHConnection2 connection = null;
+    <strong class="hl-keyword">try</strong> {
+        connection = mSSHConnectionService.establish(host, port, purpose, timeoutMillis);
+        <em class="hl-tag" style="color: green">//.</em>
+        <em class="hl-tag" style="color: green">//more code here</em>
+    }
+    <strong class="hl-keyword">catch</strong> (Exception e) {
+        <em class="hl-tag" style="color: green">//do something with the caught exception</em>
+    }</pre><p>
+                </p></div><div class="section" title="3.12.2.2. Executing commands remotely"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-connectionServices-ssh-execute-commands"/>3.12.2.2. Executing commands remotely</h4></div></div></div><p>
+                    Execute commands on the remote machines using the <code class="function">execute()</code> method.
+                    </p><p>
+                    Javadocs for the <code class="function">execute()</code> method:
+                    Send a line of text over the wire. The output of the command will be piped through the provided
+                    streams while the command executes. Once finished, the command's return code is returned.
+                    Agent code can pass null for any output stream that is not of interest. FglAM will log
+                    any unhandled stdout or stderr messages at debug and error levels respectively, so that the output
+                    is not lost. Agents are encouraged to provide buffered output streams (if they provide any
+                    stream at all) to ensure data can be processed quickly.
+
+                    </p><p>Parameters:</p><p>
+                    </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">command - The command to send</li><li class="listitem">stdout - Stream to which the connection will write the command's stdout data</li><li class="listitem">stderr - Stream to which the connection will write the command's stderr data</li></ul></div><p>
+                    An example:
+
+    </p><pre class="programlisting">
+        ByteArrayOutputStream bos = <strong class="hl-keyword">new</strong> ByteArrayOutputStream();
+        connection.execute(<strong class="hl-string"><em style="color:red">"uname -s"</em></strong>, bos, null);
+    </pre><p>
+                Another example:
+    </p><pre class="programlisting">
+        exec(connection, <strong class="hl-string"><em style="color:red">"cat /proc/diskstats"</em></strong>).get(<span class="hl-number">0</span>);
+    </pre><p>
+                </p></div><div class="section" title="3.12.2.3. Read a remote file"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-connectionServices-ssh-read-remote-file"/>3.12.2.3. Read a remote file</h4></div></div></div><p>
+                    Read a file remotely using the <code class="function">readFile()</code> method. An example:
+    </p><pre class="programlisting">
+        String localFileLocation = <strong class="hl-string"><em style="color:red">"path/to/where/file/is/copied/locally"</em></strong>
+        String remoteFileLocation = <strong class="hl-string"><em style="color:red">"path/to/remote/file"</em></strong>
+        <strong class="hl-keyword">try</strong>{
+            OutputStream os = <strong class="hl-keyword">new</strong> FileOutputStream(localFileLocation);
+            connection.readFile(remoteFileLocation, os);
+            <em class="hl-tag" style="color: green">//more code here</em>
+        }<strong class="hl-keyword">catch</strong>(IOException e){
+            <em class="hl-tag" style="color: green">//deal with the exception</em>
+        }
+    </pre><p>
+                    </p></div><div class="section" title="3.12.2.4. Write to a remote file"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-connectionServices-ssh-write-to-remote-file"/>3.12.2.4. Write to a remote file</h4></div></div></div><p>
+                    Read a file remotely using the <code class="function">writeFile()</code> method. An example:
+    </p><pre class="programlisting">
+        String localFileLocation = <strong class="hl-string"><em style="color:red">"path/to/where/file/is/locally"</em></strong>;
+        String remoteFileLocation = <strong class="hl-string"><em style="color:red">"path/to/remote/file"</em></strong>;
+        <strong class="hl-keyword">try</strong>{
+            InputStream iStream = <strong class="hl-keyword">new</strong> FileInputStream(localFileLocation);
+            connection.writeFile(iStream, remoteFileLocation);
+            <em class="hl-tag" style="color: green">//more code here</em>
+        }<strong class="hl-keyword">catch</strong>(IOException e){
+            <em class="hl-tag" style="color: green">//deal with the exception</em>
+        }
+    </pre><p>
+                    </p></div><div class="section" title="3.12.2.5. Release Connection"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-connectionServices-ssh-release-connection"/>3.12.2.5. Release Connection</h4></div></div></div><p>
+                    This releases the connection.
+    </p><pre class="programlisting">
+        <strong class="hl-keyword">finally</strong> {
+            mSSHConnectionService.release( connection );
+        }
+    </pre><p>
+                </p></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+                Further details can be found in the Javadoc API in the 
+                <code class="function">com.quest.glue.api.services.SSHConnectionService</code> package.
+            </td></tr></table></div></div><div class="section" title="3.12.3. WindowsInfoService"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-WindowsInfoService"/>3.12.3. WindowsInfoService</h3></div></div></div><p>
+            This implementation is for collecting metrics from Windows hosts. This service can connect using both
+            WinRM (Windows Remote Management) and WMI (Windows Management Instrumentation).
+        </p><div class="section" title="3.12.3.1. Establish a connection"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-WindowsInfoService-Establish-Connection"/>3.12.3.1. Establish a connection</h4></div></div></div><p>
+                Establish a connection to a given host using the <code class="function">WindowsInfoService</code>.
+
+</p><pre class="programlisting">
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsInfoService;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsInfoConnection;
+
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> TestAgent {
+
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> WindowsInfoService mConnectionService;
+WindowsInfoConnection connection = null;
+<strong class="hl-keyword">try</strong> {
+    connection = mConnectionService.establish(credentialQuery, connectionParametersList);
+    <em class="hl-tag" style="color: green">//.</em>
+    <em class="hl-tag" style="color: green">//more code here</em>
+}
+<strong class="hl-keyword">catch</strong> (Exception e) {
+    <em class="hl-tag" style="color: green">// do something with the caught exception</em>
+}
+</pre><p>
+            </p></div><div class="section" title="3.12.3.2. Connection Parameters"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-WindowsInfoService-connection-parameters"/>3.12.3.2. Connection Parameters</h4></div></div></div><p>
+                The <code class="function">WindowsInfoService</code> can establish either a WinRM connection or WMI connection. The connection type established is dependent 
+                on the parameters that are provided when establishing the connection. Connection parameter instances are obtained by invoking the 
+                <code class="function">newConnectionParameters()</code> function for the service.
+            </p><p>
+                The two connection parameter classes are:
+                </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">WinRMInfoConnectionParameters - Represents the connection parameters that are specific to a WinRM connection</li><li class="listitem">WMIInfoConnectionParameters - Represents the connection parameters that are specific to a WMI connection</li></ul></div><p>
+            </p><p>
+              An example:
+</p><pre class="programlisting">
+    <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsInfoService;
+    <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WinRMInfoConnectionParameters;
+    <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WMIAuthenticationLevel;
+    <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WMIInfoConnectionParameters;
+    
+    <em class="hl-tag" style="color: green">// WinRM parameter</em>
+    WinRMInfoConnectionParameters winrmParams = mConnectionService.newConnectionParameters(WinRMInfoConnectionParameters.<strong class="hl-keyword">class</strong>);
+    winrmParams.setNamespace(namespace);
+    winrmParams.setPort(port);
+    winrmParams.setTimeout(timeout);
+    
+    <em class="hl-tag" style="color: green">// WMI parameter</em>
+    WMIInfoConnectionParameters wmiParams = mConnectionService.newConnectionParameters(WMIInfoConnectionParameters.<strong class="hl-keyword">class</strong>);
+    wmiParams.setNamespace(namespace);
+    wmiParams.setAuthenticationLevel(WMIAuthenticationLevel.PACKET_PRIVACY);
+</pre><p>                
+            </p><p>
+              Multiple parameters can be passed to the service when establishing a connection, with each parameter used until either a connection is made, or all the parameters 
+              have been used and no connection has been made.
+            </p></div><div class="section" title="3.12.3.3. Executing queries on a remote Windows host"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-WindowsInfoService-execute-query"/>3.12.3.3. Executing queries on a remote Windows host</h4></div></div></div><p>
+                Execute queries using the <code class="function">buildQuery()</code> method.
+            </p><p>
+                Javadoc for the <code class="function">buildQuery()</code> method:
+                Executes a WMI-style query.  This connection can be created using either WinRM or WMI so queries passed to
+                it should be written so that they will work using both technologies.  Most standard queries work transparently,
+                but queries that access class meta-data (of the form <code class="function">SELECT * FROM meta_class WHERE __Class = "..."</code>)
+                will not work when executed using WinRM.  In rare situations where platform-specific queries must be executed,
+                agents can invoke <code class="function">getConnectionType()</code> to determine which underlying subsystem they are connected to.
+
+                Agents must only execute methods on this connection from within the thread where the connection was established, to avoid
+                cross-thread issues related to COM.  In general, this isn't a problem so long as agents execute queries as soon as the
+                connection is established.
+
+                Agent developers are strongly encouraged to ensure their agents are tested against both WinRM and WMI information
+                services to be sure that their queries, and result processing are compatible with both services.
+                </p><p>Parameters:</p><p>
+                </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">query - The query string to execute</li><li class="listitem">timeoutMillis - The number of milliseconds to wait before timing out, or 0 to disable timeouts entirely</li></ul></div><p>
+
+                An example:
+</p><pre class="programlisting">
+    <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsInfoService;
+    <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsInfoConnection;
+    <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsInfoObject;
+    
+    String query = <strong class="hl-string"><em style="color:red">"SELECT * FROM Win32_NetworkAdapter"</em></strong>;
+    WindowsInfoQuery adapterResults = connection.buildQuery(query, timeout);
+    <strong class="hl-keyword">for</strong> ( WindowsInfoObject adapter : adapterResults ) {
+        <em class="hl-tag" style="color: green">// process this adapter</em>
+    }
+    adapterResults.close();
+</pre><p>
+            </p></div><div class="section" title="3.12.3.4. Release Connection"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-WindowsInfoService-release-connection"/>3.12.3.4. Release Connection</h4></div></div></div><p>
+                Releases the connection.
+</p><pre class="programlisting">
+<strong class="hl-keyword">finally</strong> {
+    mConnectionService.release(connection);
+}
+</pre><p>
+            </p></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+          Further details can be found in the Javadoc API in the 
+          <code class="function">com.quest.glue.api.services.WindowsInfoService</code> package.
+        </td></tr></table></div><div class="section" title="3.12.3.5. Setting permissions for access to DCOM and registry for Windows shell"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-access-to-dcom-objects"/>3.12.3.5. Setting permissions for access to DCOM and registry for Windows shell</h4></div></div></div><p>
+                Accessing target machines using DCOM (in non-local connections) requires access to 
+                several registry keys. On newer versions of Windows (such as Windows 7 and Windows 
+                Server 2008 R2) this access might not be allowed by default and the agent will 
+                receive "Access is denied" errors even when the remote registry is enabled. When 
+                this happens, the registry variables will have to be modified to get full access.
+            </p><p>
+                The registry variables that need to be modified are:
+                </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">72C24DD5-D70A-438B-8A42-98424B88AFB8</li><li class="listitem">0D43FE01-F093-11CF-8940-00A0C9054228</li><li class="listitem">76A64158-CB41-11d1-8B02-00600806D9B6</li></ul></div><p>
+                There may be multiple instances of each key, especially for 64-bit versions of 
+                Windows Server 2008 R2 and Windows 7. Each instance will need to be updated.
+            </p><p>
+                The procedure on how to set permissions on the registry keys is as follows:
+                </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Login to the target host as 'Administrator'</li><li class="listitem">Open Start -&gt; Run and type Regedit</li><li class="listitem">From the Find menu, search for: 72C24DD5-D70A-438B-8A42-98424B88AFB8</li><li class="listitem">Right click on this item and select 'Permissions'</li><li class="listitem">Click Advanced -&gt; Select the 'Owner' tab</li><li class="listitem">In the 'Change Owner to...' box, highlight the account you are currently logged in as.</li><li class="listitem">Click Ok</li><li class="listitem">Right click the registry item and select 'Permissions' again</li><li class="listitem">Highlight the 'Administrators' group</li><li class="listitem">Give 'Full Control' permissions to this group by checking the Allow box</li><li class="listitem">Click Ok</li><li class="listitem">Continue searching and repeat the above prodecude for each instance of
+                              the key in the registry.</li><li class="listitem">Repeat the steps for 0D43FE01-F093-11CF-8940-00A0C9054228 and
+                              76A64158-CB41-11d1-8B02-00600806D9B6</li></ul></div><p>
+            </p><p>
+                 This grants access to the Windows Script Host Shell Object, Windows Script 
+                 FileSystem Object, and WBEM Scripting Locator COM objects, respectively.
+            </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+                If, for some reason, one or both keys don't exist on the target host, the solution 
+                would be to export the key/keys from an identical platform (same OS and platform) 
+                where the key/keys exist and import the Registry key to the desired target host.
+            </td></tr></table></div></div></div><div class="section" title="3.12.4. WindowsCommandShellService"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-WindowsCommandShellService"/>3.12.4. WindowsCommandShellService</h3></div></div></div><p>
+           This implementation is for executing Windows command shell commands on remote Windows hosts, and can connect using both WinRM and WMI DCOM.
+       </p><div class="section" title="3.12.4.1. Establish a connection"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-WindowsCommandShellService-Establish-Connection"/>3.12.4.1. Establish a connection</h4></div></div></div><p>
+                Establish a connection to a given host using the <code class="function">WindowsCommandShellService</code>.
+</p><pre class="programlisting">
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsCommandShell;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsCommandShellService;
+  
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> TestAgent {
+  
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> WindowsCommandShellService mShellService;
+WindowsCommandShell shell = null;
+<strong class="hl-keyword">try</strong> {
+    shell = mShellService.establish(credentialQuery, shellParametersList);
+    <em class="hl-tag" style="color: green">//.</em>
+    <em class="hl-tag" style="color: green">//more code here</em>
+}
+<strong class="hl-keyword">catch</strong> (Exception e) {
+    <em class="hl-tag" style="color: green">// do something with the caught exception</em>
+}
+</pre><p>
+            </p></div><div class="section" title="3.12.4.2. Connection Parameters"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-WindowsCommandShellService-connection-parameters"/>3.12.4.2. Connection Parameters</h4></div></div></div><p>
+               The <code class="function">WindowsCommandShellService</code> can establish either a WinRM shell connection or a WMI DCOM shell connection. The connection type established is dependent
+               on the parameters that are provided when establishing the connection. Connection parameter instances are obtained by invoking the
+               <code class="function">newConnectionParameters()</code> function for the service.
+           </p><p>
+               The two connection parameter classes are:
+               </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">WinRMCommandShellParameters - Represents the connection parameters that are specific to a WinRM connection</li><li class="listitem">DCOMWindowsCommandShellParameters - Represents the connection parameters that are specific to a WMI DCOM connection</li></ul></div><p>
+           </p><p>
+               An example:
+</p><pre class="programlisting">
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.DCOMWindowsCommandShellParameters;
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsCommandShell;
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsCommandShellService;
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WinRMCommandShellParameters;
+  
+  <em class="hl-tag" style="color: green">// WinRM parameter</em>
+  WinRMCommandShellParameters winrmParams = mShellService.newConnectionParameters(WinRMCommandShellParameters.<strong class="hl-keyword">class</strong>);
+  winrmParams.setHostname(host);
+  winrmParams.setPort(port);
+  winrmParams.setTimeout(timeout);
+
+  <em class="hl-tag" style="color: green">// WMI DCOM parameter</em>
+  DCOMWindowsCommandShellParameters dcomParams = mShellService.newConnectionParameters(DCOMWindowsCommandShellParameters.<strong class="hl-keyword">class</strong>);
+  dcomParams.setHostname(host);
+  dcomParams.setTimeout(timeout);
+</pre><p>
+           </p><p>
+               Multiple parameters can be passed to the service when establishing a connection, with each parameter used until either a connection is made, or all the parameters
+               have been used and no connection was established.
+           </p></div><div class="section" title="3.12.4.3. Executing commands remotely"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-WindowsCommandShellService-execute-command"/>3.12.4.3. Executing commands remotely</h4></div></div></div><p>
+               Execute commands using the <code class="function">execute()</code> method.
+           </p><p>
+               Javadoc for the <code class="function">execute()</code> method:
+
+               Execute a command.  The results of the command will be streamed back to the agent through the provided <code class="function">stdout</code> 
+               and <code class="function">stderr</code> output streams. The output to the respective stream depends on whether the stream is written 
+               to by the command itself.
+
+               Neither stream is required and can be <code class="function">null</code>. If <code class="function">stdout</code> is not provided then FglAM will log
+               any output received at debug level. A <code class="function">null</code> stderr parameter will cause FglAM to log errors for any input
+               received on that stream.
+               </p><p>Parameters:</p><p>
+               </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">command - The command to execute</li><li class="listitem">stdout - An output stream that the command's stdout data will be written to, or <code class="function">null</code> otherwise</li><li class="listitem">stderr - An output stream that the command's stderr data will be written to, or <code class="function">null</code> otherwise</li><li class="listitem">timeoutMillis - The timeout in milliseconds for executing the command</li></ul></div><p>
+
+               An example:
+</p><pre class="programlisting">
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsCommandShell;
+  <strong class="hl-keyword">import</strong> com.quest.glue.api.services.WindowsCommandShellService;
+
+  String command = <strong class="hl-string"><em style="color:red">"dir C:\\"</em></strong>;
+  ByteArrayOutputStream stdoutStream = <strong class="hl-keyword">new</strong> ByteArrayOutputStream();
+  ByteArrayOutputStream stderrStream = <strong class="hl-keyword">new</strong> ByteArrayOutputStream();
+  shell.execute(command, stdoutStream, stderrStream, timeout);
+</pre><p>
+           </p></div><div class="section" title="3.12.4.4. Release Connection"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-WindowsCommandShellService-release-connection"/>3.12.4.4. Release Connection</h4></div></div></div><p>
+               Releases the shell connection.
+</p><pre class="programlisting">
+<strong class="hl-keyword">finally</strong> {
+  mShellService.release(shell);
+}
+</pre><p>
+           </p></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+           Further details can be found in the Javadoc API in the
+           <code class="function">com.quest.glue.api.services.WindowsCommandShellService</code> package.
+       </td></tr></table></div><div class="section" title="3.12.4.5. Setting permissions for access to DCOM and registry for Windows shell"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-WindowsCommandShellService-access-to-dcom-objects"/>3.12.4.5. Setting permissions for access to DCOM and registry for Windows shell</h4></div></div></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+               The settings required are the same as those for the <code class="function">WindowsInfoService</code>.
+           </td></tr></table></div></div></div><div class="section" title="3.12.5. CleartextCredentialService"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-CleartextCredential"/>3.12.5. CleartextCredentialService</h3></div></div></div><p>
+            The devkit provides a number of <code class="function">ConnectionService</code> classes to enable remote resource 
+            authentication through our credential services. These services provide an authenticated connection to a monitored 
+            resource without having to expose the credentials for accessing the resource to the agent. This is 
+            a much more secure way of handling sensitive data, because the responsibility for keeping this data private is never
+            passed to the agent.
+        </p><p>
+            If a devkit connection service is not yet available for agents that need to authenticate to a remote resource. The
+            <code class="function">CleartextCredentialService</code> provides an interim solution. For example, the devkit 
+            currently supports SSH, and WMI/WinRM connection types. If your agent needs to acquire a JDBC or some other connection
+            type, then you may implement your own connection service and use the credentials returned from the 
+            <code class="function">CleartextCredentialService</code> to provide authentication when the established connection 
+            requests it.
+        </p><p>
+            Use of the <code class="function">CleartextCredentialService</code> does require some care in that you are now 
+            responsible for handling the sensitive, clear-text credential information. In addition, you must also 
+            follow a number of programmatic guidelines when processing returned credentials.
+        </p><div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"/></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+            Access to credentials through this service can only be provided when a credential is declared to be 
+            accessible directly. This flag is set on the server side (or in the credential repository if using the
+            AgentHarness). If the <code class="function">com.quest.nitro.credential.direct.access</code> attribute is set, 
+            then credentials are allowed to be passed through to the <code class="function">CleartextCredentialService</code> 
+            and on to the agent.
+        </td></tr></table></div><div class="section" title="3.12.5.1. Credential Query"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-ClrTxt-Query"/>3.12.5.1. Credential Query</h4></div></div></div><p>
+                A <code class="varname">CredentialQuery</code> must be structured and submitted in order to receive credentials. 
+                The query must define the resource to which the agent needs to authenticate. This is usually a hostname 
+                or IP Address, but it can also be a specific database.
+            </p><p>
+                To build a <code class="varname">CredentialQuery</code>, you will need to request one from the 
+                <code class="function">CredentialQueryBuilderService</code>. With this object instance you may declare the additional 
+                parameters that describe the type of resource to which you need to authenticate.
+                </p><pre class="programlisting">
+CredentialQueryBuilderService2 queryBuilderService = serviceFactory.getService(CredentialQueryBuilderService2.<strong class="hl-keyword">class</strong>);
+
+<em class="hl-tag" style="color: green">// creates a query instance with a target hostname</em>
+<strong class="hl-keyword">final</strong> CredentialQuery query = queryBuilderService.createQuery(purpose);
+<em class="hl-tag" style="color: green">// sets the remote host to monitor</em>
+query.setTargetHost(<strong class="hl-string"><em style="color:red">"monitor.host.com"</em></strong>);
+<em class="hl-tag" style="color: green">// sets the desired port on the target host</em>
+query.setTargetPort(<span class="hl-number">22</span>);
+<em class="hl-tag" style="color: green">// sets a property called username with a value of root.</em>
+query.addProperty(<strong class="hl-string"><em style="color:red">"username"</em></strong>, <strong class="hl-string"><em style="color:red">"root"</em></strong>);
+                </pre><p>
+            </p></div><div class="section" title="3.12.5.2. Handling a CredentialQuery Response"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-ClrTxt-"/>3.12.5.2. Handling a CredentialQuery Response</h4></div></div></div><p>
+                Now that a credential query is defined, you need to submit the query to the 
+                <code class="function">CleartextCredentialService</code>. This passes the request into the Agent Manager's core 
+                <code class="function">CredentialManager</code>. Here it inspects its current cache for credentials that match 
+                the query. If none are found, then the query is dispatched to the Server for processing; 
+                otherwise, a credential result-set is returned from the cache.
+                </p><pre class="programlisting">
+...
+CleartextCredentialService2 mCredentialService = serviceFactory.getService(CleartextCredentialService2.<strong class="hl-keyword">class</strong>);
+...
+<em><span class="hl-annotation" style="color: gray">@Override</span></em>
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> collectMetrics(<strong class="hl-keyword">long</strong> expectedFrequency) {
+
+    mCredentialService.queryCredentials(query, <strong class="hl-keyword">new</strong> CredentialQueryResultCallback2() {
+        <em><span class="hl-annotation" style="color: gray">@Override</span></em>
+        <strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> queryResult(CredentialQueryResultSet result) {
+            <em class="hl-tag" style="color: green">// get a connection from our ConnectionManager using the credentials returned from the query</em>
+            MyConnection conn = mConnectionManager.open(URI.create(mProperties.getConnection()), result);
+            <em class="hl-tag" style="color: green">// pass this connection to our exec step to begin data collection</em>
+            execCollection(conn);
+        }
+    });
+}
+                </pre><p>
+                In this example, we are querying for credentials within one of the Structured Data Collector scheduled
+                callback methods. Our anonymous inner-class implementation for the <code class="function">CredentialQueryResultCallback</code> 
+                provides for simple handling of this asynchronous request for credentials.
+                The implementation details of this callback demonstrate the initialization of a connection class (one that
+                you would devise as part of your agent) that requests a connection to a provided URI and the results of the
+                <code class="varname">CredentialQuery</code>.
+            </p><p>
+                To continue with our example <code class="function">ConnectionManager</code>, the following source shows a discrete pattern 
+                that must be followed when handling credentials.
+                </p><pre class="programlisting">
+
+    <strong class="hl-keyword">public</strong> MyConnection open(URI uri, CredentialQueryResultSet queryResult) {
+        MyConnection conn = null;
+        MyConnectionFactory factory = <strong class="hl-keyword">new</strong> MyConnectionFactory();
+        <strong class="hl-keyword">for</strong>( Credential credential : queryResult.getCredentials() ) {
+
+            <em class="hl-tag" style="color: green">// validate credential policy before attempting to authenticate</em>
+            <strong class="hl-keyword">if</strong>(!mCredentialService.validateCredentialPolicies(credential, queryResult)) { <a id="validateCredentialPolicies"/><img src="images/callouts/1.png" alt="1" border="0"/>
+                <em class="hl-tag" style="color: green">// a policy on this credential could not be validated. Do not attempt to</em>
+                <em class="hl-tag" style="color: green">// use for authentication.</em>
+                <strong class="hl-keyword">continue</strong>;
+            }
+
+            <strong class="hl-keyword">try</strong> {
+                <em class="hl-tag" style="color: green">// try to create a new connection from this credential</em>
+                conn = factory.getConnection(uri, credential);
+            } <strong class="hl-keyword">catch</strong>(AuthenticationException e) {
+                conn = null;
+                mLogger.log(<strong class="hl-string"><em style="color:red">"failedToConnect"</em></strong>, e, credential.getId().toString(), credential.getType());
+
+                <em class="hl-tag" style="color: green">// notify the server of the authentication failure</em>
+                mCredentialService.reportConnectionFailure( uri.getHost(), credential, queryResult, null, e ); <a id="reportConnectionFailure"/><img src="images/callouts/2.png" alt="2" border="0"/>
+            }
+            <strong class="hl-keyword">finally</strong> {
+                <strong class="hl-keyword">boolean</strong> isConnected = conn != null;
+
+                <em class="hl-tag" style="color: green">// update this credential's policies if we were able to authenticate a connection</em>
+                <em class="hl-tag" style="color: green">// with this credential</em>
+                credential.release(isConnected); <a id="releaseCredential"/><img src="images/callouts/3.png" alt="3" border="0"/>
+
+                <em class="hl-tag" style="color: green">// if connected, notify the server</em>
+                <strong class="hl-keyword">if</strong>(isConnected) {
+                    mCredentialService.reportConnectionSuccess( uri.getHost(), credential, queryResult, null ); <a id="reportConnectionSuccess"/><img src="images/callouts/4.png" alt="4" border="0"/>
+                }
+            }
+
+            <strong class="hl-keyword">if</strong>(conn != null) {
+                <strong class="hl-keyword">break</strong>;
+            }
+        }
+
+        <strong class="hl-keyword">return</strong> conn;
+    }
+
+                </pre><p>
+                When handling Credentials returned from a Credential Query, the following requirements must be done
+				</p><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left"><p><a href="#validateCredentialPolicies"><img src="images/callouts/1.png" alt="1" border="0"/></a> </p></td><td valign="top" align="left"><p>
+							Before a credential can be used to authenticate a connection, the policies must first be validated.
+							Calling the <code class="function">CleartextCredentialService2.validateCredentialPolicies(Credential, CredentialQueryResultSet)</code> will validate
+							all of the assigned CredentialPolicies. Should one of the Policies not validate, a Credential Event will be dispatched
+							to the FMS and the call will return FALSE. Only if the policy validation returns TRUE should you continue with using
+							the Credential for authentication
+						</p></td></tr><tr><td width="5%" valign="top" align="left"><p><a href="#reportConnectionFailure"><img src="images/callouts/2.png" alt="2" border="0"/></a> </p></td><td valign="top" align="left"><p>
+							If the connection attempt has failed, a message must be reported to the FMS that the Credential
+							was not able to authenticate to the resource. The message will be constructed with the thrown
+							exception and a CredentialEvent will be generated and dispatched.
+						</p></td></tr><tr><td width="5%" valign="top" align="left"><p><a href="#releaseCredential"><img src="images/callouts/3.png" alt="3" border="0"/></a> </p></td><td valign="top" align="left"><p>
+							The credential must be released once the authentication attempt has completed. Set the boolean value
+							to TRUE or FALSE depending on the result. This call is critical to make, as it will affect the assigned
+							CredentialPolicy counters so that we can track the usage of the Credential.
+						</p></td></tr><tr><td width="5%" valign="top" align="left"><p><a href="#reportConnectionSuccess"><img src="images/callouts/4.png" alt="4" border="0"/></a> </p></td><td valign="top" align="left"><p>
+							When a successful connection is made, we must also notify the FMS that the current credential
+							was successful in authenticating to the resource. The CredentialEvent that is generated here is
+							important to submit as it will result in a severity downgrade of any authentication failures that
+							maybe have been previously encountered while iterating over the current credential query result set.
+							This message will also result in the automatic clear of previous authentication failure alarms that
+							may have occurred during an earlier collection cycle.
+						</p></td></tr></table></div><p>
+            </p></div><div class="section" title="3.12.5.3. Accessing Credential Attributes"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-ClrTxt-accessing-attribtues"/>3.12.5.3. Accessing Credential Attributes</h4></div></div></div><p>
+                The credentials received through the <code class="function">CleartextCredentialService</code> are not strongly typed. 
+                As a result, you must check the <code class="function">Credential.getType()</code> value to determine the type of 
+                credential you have received. The reason you need to know this is that in order to access the attributes 
+                (that is, the username and password) of the credential, you need to know the set of attributes that are 
+                expected within the credential.
+            </p><div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"/></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+                In the credential, attribute map values such as <code class="varname">username</code> and <code class="varname">password</code> 
+                are stored as <code class="function">char[]</code>. Therefore, it is likely that you will need to convert these 
+                into Stirngs: 
+                <pre class="programlisting">
+<strong class="hl-keyword">final</strong> String username = <strong class="hl-keyword">new</strong> String((<strong class="hl-keyword">char</strong>[])credential.getAttribute(<strong class="hl-string"><em style="color:red">"username"</em></strong>)).intern();</pre></td></tr></table></div><p>
+                The following tables show the available credential types and their associated attribute key map values.
+                </p><p>
+                    <span class="emphasis"><em>Login Credential</em></span>
+                </p><p>
+                </p><p>
+                    Basic credential that contains only a username or pin for authentication.
+                </p><p>
+                </p><div class="table"><a id="d0e3241"/><p class="title"><strong>Table 3.6. Login: com.quest.forge.credentials.type.login</strong></p><div class="table-contents"><table summary="Login: com.quest.forge.credentials.type.login" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>DataType</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>char[]</td><td>Username to authenticate</td></tr></tbody></table></div></div><p><br class="table-break"/>
+                </p><p>
+                    <span class="emphasis"><em>Login Password Credential</em></span>
+                </p><p>
+                </p><p>
+                    The base username/password credential, and the most common credential type.
+                </p><p>
+                </p><div class="table"><a id="d0e3271"/><p class="title"><strong>Table 3.7. Login Password: com.quest.forge.credentials.type.loginPassword</strong></p><div class="table-contents"><table summary="Login Password: com.quest.forge.credentials.type.loginPassword" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>DataType</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>char[]</td><td>Username to authenticate</td></tr><tr><td>password</td><td>char[]</td><td>Password for user account</td></tr></tbody></table></div></div><p><br class="table-break"/>
+                </p><p>
+                    <span class="emphasis"><em>Windows Credential</em></span>
+                </p><p>
+                </p><p>
+                    Similar to the Login Password, but provides an additional domain attribute for
+                    specifying the Windows domain to which the account belongs.
+                </p><p>
+                </p><div class="table"><a id="d0e3308"/><p class="title"><strong>Table 3.8. Windows: com.quest.forge.credentials.type.windows</strong></p><div class="table-contents"><table summary="Windows: com.quest.forge.credentials.type.windows" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>DataType</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>char[]</td><td>Username to authenticate</td></tr><tr><td>password</td><td>char[]</td><td>Password for user account</td></tr><tr><td>domain</td><td>char[]</td><td>Windows domain name of account</td></tr><tr><td>ntlmv2</td><td>boolean</td><td>Value will be true if NTLMv2 is required to establish a connection with the Windows Host</td></tr></tbody></table></div></div><p><br class="table-break"/>
+                </p><p>
+                    <span class="emphasis"><em>Host Key Credential</em></span>
+                </p><p>
+                </p><p>
+                    Credential representing the keys provided by host keys. The value of the key is an arbitrary string.
+                    Under normal circumstances it can be copied out of the host's public key file and simply inserted
+                    into an instance of this class.
+
+                    These host keys are not used for any type of encryption or decryption, but instead are used to
+                    validate the signature of a host to prevent man-in-the-middle attacks.
+
+                    A common use case for preventing a host from ever connecting is to configure keys like this with 
+                    known but invalid strings like "can-never-connect".  For this reason no particular encoding format is
+                    expected in the keys. They should always be assumed to be opaque strings. Similarly, the
+                    algorithm can be anything.
+                </p><p>
+                </p><div class="table"><a id="d0e3359"/><p class="title"><strong>Table 3.9. Host Key: com.quest.forge.credentials.type.hostkey</strong></p><div class="table-contents"><table summary="Host Key: com.quest.forge.credentials.type.hostkey" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>DataType</th><th>Description</th></tr></thead><tbody><tr><td>algorithm</td><td>java.lang.String</td><td>Algorithm of the key</td></tr><tr><td>key</td><td>java.lang.String</td><td>Host key value (check the <span class="emphasis"><em>~./ssh/known-hosts</em></span> file for the host id)</td></tr></tbody></table></div></div><p><br class="table-break"/>
+                </p><p>
+                    <span class="emphasis"><em>RSA Credential</em></span>
+                </p><p>
+                </p><p>
+                    Provides RSA authentication from SSH keys.
+                </p><p>
+                </p><div class="table"><a id="d0e3399"/><p class="title"><strong>Table 3.10. RSA: com.quest.forge.credentials.type.rsakey</strong></p><div class="table-contents"><table summary="RSA: com.quest.forge.credentials.type.rsakey" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>DataType</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>char[]</td><td>Username</td></tr><tr><td>algorithm</td><td>java.lang.String</td><td>Algorithm of the key</td></tr><tr><td>formatPrivate</td><td>java.lang.String</td><td>Private key's format</td></tr><tr><td>encodedPrivateKey</td><td>byte[]</td><td>Encoded private key bytes</td></tr><tr><td>formatPublic</td><td>java.lang.String</td><td>Public key's format</td></tr><tr><td>encodedPublicKey</td><td>byte[]</td><td>Encoded public key bytes</td></tr></tbody></table></div></div><p><br class="table-break"/>
+                </p><p>
+                    <span class="emphasis"><em>DSA - Credential</em></span>
+                </p><p>
+                </p><p>
+                    Provides DSA authentication from SSH keys.
+                </p><p>
+                </p><div class="table"><a id="d0e3464"/><p class="title"><strong>Table 3.11. DSA: com.quest.forge.credentials.type.dsakey</strong></p><div class="table-contents"><table summary="DSA: com.quest.forge.credentials.type.dsakey" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>DataType</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>char[]</td><td>Username</td></tr><tr><td>algorithm</td><td>java.lang.String</td><td>Algorithm of the key</td></tr><tr><td>formatPrivate</td><td>java.lang.String</td><td>Private key's format</td></tr><tr><td>encodedPrivateKey</td><td>byte[]</td><td>Encoded private key bytes</td></tr><tr><td>formatPublic</td><td>java.lang.String</td><td>Public key's format</td></tr><tr><td>encodedPublicKey</td><td>byte[]</td><td>Encoded public key bytes</td></tr></tbody></table></div></div><p><br class="table-break"/>
+                </p><p>
+                    <span class="emphasis"><em>Generic Credential</em></span>
+                </p><p>
+                </p><p>
+                    A Generic credential may be received if a new authentication mechanism is required that is not currently
+                    supported. These credential types must be known on the agent side as well as the attributes that are
+                    expected to be in the credential's attribute map.
+
+                    Add a set of name/value pairs for each of the attributes required by our authentication scheme.
+                </p><p>
+                </p><div class="table"><a id="d0e3529"/><p class="title"><strong>Table 3.12. Generic: com.quest.forge.credentials.type.generic</strong></p><div class="table-contents"><table summary="Generic: com.quest.forge.credentials.type.generic" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>name</td><td>parameter name</td></tr><tr><td>value</td><td>parameter value</td></tr></tbody></table></div></div><p><br class="table-break"/>
+            </p></div><div class="section" title="3.12.5.4. Validating Credentials"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-ClrTxt-validation"/>3.12.5.4. Validating Credentials</h4></div></div></div><p>
+                When credentials are added to the server, the Administrator may request a test of the credential on a particular
+                Agent Manager host. This process involves invoking a <code class="function">testCredential</code> method on the Adapter, 
+                which will send down a credential, the credential's purpose attribute and a URI for authenticating against.
+            </p><p>
+                In tests where the purpose value is known and implemented by one of the devkit services, the
+                request will be intercepted by core and the test credential will be validated.
+            </p><p>
+                If the purpose value is not known, core will search its registered <code class="function">CredentialValidators</code> to see 
+                if there is one registered with the same purpose name. When found, the credential and the URI will be passed to this
+                instance.
+            </p><p>
+                When you are implementing your own <code class="function">ConnectionService</code>, you should consider also providing an 
+                implementation of the </p><pre class="programlisting">com.quest.glue.api.services.CredentialValidator</pre><p> 
+                interface.
+            </p><p>
+                Once implemented, when your agent is initialized at runtime, you will need to register this Validator with
+                the <code class="function">CleartextCredentialService</code>. This will make your Validator known to core and thus eligible 
+                for handling incoming credential tests.
+                </p><pre class="programlisting">
+mCredentialService= serviceFactory.getService(CleartextCredentialService.<strong class="hl-keyword">class</strong>);
+<em class="hl-tag" style="color: green">// register ourselves to handle credential validations</em>
+mCredentialService.registerCredentialValidator(<strong class="hl-string"><em style="color:red">"myPurpose"</em></strong>, myValidatorInstance);
+                </pre><p>
+            </p><p>
+                The implementation of the <code class="function">CredentialValidator</code> is responsible for knowing how to interpret the 
+                URI parameter. As an example, here is a Validator that handles JDBC credential authorization tests:
+                </p><pre class="programlisting">
+<em><span class="hl-annotation" style="color: gray">@Override</span></em>
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> validate(Credential credential, URI location) <strong class="hl-keyword">throws</strong> Exception {
+    <strong class="hl-keyword">if</strong>(!location.getScheme().equalsIgnoreCase(<strong class="hl-string"><em style="color:red">"jdbc"</em></strong>)) {
+        <strong class="hl-keyword">throw</strong> <strong class="hl-keyword">new</strong> IllegalArgumentException(<strong class="hl-string"><em style="color:red">"Unknown URI scheme: "</em></strong> + location.getScheme());
+    }
+
+    <strong class="hl-keyword">if</strong>(!credential.getType().equals(<strong class="hl-string"><em style="color:red">"com.quest.forge.credentials.type.loginPassword"</em></strong>)) {
+        <strong class="hl-keyword">throw</strong> <strong class="hl-keyword">new</strong> IllegalArgumentException(<strong class="hl-string"><em style="color:red">"Unexpected Credential Type. Cannot authenticate from type: "</em></strong>
+                + credential.getType());
+    }
+
+    <strong class="hl-keyword">final</strong> String username = <strong class="hl-keyword">new</strong> String((<strong class="hl-keyword">char</strong>[])credential.getAttribute(<strong class="hl-string"><em style="color:red">"username"</em></strong>)).intern();
+    <strong class="hl-keyword">final</strong> String password = <strong class="hl-keyword">new</strong> String((<strong class="hl-keyword">char</strong>[])credential.getAttribute(<strong class="hl-string"><em style="color:red">"password"</em></strong>)).intern();
+
+    mConnectionManager.open(location, username, password);
+}
+                </pre><p>
+            </p></div></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s11.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch04.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">3.11. MemoryWarningService </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> Chapter 4. Agent Tooling</td></tr></table></div></body></html>

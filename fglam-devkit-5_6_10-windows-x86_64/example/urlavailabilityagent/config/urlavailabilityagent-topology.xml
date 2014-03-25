@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+
+<types>
+    <!-- ********************  ROOT DEFINITIONS ******************** -->
+    <type name='MonitoredURLRoot' extends='CollectionModelRoot'>
+        <annotation name="LabelProperty" value='name'/>
+        <property name='name' type='String'	is-identity='true'/>
+        <property name='instances' type='MonitoredURL' is-many='true'/>
+    </type>
+
+    <type name="MonitoredURL" extends="CollectionModelInstance">
+        <!-- Ids -->
+        <property name='urlPath' type='URLPath'	is-identity='true'/>
+        <property name='urlServerInstance' type='URLServerInstance'	is-identity='true'/>
+
+        <property name='monitoredHost' type='Host'/>
+        <property name="monitoringAgent" type="Agent" />
+
+        <!-- Metrics -->
+        <property name='availability' type='Metric' is-containment='true' unit-name='percent'/>
+        <property name='pageGetTime' type='Metric' is-containment='true' unit-name='millisecond'/>
+        <property name='responseTime' type='Metric' is-containment='true' unit-name='millisecond'/>
+        <property name='errorCode' type='Integer'/>
+        <property name="url" type="String"/>
+    </type>
+
+    <!--
+    Both URLPath and URLServerInstance property types have a property, monitoredURLs. It is a special property called
+    a dynamic property. It is special because agent does not need to submit anything for the property. While referring
+    to such a property, FMS will return the script result as the value of the property. Here, the monitoredURLs is a
+    list of all the url instances associated with the current URLPath returned by the query.
+    -->
+
+    <type name="URLPath" extends="TopologyObject">
+        <property name='path' type='String'	is-identity='true'/>
+        <property name='protocol' type='String'	is-identity='true'/>         
+        <property name='monitoredURLs' type='MonitoredURL' is-many='true'>
+        <annotation name='DerivationExprType' value='Script'/>
+        <annotation name='DerivationExpression'>
+            <value>
+                <![CDATA[
+                #!MonitoredURL: urlPath = $scope#.topologyObjects
+                ]]>
+            </value>
+        </annotation>
+        </property>
+    </type>
+
+    <type name="URLServerInstance" extends="TopologyObject">
+        <property name='host' type='Host'	is-identity='true'/>
+        <property name='port' type='Integer' is-identity='true'/>
+
+        <property name='monitoredURLs' type='MonitoredURL' is-many='true'>
+        <annotation name='DerivationExprType' value='Script'/>
+        <annotation name='DerivationExpression'>
+            <value>
+                <![CDATA[
+                #!MonitoredURL: urlServerInstance = $scope#.topologyObjects
+                ]]>
+            </value>
+        </annotation>
+        </property>
+    </type>
+</types>

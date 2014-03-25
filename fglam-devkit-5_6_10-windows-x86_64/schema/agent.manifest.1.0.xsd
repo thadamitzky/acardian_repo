@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="urn:X-quest.com:glue/agent/manifest/1.0.0"
+        xmlns:manifest="urn:X-quest.com:glue/agent/manifest/1.0.0"
+        xmlns="urn:X-quest.com:glue/agent/manifest/1.0.0"
+		xmlns:common="urn:X-quest.com:glue/common/1.0.0"
+		elementFormDefault="qualified">
+
+	<!-- Load in the common schema elements -->
+	<xsd:import namespace="urn:X-quest.com:glue/common/1.0.0" schemaLocation="common.1.0.xsd"/>
+
+	<xsd:element name="agent-manifest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="version" type="HostVersion" >
+					<xsd:annotation>
+						<xsd:documentation>
+							Host version compatable with this agent package.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="agents" type="Agents" >
+					<xsd:annotation>
+						<xsd:documentation>
+							List of agents in this agent package.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attributeGroup ref="common:AgentRootNodeAttrs"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="HostVersion">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="exclude" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						List any releases that this agent should NOT be deployed on to
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="version" type="common:AllHostVersions" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+								Host version number to exclude deployment on
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="min" type="common:SupportedHostVersions" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					This is the version that the agent will be targeted to.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="max-tested" type="common:SupportedHostVersions" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					Denotes the latest version that this agent has been tested on
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="Agents">
+		<xsd:sequence>
+			<xsd:element name="agent" type="Agent" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Agent">
+		<xsd:attribute name="name" type="common:JavaIdentifier" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Name of the agent</xsd:documentation>
+			</xsd:annotation></xsd:attribute>
+		<xsd:attribute name="class" type="common:JavaIdentifier" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Agent class that contains the implementation of the
+					Glue Agent interface
+				</xsd:documentation>
+			</xsd:annotation></xsd:attribute>
+	</xsd:complexType>
+
+</xsd:schema>

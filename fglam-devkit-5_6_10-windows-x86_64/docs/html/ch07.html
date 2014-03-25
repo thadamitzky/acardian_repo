@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Chapter 7. Agent Harness</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="prev" href="ch06s03.html" title="6.3. Callbacks"/><link rel="next" href="ch08.html" title="Chapter 8. Agent Testing and Debugging"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 7. Agent Harness</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s03.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="ch08.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="chapter" title="Chapter 7. Agent Harness"><div class="titlepage"><div><div><h2 class="title"><a id="agent_harness"/>Chapter 7. Agent Harness</h2></div><div><p class="pubdate">2013-09-23</p></div></div></div><div class="toc"><p><strong>Table of Contents</strong></p><dl><dt><span class="section"><a href="ch07.html#agent-harness">7.1. Agent Harness</a></span></dt><dd><dl><dt><span class="section"><a href="ch07.html#credential-repository">7.1.1. Managing Credentials in the Agent Harness</a></span></dt><dt><span class="section"><a href="ch07.html#harness-run">7.1.2. Launching the Agent Harness</a></span></dt><dt><span class="section"><a href="ch07.html#harness-create-agent-instance">7.1.3. Creating an Agent Instance</a></span></dt><dt><span class="section"><a href="ch07.html#harness-control">7.1.4. Controlling an Agent Instance</a></span></dt><dt><span class="section"><a href="ch07.html#harness-properties">7.1.5. Configuring Properties</a></span></dt><dt><span class="section"><a href="ch07.html#harness-export">7.1.6. Export Agent Instance Configurations</a></span></dt><dt><span class="section"><a href="ch07.html#harness-callbacks">7.1.7. Invoking Callbacks</a></span></dt><dt><span class="section"><a href="ch07.html#harness-topology">7.1.8. Viewing Topology Data</a></span></dt><dt><span class="section"><a href="ch07.html#agent-harness-jprobe">7.1.9. Advanced Diagnostics with JProbe</a></span></dt></dl></dd></dl></div><div class="section" title="7.1. Agent Harness"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="agent-harness"/>7.1. Agent Harness</h2></div></div></div><p> The Foglight Agent Manager Developer's Kit includes a GUI-based tool that 
+			allows you to quickly test your agent instance without the need to have an FMS or
+			FglAM instance running. </p><p> We have built in a new Agent Harness application that enables you to launch any
+			number of agent instances defined in your agent package, test your properties handling
+			code and callback invocations, and review the topology data that is generated at
+			runtime. You can attach a remote Java debugger to this application to help you step
+			through your agent code when tracking down bugs during your agent development
+			cycle.</p><div class="section" title="7.1.1. Managing Credentials in the Agent Harness"><div class="titlepage"><div><div><h3 class="title"><a id="credential-repository"/>7.1.1. Managing Credentials in the Agent Harness</h3></div></div></div><p>
+				For agents that are utilizing the new Credential-based Services API, the Agent Harness provides a means
+				to define a credential for use by agents that utilize the new Connection and Credential services. These 
+				credential entries are fully editable in the UI and stored in the XML from the previous Developer's Kit
+				release.</p><p>
+				The Credential Repository Manager defines all aspects of credential management. It includes mappings to
+				monitored resources, policy definitions, and of course, credential types.
+				</p><div align="center"><img src="images/agentharness/credentials/AH_Repository_Launch.png" align="middle"/></div><p>
+			</p><p>
+				The main dialog for the Credential Manager displays all of the defined credential types. You can select
+				one of the credentials from the table and edit, test, or delete it.
+				</p><div align="center"><img src="images/agentharness/credentials/AH_Repository_MainTable.png" align="middle"/></div><p>
+			</p><div class="section" title="7.1.1.1. Validating Credentials"><div class="titlepage"><div><div><h4 class="title"><a id="credential-repository-resource-mapping"/>7.1.1.1. Validating Credentials</h4></div></div></div><p>
+					Existing credentials defined in the Repository Manager can be tested against a remote resource to see if
+					the attributes allow successful authentication. The remote resource should be defined as a URI, so
+					that you will be able to validate against fairly defined structures.
+					With the URI defined, click the Validate button and wait for the message box to return the result of
+					the credentials authentication.
+					</p><div align="center"><img src="images/agentharness/credentials/AH_Repository_Validate.png" align="middle"/></div><p>
+				</p></div><div class="section" title="7.1.1.2. Resource Mapping"><div class="titlepage"><div><div><h4 class="title"><a id="credential-repository-resource-mapping"/>7.1.1.2. Resource Mapping</h4></div></div></div><p>
+					Defining a set of resource mappings allows the Agent Harness to evaluate credential queries. Declared
+					query parameters are compared to registered resource mappings in order to identify the credentials
+					to be returned to the agent.
+				</p><p>
+					Multiple Resource Mapping definitions can be declared in the credential repository. Each mapping
+					will have an alias name associated with it.
+					</p><div align="center"><img src="images/agentharness/credentials/AH_Repository_Add_Resource_Alias.png" align="middle"/></div><p>
+					The definition can then declare target hosts,
+					port numbers, ip addresses, and so on, for authentication.
+					</p><div align="center"><img src="images/agentharness/credentials/AH_Repository_Add_Resource_Node.png" align="middle"/></div><p>
+				</p><p>
+					The following table details the various resource types that can be set. (Multiple resources of the same
+					type can be defined.)
+					</p><div align="center"><img src="images/agentharness/credentials/AH_Repository_Add_Resource_Leaves.png" align="middle"/></div><p>
+					</p><div class="table"><a id="d0e5161"/><p class="title"><strong>Table 7.1. Credential Repository - Resource Mapping Types</strong></p><div class="table-contents"><table summary="Credential Repository - Resource Mapping Types" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th valign="top">Type</th><th>Description</th><th>Supports RegEx</th></tr></thead><tbody><tr><td>target-host</td><td>This sets the name of the host of the resource that requires access credentials.
+ 										Note: The name will not be resolved to a host address.
+									</td><td>True</td></tr><tr><td>target-address</td><td>This is the IP address of the resource that requires access credentials.</td><td>True</td></tr><tr><td>target-port</td><td>This sets the port that is intended to be used to access the resource that requires access credentials.</td><td>True</td></tr><tr><td>source-host</td><td>This sets the name of the host from where a connection to the target resource will be attempted.
+ 										Note: The name will not be resolved to a host address.
+									</td><td>True</td></tr><tr><td>source-address</td><td>This sets the IP address of the host from where a connection to the target resource will be attempted.</td><td>True</td></tr><tr><td>property</td><td>The possible names and values of the extra query parameters are specific to the purpose
+ 										of the required credentials.</td><td>True</td></tr></tbody></table></div></div><p><br class="table-break"/>
+				</p></div><div class="section" title="7.1.1.3. Policies"><div class="titlepage"><div><div><h4 class="title"><a id="credential-repository-policies"/>7.1.1.3. Policies</h4></div></div></div><p>
+					Policies define the parameters within which a credential is permitted to be used. Policies are
+					defined and then associated to a credential.
+					</p><div align="center"><img src="images/agentharness/credentials/AH_Repository_Add_Policy.png" align="middle"/></div><p>
+				</p><p>
+					Each policy definition contains a common set of attributes:
+
+					</p><div class="table"><a id="d0e5226"/><p class="title"><strong>Table 7.2. Credential Repository - Common Policy Type Attributes</strong></p><div class="table-contents"><table summary="Credential Repository - Common Policy Type Attributes" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>alias</td><td>This is unique name identifier for the policy. This alias will be referenced by the
+									credentials that want to use this policy.</td></tr><tr><td>isCritical</td><td>Set this to true if the policy must be known to the Agent Harness. (default: FALSE)</td></tr></tbody></table></div></div><p><br class="table-break"/>
+				</p><p>
+					The following are the Support Policy types:
+					</p><p>
+						<span class="emphasis"><em>Cache Policy</em></span>
+					</p><p>
+					</p><p>
+						The Cache policy tells clients how long they can cache associated credential data without
+						querying the server again. The time-to-live timeout should be started when 
+						the client receives credentials data and is able to use it.
+					</p><p>
+					</p><div class="table"><a id="d0e5259"/><p class="title"><strong>Table 7.3. Credential Repository - Cache Policy</strong></p><div class="table-contents"><table summary="Credential Repository - Cache Policy" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>time-to-live-millis</td><td>This is the maximum amount of time (in milliseconds) that related credentials may be cached by clients.</td></tr></tbody></table></div></div><p><br class="table-break"/>
+					</p><p>
+						<span class="emphasis"><em>Failure Rate Policy</em></span>
+					</p><p>
+					</p><p>
+						Failure Rate policy defines how often a credential may be used if authentication attempts fail.
+ 						Clients may not attempt to use the credential if a potential authentication failure would violate the policy.
+
+ 						This policy implies a sliding time window. For example, if a credential was used in failed authentication attempts
+ 						at 10:02 and 10:05 while the max_failure_count was 2 and period_millis is 600000, the next time the credential
+ 						may be used is at or after 10:12. If authentication fails again, the next attempt may be made at 10:15 or 
+ 						later, and so on.
+					</p><p>
+					</p><div class="table"><a id="d0e5285"/><p class="title"><strong>Table 7.4. Credential Repository - Failure Rate</strong></p><div class="table-contents"><table summary="Credential Repository - Failure Rate" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>max-fail-count</td><td>This is the maximum number of authentication failures that are allowed over the specified time period.</td></tr><tr><td>period-millis</td><td>This is the time period (in milliseconds) over which, at most, maxCount authentication failures are allowed.</td></tr></tbody></table></div></div><p><br class="table-break"/>
+					</p><p>
+						<span class="emphasis"><em>Use Count Policy</em></span>
+					</p><p>
+					</p><p>
+						Use Count policy sets the maximum number of times a credential can be used (successfully or 
+						unsuccessfully) by a client.
+
+ 						The use count is per-client.
+
+ 						After the maximum use count is reached, the client may request the same credential from the server again.
+ 						The new request may have a different use count policy.
+					</p><p>
+					</p><div class="table"><a id="d0e5316"/><p class="title"><strong>Table 7.5. Credential Repository - Use Count</strong></p><div class="table-contents"><table summary="Credential Repository - Use Count" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>use-count</td><td>This is the maximum number of times the associated credential can be used by a client.</td></tr></tbody></table></div></div><p><br class="table-break"/>
+					</p><p>
+						<span class="emphasis"><em>Validity Window Policy</em></span>
+					</p><p>
+					</p><p>
+						Validity Window policy defines the time window within which a credential may be used.
+
+						The timestamps follow Java system time conventions. See javadoc on <code class="function">java.jang.System.currentTimeMillis()</code> for details.
+					</p><p>
+					</p><div class="table"><a id="d0e5345"/><p class="title"><strong>Table 7.6. Credential Repository - Validity Window</strong></p><div class="table-contents"><table summary="Credential Repository - Validity Window" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>valid</td><td>This indicates whether the credential should be considered valid (true) or invalid (false) during the specified time.</td></tr><tr><td>start-timestamp</td><td>This is the start time in milliseconds (inclusive) of the credential validity time window.</td></tr><tr><td>end-timestamp</td><td>This is the end time in milliseconds (exclusive) of the credential validity time window.</td></tr></tbody></table></div></div><p><br class="table-break"/>
+				</p></div><div class="section" title="7.1.1.4. Credentials"><div class="titlepage"><div><div><h4 class="title"><a id="credential-repository-credentials"/>7.1.1.4. Credentials</h4></div></div></div><p>
+					Credential definitions are set in two parts. First the Credential Type is selected. This is based
+					on the type of authentication attributes that are required by the remote resource in order to authorize
+					access.
+
+					Additional references can be made as part of the credential definition that refer to the declared
+					Resource Mappings and Policy Types.
+					</p><div align="center"><img src="images/agentharness/credentials/AH_Repository_Edit.png" align="middle"/></div><p>
+				</p><p>
+					To create a new credential, click the Add button on the Repository Manager dialog box and select
+					the type of credential you would like to configure.
+					</p><div align="center"><img src="images/agentharness/credentials/AH_Repository_Add.png" align="middle"/></div><p>
+					Each credential definition contains a common set of attributes:
+
+					</p><div class="table"><a id="d0e5383"/><p class="title"><strong>Table 7.7. Credential Repository - Common Credential Attributes</strong></p><div class="table-contents"><table summary="Credential Repository - Common Credential Attributes" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>alias</td><td>This is a unique name identifier for the credential.</td></tr><tr><td>lockbox-name</td><td>Each credential is encrypted with a lockbox. Multiple Credentials can be associated with the 
+										same lockbox. You may define your own lockboxes or allow the default value to be used by not 
+										declaring the attribute. (Default: Default)</td></tr><tr><td>purpose</td><td>This is the connection type implied for the credential.
+										If you are not sure what to put here, set the value to either SSH or WMI.
+									</td></tr><tr><td>isAgentAuthorized</td><td>Setting this to true allows an unencrypted credential to be returned to an agent.
+										If you are using the <code class="function">CleartextCredentialService</code>, then you must set this value to true 
+										in order for this credential to be returned. (Default: FALSE)</td></tr></tbody></table></div></div><p><br class="table-break"/>
+				</p><p>
+					<span class="emphasis"><em>Login Credential</em></span>
+				</p><p>
+					This is a basic credential that contains only a username or pin for authentication.
+				</p><div class="table"><a id="d0e5425"/><p class="title"><strong>Table 7.8. Credential Repository - Login</strong></p><div class="table-contents"><table summary="Credential Repository - Login" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>This is the username or pin for authentication.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					<span class="emphasis"><em>Login Password Credential</em></span>
+				</p><p>
+					This is the base username/password credential. It is the most common credential type.
+				</p><div class="table"><a id="d0e5448"/><p class="title"><strong>Table 7.9. Credential Repository - Login Password</strong></p><div class="table-contents"><table summary="Credential Repository - Login Password" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>This is the username for authentication.</td></tr><tr><td>password</td><td>This is the password for the user account.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					<span class="emphasis"><em>Windows Credential</em></span>
+				</p><p>
+					This is similar to the Login Password credential, but it provides an 
+					additional domain attribute for	specifying the Windows domain to which
+					the account belongs.
+				</p><div class="table"><a id="d0e5476"/><p class="title"><strong>Table 7.10. Credential Repository - Windows</strong></p><div class="table-contents"><table summary="Credential Repository - Windows" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>This is the username for authentication.</td></tr><tr><td>password</td><td>This is the password for the user account.</td></tr><tr><td>domain</td><td>This is the Windows domain name of the user account.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					<span class="emphasis"><em>Host Key Credential</em></span>
+				</p><p>
+					This is a special-case credential that you most likely do not need to define, because it is normally 
+					handled automatically by the <code class="function">SSHConnectionService</code> when authenticating using SSH to 
+					remote hosts.
+					
+					This credential represents the keys provided by host keys. The value of the key is an arbitrary string.
+					Under normal circumstances, it can be copied out of the host's public key file and simply inserted
+					into an instance of this class.
+
+					These host keys are not used for any type of encryption or decryption, but instead are used to
+					validate the signature of a host to prevent man-in-the-middle attacks.
+
+ 					A common use case for preventing a host from ever connecting is to configure keys like this with known
+					but invalid strings like "can-never-connect". For this reason, no particular encoding format is
+					expected in the keys. They should always be assumed to be opaque strings. Similarly, the
+					algorithm can be anything.
+				</p><div class="table"><a id="d0e5512"/><p class="title"><strong>Table 7.11. Credential Repository - Host Key</strong></p><div class="table-contents"><table summary="Credential Repository - Host Key" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>algorithm</td><td>This is the key's algorithm.</td></tr><tr><td>key</td><td>This is the host key value. Check the <span class="emphasis"><em>~./ssh/known-hosts</em></span> file for the host id.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					<span class="emphasis"><em>RSA Credential</em></span>
+				</p><p>
+					This credential provides RSA authentication from SSH keys. Check the home directory of the user account with 
+					which you are authenticating and look for the <span class="emphasis"><em>.ssh/id_rsa</em></span> file.
+				</p><div class="table"><a id="d0e5546"/><p class="title"><strong>Table 7.12. Credential Repository - RSA</strong></p><div class="table-contents"><table summary="Credential Repository - RSA" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>This is the username.</td></tr><tr><td>pem-password</td><td>This is the password for unlocking the private key.</td></tr><tr><td>pem-file</td><td>This is the full file path to the RSA private key certificate.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					<span class="emphasis"><em>DSA - Credential</em></span>
+				</p><p>
+					This credential provides DSA authentication from SSH keys. Check the home directory of the 
+					user account with which you are authenticating and look for the <span class="emphasis"><em>.ssh/id_dsa</em></span> file.
+				</p><div class="table"><a id="d0e5582"/><p class="title"><strong>Table 7.13. Credential Repository - DSA</strong></p><div class="table-contents"><table summary="Credential Repository - DSA" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>username</td><td>This is the username.</td></tr><tr><td>pem-password</td><td>This is the password for decoding the private key.</td></tr><tr><td>pem-file</td><td>This is the full file path to the DSA private key certificate.</td></tr></tbody></table></div></div><br class="table-break"/><p>
+					<span class="emphasis"><em>Generic Credential</em></span>
+				</p><p>
+					You can declare a generic credential if you have a special authentication mechanism that is currently
+					not supported by our available typed credentials.
+
+					Add a set of name/value pairs for each of the attributes required by our authentication scheme.
+				</p><div class="table"><a id="d0e5615"/><p class="title"><strong>Table 7.14. Credential Repository - Generic</strong></p><div class="table-contents"><table summary="Credential Repository - Generic" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th></tr></thead><tbody><tr><td>name</td><td>This is the parameter name.</td></tr><tr><td>value</td><td>This is the parameter value.</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="section" title="7.1.1.5. Template credential-repository.xml"><div class="titlepage"><div><div><h4 class="title"><a id="credential-repository.xml from example agent"/>7.1.1.5. Template credential-repository.xml</h4></div></div></div><p>
+					A template for defining your credential repository can be found
+					<a class="link" href="apa.html" title="Appendix A. credential-repository.xml Template Included with Example Agent">here.</a>
+				</p></div></div><div class="section" title="7.1.2. Launching the Agent Harness"><div class="titlepage"><div><div><h3 class="title"><a id="harness-run"/>7.1.2. Launching the Agent Harness</h3></div></div></div><p> The Agent Harness can only be run with agents developed with the FglAM Developer's Kit 
+				(or, with agents that have a defined <span class="emphasis"><em>agent-definition.xml</em></span>). To run the 
+				Agent Harness, you will need to provide the full path to the project's built GAR file and to the 
+				<span class="emphasis"><em>agent-definition.xml</em></span>.</p><p> The Agent Harness can be run in a number of different ways. Depending on how you
+				would like to interact with the application at runtime, you can use one of the following 
+				methods of launching it: </p><div class="section" title="1. Ant macrodef agent-harness"><div class="titlepage"><div><div><h5 class="title"><a id="harness-run-ant"/>1. Ant macrodef agent-harness</h5></div></div></div><p> The easiest way to the launch the Agent Harness is to use the built in
+						macrodef provided in the FglAM Developer's Kit. </p><p> To use the macrodef in your build project, include the following line 
+						in your <span class="emphasis"><em>build.xml</em></span>: </p><pre class="programlisting">
+							
+&lt;import file="${fglam.devkit.home}/buildtools/fglam-ant-macros.xml"/&gt;
+						</pre><p>
+						With that in place, you can add a new target to the build that will launch the
+						Agent Harness: </p><pre class="programlisting">
+							
+&lt;target name="run" depends="dist" description="Launches the Agent Harness app"&gt;
+    &lt;fglam:agent-harness/&gt;
+&lt;/target&gt;
+						</pre><p>
+					</p><p> Then, when you call the <code class="function">run</code> target from the command line, the
+						macrodef will use the default values for locating the generated GAR file
+						and the associated <span class="emphasis"><em>agent-definition.xml</em></span> and launch the application GUI. The
+						following is the full arguments list for the <code class="function">fglam:agent-harness</code> macrodef: </p><div class="table"><a id="d0e5684"/><p class="title"><strong>Table 7.15. Foglight Agent Manager Agent Harness Ant macrodef</strong></p><div class="table-contents"><table summary="Foglight Agent Manager Agent Harness Ant macrodef" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th valign="top">Attribute</th><th>Description</th><th align="center" valign="top">Required</th></tr></thead><tbody><tr><td>gar-file</td><td>This is the full path to the Developer's-Kit-generated GAR file from
+											your project's build output.</td><td>Yes</td></tr><tr><td>agent-file</td><td>This is the full path to the
+											<span class="emphasis"><em>agent-definition.xml</em></span> for your Developer's Kit 
+											project.</td><td>Yes</td></tr><tr><td>credentials</td><td>This is the full path to the
+											<span class="emphasis"><em>credential-repository.xml</em></span> for your Developer's Kit 
+											project.</td><td>No</td></tr><tr><td>restore-agent-settings</td><td>This is the full path to the previously exported agent settings XML file
+                                            for your Developer's Kit project.</td><td>No</td></tr><tr><td>jvm-args</td><td>This sets the JVM arguments required when launching the Agent 
+												Harness. <p> Add JVM debug flags, or set the debug level 
+												for logging.</p>
+											<p>
+												<span class="emphasis"><em>Note:</em></span> By default, the values
+												set in the <code class="function">devkit.vm.debug.flags</code>
+												property for your project will be used if available
+												and no <code class="function">jvm-args</code> parameter is defined.
+											</p>
+										</td><td>No</td></tr></tbody></table></div></div><p><br class="table-break"/>
+					</p></div><p>
+				</p><div class="section" title="2. Native Binary"><div class="titlepage"><div><div><h5 class="title"><a id="harness-run-binary"/>2. Native Binary</h5></div></div></div><p> A native binary is available for launching the Agent Harness. This binary
+						is located in the <span class="emphasis"><em>bin/$platform</em></span> directory of the FglAM 
+						Developer's Kit installation. To launch the Agent Harness from the native binary, 
+						run the binary from the corresponding platform sub-directory. If your current 
+						platform is not listed, then you will not be able to run the
+						application until we provide support for your platform. 
+						<span class="emphasis"><em> See <a class="link" href="apg.html" title="Appendix G. Agent Harness Supported Platform Mappings">Agent Harness Supported Platform Mappings</a>
+							for more details.
+						</em></span>
+					</p><p> Once you have selected the proper platform binary for your system, you
+						need to know the full path to two Developer's Kit build artifacts from your
+						project. The two artifacts are the generated GAR file and the associated
+						<span class="emphasis"><em>agent-definition.xml</em></span>. </p><p> The first path you require is the full path to the GAR file that has been 
+						generated for your project by the FglAM Developer's Kit. If you are using the default 
+						build output locations, then you should find this file in the 
+						<span class="emphasis"><em>build/gar</em></span> directory of your project root. </p><p> The second path you require is the full path to the
+						<span class="emphasis"><em>agent-definition.xml</em></span> that has been defined for your agent 
+						project. This file is required because it contains all of the configuration
+						information for the various agent types defined in the agent package. </p><p> Optionally, you can provide the location of the <span class="emphasis"><em>credential-repository.xml</em></span>
+						that contains the credential definitions your credential-aware agents require in order 
+						to authenticate to their configured remote monitor resources.
+					</p><p> In addition, you may also declare any number of JVM and/or property
+						variables when launching this binary. This may include setting debug
+						logging levels or setting up the process for remote Java debugging. </p><p> Here is an example command line for launching the AgentHarness: </p><pre class="programlisting">
+$FGLAM_DEVKIT_HOME/bin/agentharness --gar-file /full/path/to/agent_package.gar --agent-file /full/path/to/agent-definition.xml [--credentials /full/path/to/credential-repository.xml] [--restore-agent-settings /full/path/to/exported-agent-settings.xml]</pre><p>
+					</p></div><p>
+				</p><div class="section" title="3. IDE Debugger"><div class="titlepage"><div><div><h5 class="title"><a id="harness-run-ide"/>3. IDE Debugger</h5></div></div></div><p> The Agent Harness can also be run from within your IDE. We will not go 
+						into any detail about how this is accomplished on a per IDE basis, but we 
+						will discuss the main class you must launch and the additional resource 
+						locations that must be set in order to successfully launch the Agent Harness.
+					</p><p>
+						</p><div class="table"><a id="d0e5804"/><p class="title"><strong>Table 7.16. IDE Agent Harness Config</strong></p><div class="table-contents"><table summary="IDE Agent Harness Config" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th>Config Item</th><th>Config Value</th><th>Description</th></tr></thead><tbody><tr><td>Main Class</td><td><code class="function">com.quest.glue.tools.agentharness.AgentHarness</code></td><td>This is the main Agent Harness. It contains the
+											<code class="function">main</code>
+											method for execution.
+										</td></tr><tr><td>Classpath</td><td>Add all of the JAR files that are in the <span class="emphasis"><em>$FGLAM_DEVKIT_HOME/lib</em></span> directory.</td><td>These are the supporting JAR files for running the application.</td></tr><tr><td>VM Property</td><td><code class="code">-Dquest.home=$FGLAM_DEVKIT_HOME</code></td><td>This provides the location of the FglAM Developer's Kit home to the Agent Harness.</td></tr><tr><td>VM Property</td><td><code class="code">-Dquest.state.dir=$FGLAM_DEVKIT_HOME/state/</code></td><td>This provides the location of the State directory to the Agent Harness.</td></tr><tr><td>VM Property</td><td><code class="code">-Djava.library.path=$FGLAM_DEVKIT_HOME/bin</code></td><td>This adds the <span class="emphasis"><em>$FGLAM_DEVKIT_HOME/bin</em></span> to the library path, so that native libraries can be located.</td></tr><tr><td>Program Arg</td><td><code class="code">--gar-file /full/path/to/agent_package.gar</code></td><td>This is the full path to the Developer's-Kit-generated GAR file.</td></tr><tr><td>Program Arg</td><td><code class="code">--agent-file /full/path/to/agent-definition.xml</code></td><td>This is the full path to the Developer's Kit 
+											<span class="emphasis"><em>agent-definition.xml</em></span>.
+										</td></tr><tr><td>Program Arg [Optional]</td><td><code class="code">--credentials /full/path/to/credential-repository.xml</code></td><td>This is the full path to the Developer's Kit 
+											<span class="emphasis"><em>credential-repository.xml</em></span>.
+										</td></tr><tr><td>Program Arg [Optional]</td><td><code class="code">--restore-agent-settings /full/path/to/exported-agent-settings.xml</code></td><td>This is the full path to the Developer's Kit previously exported agent settings XML file.</td></tr></tbody></table></div></div><p><br class="table-break"/>
+					</p></div><p>
+			</p></div><div class="section" title="7.1.3. Creating an Agent Instance"><div class="titlepage"><div><div><h3 class="title"><a id="harness-create-agent-instance"/>7.1.3. Creating an Agent Instance</h3></div></div></div><p> The AgentTypes that have been declared within the AgentPackage of your project
+				will be listed on the left panel of the Agent Harness application. To create a new
+				instance of an agent type, right click the type and select the
+				Create Agent Instance menu option. 
+			</p><p>
+				</p><div align="center"><img src="images/agentharness/AH_CreateInstance.png" align="middle"/></div><p>
+			</p><p>
+				A dialog box appears prompting you to enter a name for the agent instance.
+			</p><p>
+				</p><div align="center"><img src="images/agentharness/AH_CreateInstanceNameDialog.png" align="middle"/></div><p>
+			</p><p>
+				Click OK. Your new agent instance appears as a new
+				node underneath the AgentType.
+				Once created, you may control the <a class="link" href="ch07.html#harness-control" title="7.1.4. Controlling an Agent Instance">agent state</a>, set 
+				<a class="link" href="ch07.html#harness-properties" title="7.1.5. Configuring Properties">properties</a>, invoke <a class="link" href="ch07.html#harness-callbacks" title="7.1.7. Invoking Callbacks">callbacks</a>, 
+				or view submitted <a class="link" href="ch07.html#harness-topology" title="7.1.8. Viewing Topology Data">topology data</a>.
+			</p></div><div class="section" title="7.1.4. Controlling an Agent Instance"><div class="titlepage"><div><div><h3 class="title"><a id="harness-control"/>7.1.4. Controlling an Agent Instance</h3></div></div></div><p>
+				An agent instance's state can be controlled with the buttons located at the bottom of the application.
+				</p><div><img src="images/agentharness/AH_ControlState_Activate.png"/></div><p>
+				Using those buttons, you can Activate, Start, and Stop data collection, and Deactivate the agent instance.
+			</p></div><div class="section" title="7.1.5. Configuring Properties"><div class="titlepage"><div><div><h3 class="title"><a id="harness-properties"/>7.1.5. Configuring Properties</h3></div></div></div><p>
+				There are two ways to set AgentType properties: You can edit the properties of the AgentType itself or 
+				you can change the properties of a specific agent instance. If you select the AgentType from the list 
+				and change one or more of the AgentType properties, the new values become the default values for 
+				any new agent instances that are created.
+				</p><div align="center"><img src="images/agentharness/AH_SetProperties.png" align="middle"/></div><p>
+				If you change the properties of a specific agent instance and then save them, the changes are only 
+				applied to that instance. The default properties on the AgentType and the properties on other agent 
+				instances remain the same.
+			</p><p>
+				Properties from a SecondaryASP definition are rendered in a similar fashion to the way they are 
+				on the FMS Administration UI.
+				</p><div align="center"><img src="images/agentharness/AH_SetProperties_SecondaryASP.png" align="middle"/></div><p>
+				To make a change to a table value, double-click the corresponding field.
+				When you are finished changing table values, click Save.
+				</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">There are notable differences between the properties implementation in the Agent Harness 
+					and the properties implementation on the Foglight Management Server. The most significant difference  
+					is that SecondaryASPs do not have the Global aspect to them. Therefore, changes to a SecondaryASP 
+					on one AgentInstance or on the AgentType are not propagated when the values are saved. Also,  
+					changes in one SecondaryASP instance are not reflected in the UI for a subsequent instance.
+				</td></tr></table></div><p>
+			</p><p>
+				Once all property values are modified and you are ready to commit your changes, click Save.
+				If the agent instance is active, the property changes are notified and the agent's properties handler code is 
+				initiated.
+			</p><p>
+				To save a property change to multiple agents instances, select the Save to Multiple Instances 
+				option on the Properties panel. A dialog box appears with a list of all agent instances of the same
+				AgentType.
+				</p><div align="center"><img src="images/agentharness/AH_SetProperties_Multiple.png" align="middle"/></div><p>
+				Ctrl-click all agent instances to which you would like to apply the new property changes. Each agent instance
+				will be updated. 
+			</p></div><div class="section" title="7.1.6. Export Agent Instance Configurations"><div class="titlepage"><div><div><h3 class="title"><a id="harness-export"/>7.1.6. Export Agent Instance Configurations</h3></div></div></div><p>
+				Once you have created and configured the properties for the agent instances running in the Agent Harness,
+				you can export the agent instance configurations to an agent settings XML file so that the next time the Agent Harness is loaded 
+				with this AgentPackage, each agent instance can be restored with its full properties intact.
+			</p><p>
+				From the File menu, select <code class="function">Export Agent Configs</code>.
+				A save dialog is opened to save the agent settings to a specified location and file name.
+				The default file name is prefixed with the deployed AgentPackage name and version number which can be saved to any directory. The default directory
+                is <span class="emphasis"><em>$FGLAM_DEVKIT_HOME/state</em></span>.
+			</p><p>
+                An exported agent settings file, saved to the default directory using the default file name, is automatically loaded the next time the same version of GAR file that 
+                was initially used to export the agent configurations is deployed. During startup, the Agent Harness looks for the appropriate default exported settings file and uses 
+                it, if present, to restore the agents.
+            </p><p>
+                An exported agent settings file, that did not use the default location and file name, can be specified for use on startup by using 
+                the <code class="code">--restore-agent-settings</code> agent harness parameter and providing the full path to the file. 
+                The use of this parameter will override the automatic loading of the default exported agent settings file for the GAR file, if present. The relevant version of 
+                the GAR file must be specified for use with the exported agent settings file.
+			</p><p>
+				</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+					The restore process does not support agent upgrades. Agent instances can only be restored using 
+					the exported settings from the GAR file that was defined on startup.
+				</td></tr></table></div><p>
+			</p></div><div class="section" title="7.1.7. Invoking Callbacks"><div class="titlepage"><div><div><h3 class="title"><a id="harness-callbacks"/>7.1.7. Invoking Callbacks</h3></div></div></div><p>
+				Callbacks that are defined within an AgentType are listed under the Callbacks tab on the AgentInstance panel.
+				</p><div align="center"><img src="images/agentharness/AH_InvokeCallback.png" align="middle"/></div><p>
+				While the agent instance is active, you may select any of the available Callbacks
+				to be invoked.
+				Any errors that occur during the invocation are displayed in a popup. If the invocation
+				results in a null return value, no feedback is provided by the application. Check the log file for your
+				agent instance if you want to confirm successful completion of the call.
+			</p></div><div class="section" title="7.1.8. Viewing Topology Data"><div class="titlepage"><div><div><h3 class="title"><a id="harness-topology"/>7.1.8. Viewing Topology Data</h3></div></div></div><p>
+				When an agent instance is activated and has started to collect data, 
+				the submitted topology data is displayed under the Topology
+				tab on the AgentInstance Panel.
+				</p><div align="center"><img src="images/agentharness/AH_Topology.png" align="middle"/></div><p>
+			</p><p>
+				The tree view that is rendered on the left is the raw topology submission that is transferred
+				from the agent instance to the FMS. At this point, there is no CDT transformation on this data.
+				When you expand each of the nodes, any data that has been set on the topology object is
+				displayed in the table on the right.
+				Nodes that are greyed out in the expanded tree represent a back reference in the 
+				topology object. These nodes simply highlight the Topology layout for the object.
+			</p><p>
+				Submitted topology data samples can be stored for a historical account of what was submitted. By
+				default the Agent Harness holds up to 10 previous topology trees. You can change this by
+				setting the value in the Max Messages to Keep field on the Topology	Panel for the agent instance.
+				You may also disable the history entirely by de-selecting the Show Message History
+				boolean option.
+				</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">It is best to view topology data when the agent instance is set to no longer collect data. The reason
+				for this is that if you are viewing an existing topology tree and a subsequent tree is added as a result
+				of the next collection, then the tree list will refresh and you will lose your location in the currently expanded
+				tree. Also, depending on the Message History settings, the topology tree could be removed altogether.</td></tr></table></div><p>
+			</p><p>
+				An additional option is available when viewing the topology data. By setting
+				Enable Node Debug, the list topology tree will be updated to display all of the available attributes that 
+				have been set on the nodes.	This is helpful for determining the sample frequency that was applied to the 
+				submission,	validating the <code class="function">refid</code> of a back reference to the <code class="function">id</code>
+				of an object.
+				</p><div align="center"><img src="images/agentharness/AH_Topology_Debug.png" align="middle"/></div><p>
+			</p></div><div class="section" title="7.1.9. Advanced Diagnostics with JProbe"><div class="titlepage"><div><div><h3 class="title"><a id="agent-harness-jprobe"/>7.1.9. Advanced Diagnostics with JProbe</h3></div></div></div><p>
+				JProbe is an enterprise-class Java profiler that provides intelligent diagnostics on memory usage,
+				performance, and test coverage, allowing developers to quickly pinpoint and repair the root cause of
+				application code performance and stability problems that obstruct component and integration integrity.
+			</p><p>
+				Running the Agent Harness under JProbe will further improve the performance tuning and debugging of
+				your Agent Package. The following steps outline how to get the Agent Harness running with JProbe.
+			</p><div class="section" title="7.1.9.1. JProbe Configuration Wizard"><div class="titlepage"><div><div><h4 class="title"><a id="agent-harness-jprobe-config"/>7.1.9.1. JProbe Configuration Wizard</h4></div></div></div><p>
+					To begin, launch the <span class="emphasis"><em>jpconsole</em></span> binary from your JProbe installation.
+					Under the Configurations tab, select Java Application and create
+					a new configuration.
+					</p><div align="center"><img src="images/agentharness/JProbe/AH_JPW_Config_Name.png" align="middle"/></div><p>
+				</p><p>
+					Set the application to launch by selecting the
+					<span class="emphasis"><em>$FGLAM_DEVKIT_HOME/lib/gluetools.jar</em></span> and then select the
+					<code class="function">com.quest.glue.tools.agentharness.AgentHarness</code> class.
+					The working directory should be set to
+					<span class="emphasis"><em>$FGLAM_DEVKIT_HOME/bin</em></span>.
+					</p><div align="center"><img src="images/agentharness/JProbe/AH_JPW_Set_Application.png" align="middle"/></div><p>
+				</p><p>
+					Next we need to configure the Application Arguments that are required when you set the regular Agent Harness
+					parameters. Note that the <code class="function">--credentials</code> arg is optional.
+					</p><div align="center"><img src="images/agentharness/JProbe/AH_JPW_Set_Application_Arguments.png" align="middle"/></div><p>
+				</p><p>
+					When defining the Classpath, include your agent's JAR files. Select the check box to enable JProbe
+					to profile these classes. In addition, you will also need to add all of the JARs within the devkit's
+					<span class="emphasis"><em>lib</em></span> directory.
+					</p><div align="center"><img src="images/agentharness/JProbe/AH_JPW_Classpath.png" align="middle"/></div><p>
+				</p><p>
+					When JProbe is launched, we need to tell the VM where the <span class="emphasis"><em>quest.home</em></span>,
+					<span class="emphasis"><em>quest.state.dir</em></span> and <span class="emphasis"><em>java.library.path</em></span> locations are.
+					These help the Agent Harness locate various components and resources at runtime.
+					</p><div align="center"><img src="images/agentharness/JProbe/AH_JPW_JVM_Arguments.png" align="middle"/></div><p>
+				</p><p>
+					By default, JProbe will set the VM to its internal JRE. This can be used, or you may set the
+					VM location from your development environment.
+					</p><div align="center"><img src="images/agentharness/JProbe/AH_JPW_JVM.png" align="middle"/></div><p>
+				</p><p>
+					Next select the Analysis type that you would like performed on your agent.
+					</p><div align="center"><img src="images/agentharness/JProbe/AH_JPW_Analysis_Type.png" align="middle"/></div><p>
+				</p><p>
+					Set the filter package to include the Java packages in which you are interested.
+					</p><div align="center"><img src="images/agentharness/JProbe/AH_JPW_MyCode.png" align="middle"/></div><p>
+				</p><p>
+					Save your config and you are ready to go.
+					</p><div align="center"><img src="images/agentharness/JProbe/AH_JPW_Save.png" align="middle"/></div><p>
+				</p></div></div></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06s03.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="ch08.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">6.3. Callbacks </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> Chapter 8. Agent Testing and Debugging</td></tr></table></div></body></html>

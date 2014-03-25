@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:X-quest.com:glue/common/1.4"
+			xmlns:common="urn:X-quest.com:glue/common/1.4"
+			elementFormDefault="qualified">
+
+    <!--  Version 1.4 added in 5.5.4 (INTERLAGOS) -->        
+
+	<!-- The following are common XSD elements that can be reused in various Glue XSD documents -->
+	
+	<xsd:simpleType name="JavaIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>
+				Restricts values to conform to a valid java identifier
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-zA-Z$_][a-zA-Z0-9$_.]*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="JavaPackageName">
+		<xsd:annotation>
+			<xsd:documentation>
+				Restricts values to conform to a valid java package name
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[a-zA-Z][a-zA-Z0-9.]*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- agent-config and agent-manifest root nodes share these attributes -->
+	<xsd:attributeGroup name="AgentRootNodeAttrs">
+		<xsd:attribute name="name" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The name attribute is used to define the name of the agent package
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ver" type="xsd:string" use="required" >
+			<xsd:annotation>
+				<xsd:documentation>
+					Version of this agent package. All agents in the
+					same package have the same version.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="out-of-process" type="common:OutOfProcessType" use="optional" default="disabled">
+			<xsd:annotation>
+				<xsd:documentation>
+					Set this attribute to true in order to launch all contained agents in an
+					isolated Foglight Agent Manager instance. Out of process agents will be run
+                    without a restrictive security manager. This is required for agents which
+                    contain native code.
+                </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+        <xsd:attribute name="config-namespace" type="xsd:string" use="optional">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Namespace provides a scope for cartridges and their configurations in the FMS UI.
+                    All agents in a package will be in the same namespace, and the default value for
+                    the namespace is the package name.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="allow-asynchronous-access" type="xsd:boolean" use="optional" default="false"/>
+    </xsd:attributeGroup>
+
+    <xsd:simpleType name="UUID">
+        <xsd:annotation>
+        	<xsd:documentation>
+        		An RFC 4122-compliant Universally Unique Identifier
+        		(UUID
+        	</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+    		<xsd:pattern value="\w{8}-\w{4}-\w{4}-\w{4}-\w{12}"/>
+    	</xsd:restriction>
+    </xsd:simpleType>
+
+	<xsd:simpleType name="OutOfProcessType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Possible reasons for an agent to request being run out-of-process 
+                or in-process..
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+			<xsd:enumeration value="enabled">
+			    <xsd:annotation>
+			        <xsd:documentation>
+			            This agent will always be run out-of-process, unless the
+			            -Dquest.debug.allinprocess flag was detected at runtime. In
+			            this case the out-of-process type will be automatically
+			            changed to &quot;override&quot;.
+			        </xsd:documentation>
+			    </xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="disabled">
+			    <xsd:annotation>
+			        <xsd:documentation>
+			            This agent will always be run in-process, with the standard
+			            FglAM security manager. This is the preferred setting if at
+			            all possible.
+			        </xsd:documentation>
+			    </xsd:annotation>
+			</xsd:enumeration>
+            <xsd:enumeration value="concentrator-push">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        This agent is requesting to be run in-process so that it
+                        can use the message push from the upstream. Once FglAM
+                        supports message push to out-of-process agents, this
+                        agent will be automatically run out-of-process.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+			<xsd:enumeration value="override">
+			    <xsd:annotation>
+			        <xsd:documentation>
+			            This agent will be run in process because the -Dquest.debug.allinprocess
+			            flag was detected at runtime. This value should not be used in an agent
+			            manifest.
+			        </xsd:documentation>
+			    </xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

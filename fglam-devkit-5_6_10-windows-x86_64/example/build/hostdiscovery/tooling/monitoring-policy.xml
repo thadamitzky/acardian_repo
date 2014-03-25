@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2013 Dell Inc.
+ ALL RIGHTS RESERVED.
+
+ This software is the confidential and proprietary information of
+ Dell Inc. ("Confidential Information"). You shall not
+ disclose such Confidential Information and shall use it only in
+ accordance with the terms of the license agreement you entered
+ into with Dell Inc.
+
+ DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--><foglight-config version="1.0.0" exported-on="2013-09-23T12:51:49.058">
+	<persistable-config-model>
+		<config_id>2b0fae29-9400-338e-b3f1-eb388666b784</config_id>
+		<adapter>HostDiscoveryAgent</adapter>
+		<agent_type>HostDiscovery</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>template</config_qualifier>
+		<sharing_name/>
+		<known_name/>
+		<type_id>ed3514e5-3ef4-3aca-b8fa-637cf1d7f670</type_id>
+		<asp name="primary" type="singleitem">
+			<structure>
+				<field name="local" dataType="BOOL">
+					<attributes MustEnter="1" PageTitle="Properties" PageLineNbr="1"/>
+					<prompt>Scan Local Subnet</prompt>
+					<paramdata>1</paramdata>
+				</field>
+				<field name="osinfo" dataType="BOOL">
+					<attributes MustEnter="1" PageTitle="Properties" PageLineNbr="2"/>
+					<prompt>Guess OS Information</prompt>
+					<paramdata>1</paramdata>
+				</field>
+				<field name="timeout" dataType="INT">
+					<attributes MustEnter="1" PageTitle="Properties" PageLineNbr="3"/>
+					<prompt>Ping Timeout (seconds)</prompt>
+					<paramdata>15</paramdata>
+				</field>
+				<field name="subnets" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Properties" PageLineNbr="4"/>
+					<prompt>Subnets</prompt>
+					<paramdata>subnets</paramdata>
+				</field>
+				<field name="fglamCollectorConfig" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Data Collection Scheduler" PageLineNbr="1"/>
+					<prompt>Collector Config</prompt>
+					<paramdata>fglamCollectorConfig</paramdata>
+				</field>
+			</structure>
+			<valuelist/>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>74991a0b-03b0-38d5-b485-f5445d806d31</config_id>
+		<adapter>HostDiscoveryAgent</adapter>
+		<agent_type>HostDiscovery</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>subnets</sharing_name>
+		<known_name>subnetsList</known_name>
+		<type_id>ee11b8c9-31fb-344b-a06c-2021f29e3c66</type_id>
+		<asp name="subnets" knownName="subnetsList" type="list">
+			<structure>
+				<field name="address" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Address</prompt>
+					<paramdata/>
+				</field>
+				<field name="mask" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Net Mask</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist/>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>d40c45b1-74a2-359e-a200-591dd06668df</config_id>
+		<adapter>HostDiscoveryAgent</adapter>
+		<agent_type>HostDiscovery</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>fglamCollectorConfig</sharing_name>
+		<known_name>defaultSchedule</known_name>
+		<type_id>3372cf54-6a04-3013-a969-088e30ae7aec</type_id>
+		<asp name="fglamCollectorConfig" knownName="defaultSchedule" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="128">
+					<attributes MustEnter="1"/>
+					<prompt>Collector Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="methodName" dataType="OPTION">
+					<attributes MustEnter="1" Hidden="1"/>
+					<prompt>Collector Method Name</prompt>
+					<paramdata>scanNow</paramdata>
+				</field>
+				<field name="interval" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Default Collection Interval</prompt>
+					<paramdata>5</paramdata>
+				</field>
+				<field name="unit" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Time Unit</prompt>
+					<paramdata>minutes,milliseconds,seconds,hours,days,cron</paramdata>
+				</field>
+				<field name="fastModeInterval" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Fast-Mode Collection Interval</prompt>
+					<paramdata>0</paramdata>
+				</field>
+				<field name="fastModeUnit" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Fast-Mode Time Unit</prompt>
+					<paramdata>seconds,milliseconds,minutes,hours,days,cron</paramdata>
+				</field>
+				<field name="fastModeMaxCount" dataType="INT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Fast-Mode Max Count</prompt>
+					<paramdata>0</paramdata>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">scan</value>
+					<value name="methodName">scanNow</value>
+					<value name="interval">12</value>
+					<value name="unit">hours</value>
+					<value name="fastModeInterval">0</value>
+					<value name="fastModeUnit">seconds</value>
+					<value name="fastModeMaxCount">0</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model></foglight-config>

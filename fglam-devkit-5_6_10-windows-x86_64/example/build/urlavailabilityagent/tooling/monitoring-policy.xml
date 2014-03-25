@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2013 Dell Inc.
+ ALL RIGHTS RESERVED.
+
+ This software is the confidential and proprietary information of
+ Dell Inc. ("Confidential Information"). You shall not
+ disclose such Confidential Information and shall use it only in
+ accordance with the terms of the license agreement you entered
+ into with Dell Inc.
+
+ DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--><foglight-config version="1.0.0" exported-on="2013-09-23T12:52:03.978">
+	<persistable-config-model>
+		<config_id>52e124be-931f-3a2e-9e42-eaf0aaa6eb39</config_id>
+		<adapter>URLAvailabilityAgent</adapter>
+		<agent_type>URLAvailabilityAgent</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>template</config_qualifier>
+		<sharing_name/>
+		<known_name/>
+		<type_id>3c054073-b3b8-33d8-8876-94423da9c036</type_id>
+		<asp name="primary" type="singleitem">
+			<structure>
+				<field name="urlList" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Settings" PageLineNbr="1"/>
+					<prompt>URL List</prompt>
+					<paramdata>urlList</paramdata>
+				</field>
+				<field name="fglamCollectorConfig" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Data Collection Scheduler" PageLineNbr="1"/>
+					<prompt>Collector Config</prompt>
+					<paramdata>fglamCollectorConfig</paramdata>
+				</field>
+			</structure>
+			<valuelist/>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>d75ad585-032c-3f2e-8740-cf8677d4378b</config_id>
+		<adapter>URLAvailabilityAgent</adapter>
+		<agent_type>URLAvailabilityAgent</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>urlList</sharing_name>
+		<known_name>defaultURLList</known_name>
+		<type_id>f5e9bb24-7950-3d18-92a4-f6064b4ea899</type_id>
+		<asp name="urlList" knownName="defaultURLList" type="list">
+			<structure>
+				<field name="hostname" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Hostname</prompt>
+					<paramdata/>
+				</field>
+				<field name="url" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>URL</prompt>
+					<paramdata/>
+				</field>
+				<field name="port" dataType="INT">
+					<attributes MustEnter="1"/>
+					<prompt>Port</prompt>
+					<paramdata>80</paramdata>
+				</field>
+				<field name="customHeader" dataType="STRING" size="-1">
+					<attributes/>
+					<prompt>Custom Header</prompt>
+					<paramdata/>
+				</field>
+			</structure>
+			<valuelist/>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>bc728280-b5db-304b-8632-e93e2175f3c8</config_id>
+		<adapter>URLAvailabilityAgent</adapter>
+		<agent_type>URLAvailabilityAgent</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>fglamCollectorConfig</sharing_name>
+		<known_name>defaultSchedule</known_name>
+		<type_id>1024c5db-af01-3280-a1b8-b84e1491fea3</type_id>
+		<asp name="fglamCollectorConfig" knownName="defaultSchedule" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="128">
+					<attributes MustEnter="1"/>
+					<prompt>Collector Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="methodName" dataType="OPTION">
+					<attributes MustEnter="1" Hidden="1"/>
+					<prompt>Collector Method Name</prompt>
+					<paramdata>collectMetrics</paramdata>
+				</field>
+				<field name="interval" dataType="INT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Default Collection Interval</prompt>
+					<paramdata>5</paramdata>
+				</field>
+				<field name="unit" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Time Unit</prompt>
+					<paramdata>minutes,milliseconds,seconds,hours,days</paramdata>
+				</field>
+				<field name="fastModeInterval" dataType="INT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Fast-Mode Collection Interval</prompt>
+					<paramdata>0</paramdata>
+				</field>
+				<field name="fastModeUnit" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Fast-Mode Time Unit</prompt>
+					<paramdata>seconds,milliseconds,minutes,hours,days</paramdata>
+				</field>
+				<field name="fastModeMaxCount" dataType="INT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Fast-Mode Max Count</prompt>
+					<paramdata>0</paramdata>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">metrics</value>
+					<value name="methodName">collectMetrics</value>
+					<value name="interval">1</value>
+					<value name="unit">minutes</value>
+					<value name="fastModeInterval">0</value>
+					<value name="fastModeUnit">seconds</value>
+					<value name="fastModeMaxCount">0</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model></foglight-config>

@@ -1,0 +1,1893 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<agentdef:agent-definition xmlns:agentdef="urn:X-quest.com:glue/agent/definition/1.9.1" xmlns:ns2="urn:X-quest.com:glue/agent/definition/1.9" xmlns:ns3="urn:X-quest.com:glue/agent/definition/1.8" xmlns:ns4="urn:X-quest.com:glue/agent/definition/1.7" xmlns:ns5="urn:X-quest.com:glue/agent/definition/1.6" xmlns:ns6="urn:X-quest.com:glue/agent/definition/1.5.1" xmlns:ns7="urn:X-quest.com:glue/agent/definition/1.5" xmlns:ns8="urn:X-quest.com:glue/agent/definition/1.4" xmlns:ns9="urn:X-quest.com:glue/agent/definition/1.3" xmlns:ns10="urn:X-quest.com:glue/agent/definition/1.2" xmlns:ns11="urn:X-quest.com:glue/agent/definition/1.1" xmlns:ns12="urn:X-quest.com:glue/agent/config/1.0.0" name="URLAvailabilityAgent_Simulator" ver="5.6.10" config-namespace="URLAvailabilityAgent_Simulator" allow-asynchronous-access="false">
+    <agentdef:host-version min="5.6.10"/>
+    <agentdef:topology-types package="this.is.a.simulator.package">
+        <agentdef:topology-file filename="file:///no%20such%20file"/>
+    </agentdef:topology-types>
+    <agentdef:simulator-agent name="URLAvailabilityAgent_Simulator" package="URLAvailabilityAgent" type="URLAvailabilityAgent" dataSubmitter="Topology">
+        <agentdef:properties>
+            <agentdef:group id="config" label="URLAvailabilityAgent_Simulator Configuration">
+                <agentdef:integer default="1" id="instanceCount" label="No. instances to create"/>
+                <agentdef:secondary size="32" id="tables" label="Tables">
+                    <agentdef:cols>
+                        <agentdef:string size="32" canBeBlank="false" id="name" label="Table Name"/>
+                        <agentdef:boolean default="true" id="enabled" label="Enable Table Collection"/>
+                        <agentdef:integer default="60" gtEqualZero="true" canBeBlank="false" id="freq" label="Data Simulation Interval"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Tables_Default">
+                        <agentdef:row>
+                            <agentdef:string value="MonitoredURLRoot" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="MonitoredURL" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="URLPath" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="URLServerInstance" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="LogicalDisk" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="CollectionModelRoot" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="IPAddress" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="Memory" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="OperatingSystem" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostTopMemoryProcessEntry" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="Agent" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostTopProcessEntry" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostTopMemoryProcessTrend" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="Processor" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostTopIOProcessEntry" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostProcessInstance" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostComponent" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostCPUs" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="NetworkInterface" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostStorage" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostModelNetwork" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="PhysicalDisk" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostTopCPUProcessEntry" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="Host" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostTopIOProcessTrend" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostService" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="CollectionModelInstance" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostTopCPUProcessTrend" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="NetworkPath" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostNetwork" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostProcess" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="HostBaseObject" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="SecondaryStorage" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="TopologyEdge" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="DataObject" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="Object" id="name"/>
+                            <agentdef:boolean value="true" id="enabled"/>
+                            <agentdef:integer value="60" id="freq"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+            </agentdef:group>
+            <agentdef:group id="metricSim" label="Simulated Metric Data Configuration">
+                <agentdef:secondary size="Unlimited" id="MonitoredURL_metric" label="MonitoredURL Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_MonitoredURL_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="availability" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="pageGetTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="responseTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="Memory_metric" label="Memory Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Memory_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="capacity" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="consumed" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="utilization" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="pageInRate" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="pageOutRate" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="virtualMemorySize" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="nonPagedKernelMemory" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="pagedKernelMemory" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="fileSystemCache" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="Processor_metric" label="Processor Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Processor_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="percentUserTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="percentSystemTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="percentIdleTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="utilization" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="usedHz" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="totalHz" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostCPUs_metric" label="HostCPUs Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostCPUs_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="percentUserTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="percentSystemTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="percentIdleTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="utilization" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="usedHz" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="totalHz" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="NetworkInterface_metric" label="NetworkInterface Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_NetworkInterface_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="bandwidth" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="utilization" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="packetsSent" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="packetsReceived" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="sendRate" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="receiveRate" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="inboundPacketsDropped" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="outboundPacketsDropped" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="inboundErrors" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="outboundErrors" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="outputQueueLength" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostStorage_metric" label="HostStorage Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostStorage_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="diskUtilization" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="diskReads" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="diskWrites" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="diskBytesRead" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="diskBytesWritten" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="diskTransferRate" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="spaceUsed" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="spaceAvailable" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="Host_metric" label="Host Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Host_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="virtualHostCount" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="numProcesses" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="runQueueLength" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="interrupts" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="contextSwitches" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="availablePagingSpace" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostNetwork_metric" label="HostNetwork Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostNetwork_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="utilization" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="packetsSent" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="packetsReceived" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="sendRate" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="receiveRate" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="transferRate" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostProcess_metric" label="HostProcess Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostProcess_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="percentProcessorTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="totalProcessorTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="percentMemory" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="virtualSize" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="workingSetSize" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="swapSize" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="pageFaults" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="dataRead" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="dataWritten" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="dataOther" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="dataTransferRate" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="operationsRead" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="operationsWrite" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="operationsOther" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="SecondaryStorage_metric" label="SecondaryStorage Table Metrics">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_SecondaryStorage_Metric_Default">
+                        <agentdef:row>
+                            <agentdef:string value="utilization" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="reads" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="writes" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="bytesRead" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="bytesWritten" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="averageReadTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="averageWriteTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="averageTransferTime" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="queueLength" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="spaceUsed" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="spaceAvailable" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="totalSpace" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="capacityUsed" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="capacityAvailable" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.Double" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+            </agentdef:group>
+            <agentdef:group id="observationSim" label="Simulated Observation Data Configuration">
+                <agentdef:secondary size="Unlimited" id="Memory_observation" label="Memory Table Observations">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Memory_Observation_Default">
+                        <agentdef:row>
+                            <agentdef:string value="topMemoryProcesses" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="HostTopMemoryProcessObservation" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="Agent_observation" label="Agent Table Observations">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Agent_Observation_Default">
+                        <agentdef:row>
+                            <agentdef:string value="runningStateObservation" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.String" id="dataType"/>
+                            <agentdef:string value="Unknown,Stopped,Starting,Stopping,Running,Collecting data,Running but not collecting data,Failed to start,Failed to start data collection" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostCPUs_observation" label="HostCPUs Table Observations">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostCPUs_Observation_Default">
+                        <agentdef:row>
+                            <agentdef:string value="topCPUProcesses" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="HostTopCPUProcessObservation" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostStorage_observation" label="HostStorage Table Observations">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostStorage_Observation_Default">
+                        <agentdef:row>
+                            <agentdef:string value="topIOProcesses" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="HostTopIOProcessObservation" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostService_observation" label="HostService Table Observations">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostService_Observation_Default">
+                        <agentdef:row>
+                            <agentdef:string value="state" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.String" id="dataType"/>
+                            <agentdef:string value="Stopped,Start Pending,Stop Pending,Running,Continue Pending,Pause Pending,Paused,Unknown" id="values"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="pid" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="java.lang.String" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostProcess_observation" label="HostProcess Table Observations">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Metric Name"/>
+                        <agentdef:enum default="random" id="simulator" label="Simulator Type">
+                            <agentdef:const id="linear"/>
+                            <agentdef:const id="random"/>
+                            <agentdef:const id="static"/>
+                        </agentdef:enum>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="low" label="Lowest Value"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="high" label="Highest Value"/>
+                        <agentdef:float canBeBlank="false" id="factor" label="Simulator Factor"/>
+                        <agentdef:float gtEqualZero="true" canBeBlank="false" id="seed" label="Starting Value"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="dataType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="true" id="values" label="Preset Values (Comma delimited)"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostProcess_Observation_Default">
+                        <agentdef:row>
+                            <agentdef:string value="instances" id="name"/>
+                            <agentdef:enum value="random" id="simulator"/>
+                            <agentdef:float value="0.0" id="low"/>
+                            <agentdef:float value="100.0" id="high"/>
+                            <agentdef:float value="1.0" id="factor"/>
+                            <agentdef:float value="1.0" id="seed"/>
+                            <agentdef:string value="HostProcessInstanceListObservation" id="dataType"/>
+                            <agentdef:string value="" id="values"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+            </agentdef:group>
+            <agentdef:group id="propertySim" label="Property Data Configuration">
+                <agentdef:secondary size="Unlimited" id="MonitoredURL_property" label="MonitoredURL Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_MonitoredURL_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="errorCode" id="name"/>
+                            <agentdef:string value="java.lang.Integer" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="url" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="url" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="URLPath_property" label="URLPath Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_URLPath_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="name" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="name" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="URLServerInstance_property" label="URLServerInstance Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_URLServerInstance_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="name" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="name" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="Memory_property" label="Memory Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Memory_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="totalMemory" id="name"/>
+                            <agentdef:string value="java.lang.Long" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="OperatingSystem_property" label="OperatingSystem Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_OperatingSystem_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="type" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="type" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="name" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="name" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="architecture" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="architecture" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="version" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="version" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="servicePackMajorVersion" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="servicePackMajorVersion" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="servicePackMinorVersion" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="servicePackMinorVersion" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="buildNumber" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="buildNumber" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostTopMemoryProcessEntry_property" label="HostTopMemoryProcessEntry Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostTopMemoryProcessEntry_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="residentSetSize" id="name"/>
+                            <agentdef:string value="java.lang.Float" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="virtualSetSize" id="name"/>
+                            <agentdef:string value="java.lang.Float" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="Agent_property" label="Agent Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Agent_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="name" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="name" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="agentVersion" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="agentVersion" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="agentName" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="agentName" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="agentInstance" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="agentInstance" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="build" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="build" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="cpuCount" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="cpuCount" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="hostName" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="hostName" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="type" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="type" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostTopProcessEntry_property" label="HostTopProcessEntry Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostTopProcessEntry_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="userName" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="userName" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="command" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="command" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="Processor_property" label="Processor Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Processor_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="processorType" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="processorType" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="stepping" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="stepping" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostTopIOProcessEntry_property" label="HostTopIOProcessEntry Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostTopIOProcessEntry_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="ioRate" id="name"/>
+                            <agentdef:string value="java.lang.Float" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostProcessInstance_property" label="HostProcessInstance Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostProcessInstance_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="parentPid" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="parentPid" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="percentProcessorTime" id="name"/>
+                            <agentdef:string value="java.lang.Float" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="totalProcessorTime" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="percentMemory" id="name"/>
+                            <agentdef:string value="java.lang.Float" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="virtualSize" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="workingSetSize" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="swapSize" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="pageFaults" id="name"/>
+                            <agentdef:string value="java.lang.Float" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="dataRead" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="dataWritten" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="dataOther" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="operationsRead" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="operationsWrite" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="operationsOther" id="name"/>
+                            <agentdef:string value="java.lang.Double" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="NetworkInterface_property" label="NetworkInterface Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_NetworkInterface_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="macAddress" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="macAddress" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="interfaceIndex" id="name"/>
+                            <agentdef:string value="java.lang.Integer" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="portNumber" id="name"/>
+                            <agentdef:string value="java.lang.Integer" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="interfaceType" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="interfaceType" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="netmask" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="netmask" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="isLayer2" id="name"/>
+                            <agentdef:string value="java.lang.Boolean" id="valueType"/>
+                            <agentdef:string value="true" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="networkSegment" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="networkSegment" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="layer2Segment" id="name"/>
+                            <agentdef:string value="java.lang.Integer" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="discoveryStatus" id="name"/>
+                            <agentdef:string value="com.quest.fglam.example.url.samples.HostDiscoveryStatus" id="valueType"/>
+                            <agentdef:string value="Inactive,Active" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostTopCPUProcessEntry_property" label="HostTopCPUProcessEntry Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostTopCPUProcessEntry_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="cpuUsage" id="name"/>
+                            <agentdef:string value="java.lang.Float" id="valueType"/>
+                            <agentdef:string value="0" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="Host_property" label="Host Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Host_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="systemId" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="systemId" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="isHidden" id="name"/>
+                            <agentdef:string value="java.lang.Boolean" id="valueType"/>
+                            <agentdef:string value="true" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="localName" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="localName" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="domainName" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="domainName" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="vendor" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="vendor" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="sysObjectId" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="sysObjectId" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="isGateway" id="name"/>
+                            <agentdef:string value="java.lang.Boolean" id="valueType"/>
+                            <agentdef:string value="true" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="isBridge" id="name"/>
+                            <agentdef:string value="java.lang.Boolean" id="valueType"/>
+                            <agentdef:string value="true" id="value"/>
+                        </agentdef:row>
+                        <agentdef:row>
+                            <agentdef:string value="discoveryStatus" id="name"/>
+                            <agentdef:string value="com.quest.fglam.example.url.samples.HostDiscoveryStatus" id="valueType"/>
+                            <agentdef:string value="Inactive,Active" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostService_property" label="HostService Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostService_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="displayName" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="displayName" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="HostBaseObject_property" label="HostBaseObject Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_HostBaseObject_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="name" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="name" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="TopologyEdge_property" label="TopologyEdge Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_TopologyEdge_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="name" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="name" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="DataObject_property" label="DataObject Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_DataObject_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="uniqueId" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="uniqueId" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+                <agentdef:secondary size="Unlimited" id="Object_property" label="Object Table Properties">
+                    <agentdef:cols>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="name" label="Property Name"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="valueType" label="Value Datatype Reminder (R/O)"/>
+                        <agentdef:string size="Unlimited" canBeBlank="false" id="value" label="Property Value"/>
+                    </agentdef:cols>
+                    <agentdef:list id="URLAvailabilityAgent_Simulator_Object_Property_Default">
+                        <agentdef:row>
+                            <agentdef:string value="name" id="name"/>
+                            <agentdef:string value="java.lang.String" id="valueType"/>
+                            <agentdef:string value="name" id="value"/>
+                        </agentdef:row>
+                    </agentdef:list>
+                </agentdef:secondary>
+            </agentdef:group>
+        </agentdef:properties>
+    </agentdef:simulator-agent>
+</agentdef:agent-definition>

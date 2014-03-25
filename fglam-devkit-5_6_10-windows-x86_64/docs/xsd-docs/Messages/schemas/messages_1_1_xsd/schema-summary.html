@@ -1,0 +1,970 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--
+  Copyright 2013 Dell Software Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Software Inc. ("Confidential Information"). You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Software Inc.
+  
+  DELL SOFTWARE INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SOFTWARE SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+<HTML>
+    <HEAD>
+        <META http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <!-- Generated with DocFlex/XML (Kit) 1.6.8 on Mon Sep 23 12:50:52 EDT 2013 -->
+<STYLE TYPE="text/css">
+A:link {text-decoration: underline; color: #0000FF}
+.p1 { padding: 3pt 5pt 3pt 5pt; background-color:#EEEEEE; border: 1px solid #4477AA }
+.p2 { margin-top:12pt }
+.p3 { margin:0pt }
+.p4 { margin-top:6pt }
+.p5 { margin-top:14pt }
+.p6 { line-height: 110%; margin-right:7pt }
+.p7 { line-height: 110% }
+.p8 { margin-top:14pt; padding: 2pt 2.5pt 2pt 2.5pt; background-color:#CCCCFF; border: 1px solid #666666 }
+.p9 { margin-top:10pt }
+.p10 { margin-left:10pt }
+.p11 { margin-left:20pt }
+.p12 { margin-left:30pt }
+.p13 { margin-left:40pt }
+.p14 { margin-left:50pt }
+.p15 { margin-left:60pt }
+.p16 { margin-left:70pt }
+.p17 { margin-left:80pt }
+.p18 { margin-left:90pt }
+.p19 { margin-left:100pt }
+.p20 { margin-left:110pt }
+.p21 { margin-top:8pt }
+.p22 { margin-top:2pt }
+.f1 { font-family: "Arial", sans-serif; font-style: normal; font-weight: normal; text-decoration: none; color: black }
+.f2 { font-family: "Verdana", sans-serif; font-size: 130%; font-weight: bold; color: #4477AA }
+.f3 { font-family: "Verdana", sans-serif; font-size: 130%; font-style: italic; font-weight: bold; color: #4477AA }
+.f4 { font-family: "Arial", sans-serif; font-size: 90%; font-weight: bold }
+.f5 { font-family: "Courier New", monospace; font-size: 80% }
+.f6 { font-family: "Arial", sans-serif; font-size: 90% }
+.f7 { font-family: "Verdana", sans-serif; font-size: 80% }
+.f8 { font-size: 120%; font-weight: bold }
+.f9 { font-family: "Courier New", monospace; font-size: 90%; font-weight: bold }
+.f10 { font-family: "Verdana", sans-serif; font-size: 70%; font-weight: normal; color: #B2B2B2 }
+.f11 { font-family: "Verdana", sans-serif; font-size: 70%; font-style: italic; font-weight: normal; text-decoration: underline; color: #B2B2B2 }
+.f12 { font-family: "Arial", sans-serif; font-size: 80%; font-weight: bold }
+.f13 { font-family: "Verdana", sans-serif; font-size: 80%; color: #FF9900 }
+.f14 { font-family: "Verdana", sans-serif; font-size: 80%; color: #0000FF }
+.f15 { font-family: "Courier New", monospace; font-size: 80%; color: #4D4D4D }
+.f16 { font-family: "Verdana", sans-serif; font-size: 80%; color: #990000 }
+.f17 { font-family: "Verdana", sans-serif; font-size: 70%; font-weight: bold; color: black }
+.f18 { font-family: "Verdana", sans-serif; font-size: 70%; font-weight: bold; text-decoration: underline; color: black }
+.f19 { font-family: "Verdana", sans-serif; font-size: 80%; color: #FF0000 }
+.f20 { font-family: "Verdana", sans-serif; font-size: 70%; font-weight: bold; color: #FF0000 }
+.f21 { font-family: "Arial", sans-serif; font-size: 80% }
+.brdr1 { border: 1px solid #999999 }
+.brdr2 { padding:5px }
+.hr1 { border-width:0px; border-top: 2px dotted #B2B2B2; height:2px }
+</STYLE>
+    </HEAD>
+    <BODY>
+        <DIV CLASS="f1"><DIV CLASS="p1"><SPAN CLASS="f2">XML Schema </SPAN><SPAN CLASS="f3">&quot;messages.1.1.xsd&quot;</SPAN></DIV><A NAME="r1"><DIV CLASS="p2"><SPAN CLASS="f4">Target Namespace:</SPAN></DIV><DL CLASS="p3"><DD>
+<DIV><SPAN CLASS="f5"><A HREF="../../namespaces/urn_X-quest_com_glue_messages_1_1/namespace-summary.html">urn:X-quest.com:glue/messages/1.1</A></SPAN></DIV></DD></DL>
+<DIV CLASS="p4"><SPAN CLASS="f4">Components:</SPAN></DIV><DL CLASS="p3"><DD>
+<DIV><SPAN CLASS="f6">2&nbsp;<A HREF="#r2">global&nbsp;elements</A>, 18&nbsp;<A HREF="#r2">local&nbsp;elements</A>, 17&nbsp;<A HREF="#r3">complexTypes</A>, 4&nbsp;<A HREF="#r4">element&nbsp;groups</A></SPAN></DIV></DD></DL>
+<DIV CLASS="p4"><SPAN CLASS="f4">Schema Location:</SPAN></DIV><DL CLASS="p3"><DD>
+<DIV><SPAN CLASS="f7">/builds/hudson/hudson/workspace/fglam-clio-java/src/xml/schema/messages/messages.1.1.xsd, see <A HREF="#r73">XML source</A></SPAN></DIV></DD></DL>
+<DIV CLASS="p4"><SPAN CLASS="f4">Imports Schema:</SPAN></DIV><DL CLASS="p3"><DD>
+<DIV><SPAN CLASS="f6"><A HREF="../messages_1_0_xsd/schema-summary.html">messages.1.0.xsd</A>&nbsp;[<A HREF="#r5">src</A>]</SPAN></DIV></DD></DL>
+<DIV CLASS="p4"><SPAN CLASS="f4">Imported by Schemas (10):</SPAN></DIV><DL CLASS="p3"><DD>
+<DIV><SPAN CLASS="f6"><A HREF="../messages_1_2_xsd/schema-summary.html">messages.1.2.xsd</A>&nbsp;[<A HREF="../messages_1_2_xsd/schema-summary.html#r8">src</A>], <A HREF="../messages_1_3_xsd/schema-summary.html">messages.1.3.xsd</A>&nbsp;[<A HREF="../messages_1_3_xsd/schema-summary.html#r7">src</A>], <A HREF="../messages_10_xsd/schema-summary.html">messages.10.xsd</A>&nbsp;[<A HREF="../messages_10_xsd/schema-summary.html#r7">src</A>], <A HREF="../messages_4_xsd/schema-summary.html">messages.4.xsd</A>&nbsp;[<A HREF="../messages_4_xsd/schema-summary.html#r7">src</A>], <A HREF="../messages_5_xsd/schema-summary.html">messages.5.xsd</A>&nbsp;[<A HREF="../messages_5_xsd/schema-summary.html#r6">src</A>], <A HREF="../messages_6_xsd/schema-summary.html">messages.6.xsd</A>&nbsp;[<A HREF="../messages_6_xsd/schema-summary.html#r6">src</A>], <A HREF="../messages_7_xsd/schema-summary.html">messages.7.xsd</A>&nbsp;[<A HREF="../messages_7_xsd/schema-summary.html#r6">src</A>], <A HREF="../messages_8_1_xsd/schema-summary.html">messages.8.1.xsd</A>&nbsp;[<A HREF="../messages_8_1_xsd/schema-summary.html#r6">src</A>], <A HREF="../messages_8_xsd/schema-summary.html">messages.8.xsd</A>&nbsp;[<A HREF="../messages_8_xsd/schema-summary.html#r6">src</A>], <A HREF="../messages_9_xsd/schema-summary.html">messages.9.xsd</A>&nbsp;[<A HREF="../messages_9_xsd/schema-summary.html#r7">src</A>]</SPAN></DIV></DD></DL>
+</A><A NAME="r2"><DIV CLASS="p5">
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="4" BORDER="1">
+<COLGROUP SPAN="3"></COLGROUP>
+<TR BGCOLOR="#CCCCFF">
+<TD COLSPAN="3"><SPAN CLASS="f8">All Element Summary</SPAN></TD>
+</TR>
+<TR>
+<TD WIDTH="1%"><SPAN CLASS="f9"><A HREF="elements/agent-properties-change.html">msgs1_1:agent-properties-change</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/AgentPropertyChangeRequest.html">msgs1_1:AgentPropertyChangeRequest</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/AgentPropertyChangeRequest.html">msgs1_1:AgentPropertyChangeRequest</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 4&nbsp;attributes, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/agent-properties-change.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/create-agent.html">msgs1_1:create-agent</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/CreateAgent.html">msgs1_1:CreateAgent</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/CreateAgent.html">msgs1_1:CreateAgent</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 11&nbsp;attributes, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/create-agent.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/creation-type.html">msgs1_1:creation-type</A></SPAN><SPAN CLASS="f10"> (within </SPAN><SPAN CLASS="f11"><A HREF="elements/create-agent.html">msgs1_1:create-agent</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Indicates the source of this create agent command.</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7"><A HREF="elements/creation-type.html#r3">embedded</A> (</SPAN><SPAN CLASS="f13">restriction of</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f5">xsd:string</SPAN><SPAN CLASS="f7">)</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">simple</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/creation-type.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/data.html">msgs1_1:data</A></SPAN><SPAN CLASS="f10"> (within </SPAN><SPAN CLASS="f11"><A HREF="elements/row.html">msgs1_1:row</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">embedded complexType</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 1&nbsp;attribute</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/data.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definition of 1&nbsp;<A HREF="elements/data.html#r5">attribute</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="1%"><SPAN CLASS="f9"><A HREF="elements/downstream-envelope.html">msgs1_1:downstream-envelope</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7"><A HREF="elements/downstream-envelope.html#r1">embedded</A> (</SPAN><SPAN CLASS="f13">extension of</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f5"><A HREF="complexTypes/Envelope.html">msgs1_1:Envelope</A></SPAN><SPAN CLASS="f7">)</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definition of 1&nbsp;<A HREF="elements/downstream-envelope.html#r4">element</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">never</SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/empty.html">msgs1_1:empty</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/EmptyUpstream.html">msgs1_1:EmptyUpstream</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/EmptyUpstream.html">msgs1_1:EmptyUpstream</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 2&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/empty.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/field.html">msgs1_1:field</A></SPAN><SPAN CLASS="f10"> (within </SPAN><SPAN CLASS="f11"><A HREF="elements/meta.html">msgs1_1:meta</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">embedded complexType</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 3&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/field.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 3&nbsp;<A HREF="elements/field.html#r7">attributes</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/headers.html">msgs1_1:headers</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="../messages_1_0_xsd/complexTypes/Headers.html">msgs1_0:Headers</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="../messages_1_0_xsd/complexTypes/Headers.html">msgs1_0:Headers</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 4&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/headers.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/messages.html">msgs1_1:messages</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/DownstreamMessages.html">msgs1_1:DownstreamMessages</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/DownstreamMessages.html">msgs1_1:DownstreamMessages</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 1&nbsp;attribute, 26&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/messages.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/messages_1.html">msgs1_1:messages</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/UpstreamMessages.html">msgs1_1:UpstreamMessages</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/UpstreamMessages.html">msgs1_1:UpstreamMessages</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 1&nbsp;attribute, 29&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/messages_1.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/meta.html">msgs1_1:meta</A></SPAN><SPAN CLASS="f10"> (within </SPAN><SPAN CLASS="f11"><A HREF="elements/secondaryasp.html">msgs1_1:secondaryasp</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">embedded complexType</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 1&nbsp;element</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/meta.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definition of 1&nbsp;<A HREF="elements/meta.html#r5">element</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/placeholder.html">msgs1_1:placeholder</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/Placeholder.html">msgs1_1:Placeholder</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/Placeholder.html">msgs1_1:Placeholder</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 2&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/placeholder.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/primaryasp.html">msgs1_1:primaryasp</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="../messages_1_0_xsd/complexTypes/PrimaryASP.html">msgs1_0:PrimaryASP</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="../messages_1_0_xsd/complexTypes/PrimaryASP.html">msgs1_0:PrimaryASP</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 1&nbsp;element</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 3 <A HREF="elements/primaryasp.html#r2">locations</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/properties.html">msgs1_1:properties</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/SpiProperties.html">msgs1_1:SpiProperties</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/SpiProperties.html">msgs1_1:SpiProperties</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/properties.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/properties-change.html">msgs1_1:properties-change</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/AgentPropertyChange.html">msgs1_1:AgentPropertyChange</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/AgentPropertyChange.html">msgs1_1:AgentPropertyChange</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 3&nbsp;attributes, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/properties-change.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/row.html">msgs1_1:row</A></SPAN><SPAN CLASS="f10"> (within </SPAN><SPAN CLASS="f11"><A HREF="elements/rows.html">msgs1_1:rows</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">embedded complexType</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 1&nbsp;element</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/row.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definition of 1&nbsp;<A HREF="elements/row.html#r5">element</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/rows.html">msgs1_1:rows</A></SPAN><SPAN CLASS="f10"> (within </SPAN><SPAN CLASS="f11"><A HREF="elements/secondaryasp.html">msgs1_1:secondaryasp</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">embedded complexType</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 1&nbsp;element</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/rows.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definition of 1&nbsp;<A HREF="elements/rows.html#r5">element</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/secondaryasp.html">msgs1_1:secondaryasp</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/SecondaryASP.html">msgs1_1:SecondaryASP</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/SecondaryASP.html">msgs1_1:SecondaryASP</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 3&nbsp;attributes, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 3 <A HREF="elements/secondaryasp.html#r2">locations</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/spi-sample-data.html">msgs1_1:spi-sample-data</A></SPAN><SPAN CLASS="f10"> (type </SPAN><SPAN CLASS="f11"><A HREF="complexTypes/ProcessSpiSampleRequest.html">msgs1_1:ProcessSpiSampleRequest</A></SPAN><SPAN CLASS="f10">)</SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f5"><A HREF="complexTypes/ProcessSpiSampleRequest.html">msgs1_1:ProcessSpiSampleRequest</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 9&nbsp;attributes, 1&nbsp;element</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Defined:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">locally at 1 <A HREF="elements/spi-sample-data.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="elements/upstream-envelope.html">msgs1_1:upstream-envelope</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Type:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7"><A HREF="elements/upstream-envelope.html#r1">embedded</A> (</SPAN><SPAN CLASS="f13">extension of</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f5"><A HREF="complexTypes/Envelope.html">msgs1_1:Envelope</A></SPAN><SPAN CLASS="f7">)</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definition of 1&nbsp;<A HREF="elements/upstream-envelope.html#r4">element</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">never</SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE></DIV>
+</A><A NAME="r3"><DIV CLASS="p2">
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="4" BORDER="1">
+<COLGROUP SPAN="3"></COLGROUP>
+<TR BGCOLOR="#CCCCFF">
+<TD COLSPAN="3"><SPAN CLASS="f8">Complex Type Summary</SPAN></TD>
+</TR>
+<TR>
+<TD WIDTH="1%"><SPAN CLASS="f9"><A HREF="complexTypes/AgentPropertyChange.html">msgs1_1:AgentPropertyChange</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 3&nbsp;attributes, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 2&nbsp;<A HREF="complexTypes/AgentPropertyChange.html#r5">elements</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/AgentPropertyChange.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/AgentPropertyChangeRequest.html">msgs1_1:AgentPropertyChangeRequest</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Called by discovery code to change properties on an agent.</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 4&nbsp;attributes, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 1&nbsp;<A HREF="complexTypes/AgentPropertyChangeRequest.html#r4">attribute</A> and 2&nbsp;<A HREF="complexTypes/AgentPropertyChangeRequest.html#r7">elements</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/AgentPropertyChangeRequest.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/ContentBlock.html">msgs1_1:ContentBlock</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Extends the msgs1_0:ContentBlock to denote new Content Blocks that have been added to the 1.1 schema</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 2&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 2&nbsp;<A HREF="complexTypes/ContentBlock.html#r5">attributes</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 2 <A HREF="complexTypes/ContentBlock.html#r1">locations</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/CreateAgent.html">msgs1_1:CreateAgent</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Creates a new Agent instance</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 11&nbsp;attributes, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 2&nbsp;<A HREF="complexTypes/CreateAgent.html#r5">attributes</A> and 2&nbsp;<A HREF="complexTypes/CreateAgent.html#r8">elements</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/CreateAgent.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/DownstreamAgentBlock.html">msgs1_1:DownstreamAgentBlock</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 3&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definition of 1&nbsp;<A HREF="complexTypes/DownstreamAgentBlock.html#r4">attribute</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/DownstreamAgentBlock.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/DownstreamContentBlock.html">msgs1_1:DownstreamContentBlock</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 2&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 2 <A HREF="complexTypes/DownstreamContentBlock.html#r1">locations</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/DownstreamMessages.html">msgs1_1:DownstreamMessages</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Defines all DownstreamMessages that can be handled in this schema version</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 1&nbsp;attribute, 26&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 2 <A HREF="complexTypes/DownstreamMessages.html#r1">locations</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/EmptyUpstream.html">msgs1_1:EmptyUpstream</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 2&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/EmptyUpstream.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/Envelope.html">msgs1_1:Envelope</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 1&nbsp;element</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definition of 1&nbsp;<A HREF="complexTypes/Envelope.html#r4">element</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 2 <A HREF="complexTypes/Envelope.html#r1">locations</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/Host.html">msgs1_1:Host</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Extends the msgs1_0:Host</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 16&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 2&nbsp;<A HREF="complexTypes/Host.html#r6">attributes</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 2 <A HREF="complexTypes/Host.html#r1">locations</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/Placeholder.html">msgs1_1:Placeholder</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 2&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/Placeholder.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/ProcessSpiSampleRequest.html">msgs1_1:ProcessSpiSampleRequest</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">An extension of the verison 1.0 message that allows the host specific information to be included in the sample request.</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 9&nbsp;attributes, 1&nbsp;element</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 5&nbsp;<A HREF="complexTypes/ProcessSpiSampleRequest.html#r8">attributes</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/ProcessSpiSampleRequest.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/SecondaryASP.html">msgs1_1:SecondaryASP</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Adding support for handling Multi-level SecondaryASPs (think FTR scripts) It should be noted that the FglAM tooling does not support this SecondaryASP type.</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 3&nbsp;attributes, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 3&nbsp;<A HREF="complexTypes/SecondaryASP.html#r6">attributes</A> and 2&nbsp;<A HREF="complexTypes/SecondaryASP.html#r9">elements</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/SecondaryASP.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/SpiProperties.html">msgs1_1:SpiProperties</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 2&nbsp;<A HREF="complexTypes/SpiProperties.html#r5">elements</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/SpiProperties.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/UpstreamAgentBlock.html">msgs1_1:UpstreamAgentBlock</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Extends the msgs1_0:UpstreamAgentBlock to denote new Upstream Agent Block based messages that have been added to the 1.1 schema</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 3&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definition of 1&nbsp;<A HREF="complexTypes/UpstreamAgentBlock.html#r4">attribute</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="complexTypes/UpstreamAgentBlock.html#r1">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/UpstreamContentBlock.html">msgs1_1:UpstreamContentBlock</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Extends the msgs1_0:UpstreamContentBlock to denote new Upstream Content Block based messages that have been added to the 1.1 schema</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">empty, 2&nbsp;attributes</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 2 <A HREF="complexTypes/UpstreamContentBlock.html#r1">locations</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="complexTypes/UpstreamMessages.html">msgs1_1:UpstreamMessages</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">Defines all UpstreamMessages that can be handled in this schema version</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">complex, 1&nbsp;attribute, 29&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 2 <A HREF="complexTypes/UpstreamMessages.html#r1">locations</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+</TABLE></DIV>
+</A><A NAME="r4"><DIV CLASS="p2">
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="4" BORDER="1">
+<COLGROUP SPAN="3"></COLGROUP>
+<TR BGCOLOR="#CCCCFF">
+<TD COLSPAN="3"><SPAN CLASS="f8">Element Group Summary</SPAN></TD>
+</TR>
+<TR>
+<TD WIDTH="1%"><SPAN CLASS="f9"><A HREF="groups/DownstreamMessageTypes_v1_0_Extensions.html">msgs1_1:DownstreamMessageTypes_v1_0_Extensions</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">List DownstreamContentBlock messages that extend existing 1.0 DownstreamContentBlock</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="groups/DownstreamMessageTypes_v1_0_Extensions.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="groups/DownstreamMessageTypes_v1_1.html">msgs1_1:DownstreamMessageTypes_v1_1</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">List new DownstreamContentBlock messages that have been added to the 1.1 schema</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 2&nbsp;<A HREF="groups/DownstreamMessageTypes_v1_1.html#r6">elements</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="groups/DownstreamMessageTypes_v1_1.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="groups/UpstreamMessageTypes_v1_0_Extensions.html">msgs1_1:UpstreamMessageTypes_v1_0_Extensions</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">List UpstreamContentBlock messages that extend existing 1.0 UpstreamContentBlocks</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 2&nbsp;<A HREF="groups/UpstreamMessageTypes_v1_0_Extensions.html#r6">elements</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="groups/UpstreamMessageTypes_v1_0_Extensions.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+<TR>
+<TD><SPAN CLASS="f9"><A HREF="groups/UpstreamMessageTypes_v1_1.html">msgs1_1:UpstreamMessageTypes_v1_1</A></SPAN></TD>
+<TD COLSPAN="2" WIDTH="99%"><SPAN CLASS="f6">List new UpstreamContentBlock messages that have been added to the 1.1 schema</SPAN><DIV CLASS="p4">
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<COLGROUP SPAN="2"></COLGROUP>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Content:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">2&nbsp;elements</SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Includes:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">definitions of 2&nbsp;<A HREF="groups/UpstreamMessageTypes_v1_1.html#r6">elements</A></SPAN></DIV></TD>
+</TR>
+<TR VALIGN="top">
+<TD><DIV CLASS="p6"><SPAN CLASS="f12">Used:</SPAN></DIV></TD>
+<TD><DIV CLASS="p7"><SPAN CLASS="f7">at 1 <A HREF="groups/UpstreamMessageTypes_v1_1.html#r2">location</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</TD>
+</TR>
+</TABLE></DIV>
+</A><A NAME="r73"><DIV CLASS="p8"><SPAN CLASS="f8">XML Source</SPAN></DIV><DIV CLASS="p9">
+<TABLE WIDTH="100%" BGCOLOR="#F5F5F5" CELLSPACING="0" CELLPADDING="7" BORDER="0" CLASS="brdr1">
+<TR>
+<TD><SPAN CLASS="f14">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</SPAN><DIV><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR>  Copyright 2013 Dell Inc.<BR>  ALL RIGHTS RESERVED.<BR>  <BR>  This software is the confidential and proprietary information of<BR>  Dell Inc. (&quot;Confidential Information&quot;).  You shall not<BR>  disclose such Confidential Information and shall use it only in<BR>  accordance with the terms of the license agreement you entered<BR>  into with Dell Inc.<BR>  <BR>  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT<BR>  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,<BR>  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF<BR>  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR<BR>  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY<BR>  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING<BR>  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.<BR></SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><A NAME="r72"><DIV><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:schema</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">elementFormDefault</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">qualified</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">targetNamespace</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../../namespaces/urn_X-quest_com_glue_messages_1_1/namespace-summary.html"><SPAN CLASS="f18">urn:X-quest.com:glue/messages/1.1</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f19">xmlns:msgs1_0</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f20">urn:X-quest.com:glue/messages/1.0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f19">xmlns:msgs1_1</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f20">urn:X-quest.com:glue/messages/1.1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f19">xmlns:xsd</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f20">http://www.w3.org/2001/XMLSchema</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"> Import the Message 1.0 XSD </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r5"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:import</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">namespace</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="urn:X-quest.com:glue/messages/1.0" TARGET="_blank"><SPAN CLASS="f18">urn:X-quest.com:glue/messages/1.0</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">schemaLocation</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/schema-summary.html"><SPAN CLASS="f18">messages.1.0.xsd</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r7"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/downstream-envelope.html"><SPAN CLASS="f18">downstream-envelope</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/Envelope.html"><SPAN CLASS="f18">msgs1_1:Envelope</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><A NAME="r6"><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/downstream-envelope.html#r3"><SPAN CLASS="f18">messages</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/DownstreamMessages.html"><SPAN CLASS="f18">msgs1_1:DownstreamMessages</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r9"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/upstream-envelope.html"><SPAN CLASS="f18">upstream-envelope</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/Envelope.html"><SPAN CLASS="f18">msgs1_1:Envelope</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><A NAME="r8"><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/upstream-envelope.html#r3"><SPAN CLASS="f18">messages</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/UpstreamMessages.html"><SPAN CLASS="f18">msgs1_1:UpstreamMessages</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r11"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">abstract</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">true</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/Envelope.html"><SPAN CLASS="f18">Envelope</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><A NAME="r10"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/Envelope.html#r3"><SPAN CLASS="f18">headers</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/complexTypes/Headers.html"><SPAN CLASS="f18">msgs1_0:Headers</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR>  We are defining the ContentBlock here so that we can identify newly created<BR>  ContentBlock in this schema. We need to know this so that we can add the Message to<BR>  the appropriate UpstreamMessages list<BR> </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r14"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">abstract</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">true</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">block</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">restriction</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ContentBlock.html"><SPAN CLASS="f18">ContentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">Extends the msgs1_0:ContentBlock to denote new Content Blocks that have been<BR>added to the 1.1 schema</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><A NAME="r12"><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ContentBlock.html#r3"><SPAN CLASS="f18">msgid</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/simpleTypes/UUID.html"><SPAN CLASS="f18">msgs1_0:UUID</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p11"></DIV><A NAME="r13"><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ContentBlock.html#r4"><SPAN CLASS="f18">response-to</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/simpleTypes/UUID.html"><SPAN CLASS="f18">msgs1_0:UUID</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">optional</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR>  We are defining the UpstreamContentBlock here so that we can identify newly created<BR>  UpstreamContentBlock in this schema. We need to know this so that we can add the Message to<BR>  the appropriate UpstreamMessages list<BR> </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r15"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">abstract</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">true</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/UpstreamContentBlock.html"><SPAN CLASS="f18">UpstreamContentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">Extends the msgs1_0:UpstreamContentBlock to denote new Upstream Content Block<BR>based messages that have been added to the 1.1 schema</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ContentBlock.html"><SPAN CLASS="f18">msgs1_1:ContentBlock</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR>  We are defining the UpstreamAgentBlock here so that we can identify newly created<BR>  UpstreamAgentBlock in this schema. We need to know this so that we can add the Message to<BR>  the appropriate UpstreamMessages list<BR> </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r17"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">abstract</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">true</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/UpstreamAgentBlock.html"><SPAN CLASS="f18">UpstreamAgentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">Extends the msgs1_0:UpstreamAgentBlock to denote new Upstream Agent Block<BR>based messages that have been added to the 1.1 schema</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/UpstreamContentBlock.html"><SPAN CLASS="f18">msgs1_1:UpstreamContentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><A NAME="r16"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/UpstreamAgentBlock.html#r3"><SPAN CLASS="f18">agentid</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/simpleTypes/UUID.html"><SPAN CLASS="f18">msgs1_0:UUID</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r18"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/UpstreamMessages.html"><SPAN CLASS="f18">UpstreamMessages</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">Defines all UpstreamMessages that can be handled in this schema version</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/complexTypes/UpstreamMessages.html"><SPAN CLASS="f18">msgs1_0:UpstreamMessages</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">ref</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/UpstreamMessageTypes_v1_0_Extensions.html"><SPAN CLASS="f18">msgs1_1:UpstreamMessageTypes_v1_0_Extensions</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">ref</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/UpstreamMessageTypes_v1_1.html"><SPAN CLASS="f18">msgs1_1:UpstreamMessageTypes_v1_1</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR>  Only list elements that are extending an existing UpstreamContentBlock from the<BR>  1.0 messages schema.<BR>  </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r21"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/UpstreamMessageTypes_v1_0_Extensions.html"><SPAN CLASS="f18">UpstreamMessageTypes_v1_0_Extensions</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">List UpstreamContentBlock messages that extend existing 1.0 UpstreamContentBlocks</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><A NAME="r19"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/UpstreamMessageTypes_v1_0_Extensions.html#r4"><SPAN CLASS="f18">empty</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/EmptyUpstream.html"><SPAN CLASS="f18">msgs1_1:EmptyUpstream</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><A NAME="r20"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/UpstreamMessageTypes_v1_0_Extensions.html#r5"><SPAN CLASS="f18">spi-sample-data</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ProcessSpiSampleRequest.html"><SPAN CLASS="f18">msgs1_1:ProcessSpiSampleRequest</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r22"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/EmptyUpstream.html"><SPAN CLASS="f18">EmptyUpstream</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/complexTypes/EmptyUpstream.html"><SPAN CLASS="f18">msgs1_0:EmptyUpstream</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR> Only list elements that are implementing new UpstreamContentBlock messages.<BR> </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r25"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/UpstreamMessageTypes_v1_1.html"><SPAN CLASS="f18">UpstreamMessageTypes_v1_1</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">List new UpstreamContentBlock messages that have been added to the 1.1 schema</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><A NAME="r23"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/UpstreamMessageTypes_v1_1.html#r4"><SPAN CLASS="f18">agent-properties-change</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/AgentPropertyChangeRequest.html"><SPAN CLASS="f18">msgs1_1:AgentPropertyChangeRequest</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><A NAME="r24"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/UpstreamMessageTypes_v1_1.html#r5"><SPAN CLASS="f18">placeholder</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/Placeholder.html"><SPAN CLASS="f18">msgs1_1:Placeholder</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r26"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/DownstreamMessages.html"><SPAN CLASS="f18">DownstreamMessages</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">Defines all DownstreamMessages that can be handled in this schema version</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/complexTypes/DownstreamMessages.html"><SPAN CLASS="f18">msgs1_0:DownstreamMessages</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">ref</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/DownstreamMessageTypes_v1_0_Extensions.html"><SPAN CLASS="f18">msgs1_1:DownstreamMessageTypes_v1_0_Extensions</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">ref</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/DownstreamMessageTypes_v1_1.html"><SPAN CLASS="f18">msgs1_1:DownstreamMessageTypes_v1_1</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR> We are defining the DownstreamContentBlock here so that we can identify newly created<BR> DownstreamContentBlock in this schema. We need to know this so that we can add the Message to<BR> the appropriate DownstreamMessages list<BR> </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r27"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">abstract</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">true</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/DownstreamContentBlock.html"><SPAN CLASS="f18">DownstreamContentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ContentBlock.html"><SPAN CLASS="f18">msgs1_1:ContentBlock</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR> We are defining the DownstreamAgentBlock here so that we can identify newly created<BR> DownstreamAgentBlock in this schema. We need to know this so that we can add the Message to<BR> the appropriate DownstreamMessages list<BR> </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r29"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">abstract</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">true</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/DownstreamAgentBlock.html"><SPAN CLASS="f18">DownstreamAgentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/DownstreamContentBlock.html"><SPAN CLASS="f18">msgs1_1:DownstreamContentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><A NAME="r28"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/DownstreamAgentBlock.html#r3"><SPAN CLASS="f18">agentid</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/simpleTypes/UUID.html"><SPAN CLASS="f18">msgs1_0:UUID</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR>  Only list elements that are extending an existing DownstreamContentBlock from the<BR>  1.0 messages schema.<BR>  </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r30"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/DownstreamMessageTypes_v1_0_Extensions.html"><SPAN CLASS="f18">DownstreamMessageTypes_v1_0_Extensions</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">List DownstreamContentBlock messages that extend existing 1.0 DownstreamContentBlock</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;!--</SPAN><SPAN CLASS="f15"><BR> Only list elements that are implementing new DownstreamContentBlock messages.<BR> </SPAN><SPAN CLASS="f14">--&gt;</SPAN></DIV><DIV CLASS="p10"></DIV><A NAME="r33"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/DownstreamMessageTypes_v1_1.html"><SPAN CLASS="f18">DownstreamMessageTypes_v1_1</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">List new DownstreamContentBlock messages that have been added to the 1.1 schema</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><A NAME="r31"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/DownstreamMessageTypes_v1_1.html#r4"><SPAN CLASS="f18">create-agent</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/CreateAgent.html"><SPAN CLASS="f18">msgs1_1:CreateAgent</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><A NAME="r32"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="groups/DownstreamMessageTypes_v1_1.html#r5"><SPAN CLASS="f18">properties-change</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/AgentPropertyChange.html"><SPAN CLASS="f18">msgs1_1:AgentPropertyChange</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:group</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r36"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/Host.html"><SPAN CLASS="f18">Host</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">Extends the msgs1_0:Host</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/complexTypes/Host.html"><SPAN CLASS="f18">msgs1_0:Host</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><A NAME="r34"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/Host.html#r5"><SPAN CLASS="f18">schema-version</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"><SPAN CLASS="f17">Sets the message schema version that the FglAM instance this<BR>is host is modelling.</SPAN></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><A NAME="r35"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/Host.html#r4"><SPAN CLASS="f18">hops</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"><SPAN CLASS="f17">Counts the number of hops a FglAM host is from the Foglight Server.<BR>This metric is used to contribute to the load estimator by counting<BR>the number of connections that are traversed across downstream endpoints.</SPAN></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:simpleType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:restriction</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:int</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p16"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:minInclusive</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">value</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:restriction</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:simpleType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r41"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/CreateAgent.html"><SPAN CLASS="f18">CreateAgent</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">Creates a new Agent instance</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/DownstreamContentBlock.html"><SPAN CLASS="f18">msgs1_1:DownstreamContentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><A NAME="r37"><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/CreateAgent.html#r7"><SPAN CLASS="f18">properties</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SpiProperties.html"><SPAN CLASS="f18">msgs1_1:SpiProperties</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p14"></DIV><A NAME="r38"><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/CreateAgent.html#r6"><SPAN CLASS="f18">creation-type</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p16"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p17"><SPAN CLASS="f17">Indicates the source of this create agent command.<BR>&quot;server&quot; comes from the upstream server<BR>&quot;upgrade&quot; server initiates upgrade to an existing agent instance<BR>&quot;restore&quot; is from the persisted agent state file<BR>&quot;precreate&quot; is from a file configured to precreate agents without user intervention.</SPAN></DIV><DIV CLASS="p16"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:simpleType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p16"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:restriction</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p17"></DIV><DIV CLASS="p17"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:enumeration</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">value</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">server</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p17"></DIV><DIV CLASS="p17"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:enumeration</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">value</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">upgrade</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p17"></DIV><DIV CLASS="p17"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:enumeration</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">value</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">restore</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p17"></DIV><DIV CLASS="p17"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:enumeration</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">value</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">precreate</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p17"></DIV><DIV CLASS="p16"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:restriction</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:simpleType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><A NAME="r39"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/CreateAgent.html#r3"><SPAN CLASS="f18">id</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/simpleTypes/UUID.html"><SPAN CLASS="f18">msgs1_0:UUID</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"><SPAN CLASS="f17">Reuse the Agent ID from the existing agent instance</SPAN></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><A NAME="r40"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/CreateAgent.html#r4"><SPAN CLASS="f18">state</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/simpleTypes/AgentState.html"><SPAN CLASS="f18">msgs1_0:AgentState</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"><SPAN CLASS="f17">The state value to return the upgraded agent to</SPAN></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attributeGroup</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">ref</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/attributeGroups/AgentInstanceAttrs.html"><SPAN CLASS="f18">msgs1_0:AgentInstanceAttrs</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r44"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SpiProperties.html"><SPAN CLASS="f18">SpiProperties</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><A NAME="r42"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SpiProperties.html#r3"><SPAN CLASS="f18">primaryasp</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/complexTypes/PrimaryASP.html"><SPAN CLASS="f18">msgs1_0:PrimaryASP</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><A NAME="r43"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SpiProperties.html#r4"><SPAN CLASS="f18">secondaryasp</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SecondaryASP.html"><SPAN CLASS="f18">msgs1_1:SecondaryASP</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r57"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SecondaryASP.html"><SPAN CLASS="f18">SecondaryASP</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">Adding support for handling Multi-level SecondaryASPs (think FTR scripts)<BR>It should be noted that the FglAM tooling does not support this SecondaryASP<BR>type. Access to the new attributes in this class are available only through<BR>'raw' calls on the ASPService.</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><A NAME="r49"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SecondaryASP.html#r7"><SPAN CLASS="f18">meta</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><A NAME="r48"><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/meta.html#r4"><SPAN CLASS="f18">field</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p16"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p17"></DIV><A NAME="r45"><DIV CLASS="p17"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/field.html#r5"><SPAN CLASS="f18">name</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p17"></DIV><A NAME="r46"><DIV CLASS="p17"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/field.html#r6"><SPAN CLASS="f18">type</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/simpleTypes/MsgPropertyTypes.html"><SPAN CLASS="f18">msgs1_0:MsgPropertyTypes</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p17"></DIV><A NAME="r47"><DIV CLASS="p17"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">default</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">false</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/field.html#r4"><SPAN CLASS="f18">multi-level</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:boolean</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">optional</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p17"></DIV><DIV CLASS="p16"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><A NAME="r53"><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">1</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SecondaryASP.html#r8"><SPAN CLASS="f18">rows</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><A NAME="r52"><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/rows.html#r4"><SPAN CLASS="f18">row</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p16"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p17"></DIV><DIV CLASS="p17"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p18"></DIV><A NAME="r51"><DIV CLASS="p18"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/row.html#r4"><SPAN CLASS="f18">data</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p19"></DIV><DIV CLASS="p19"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p20"></DIV><A NAME="r50"><DIV CLASS="p20"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="elements/data.html#r4"><SPAN CLASS="f18">value</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p20"></DIV><DIV CLASS="p19"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p19"></DIV><DIV CLASS="p18"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p18"></DIV><DIV CLASS="p17"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p17"></DIV><DIV CLASS="p16"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><A NAME="r54"><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SecondaryASP.html#r4"><SPAN CLASS="f18">name</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"><SPAN CLASS="f17">The name of the SecondaryASP (aka 'sharing_name')</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p11"></DIV><A NAME="r55"><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SecondaryASP.html#r5"><SPAN CLASS="f18">parent</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">optional</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"><SPAN CLASS="f17">The 'sharing_name' of the parent SecondaryASP that this multilevel asp is<BR>bound to</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p11"></DIV><A NAME="r56"><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SecondaryASP.html#r3"><SPAN CLASS="f18">column-ref</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">optional</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"><SPAN CLASS="f17">The name of the column in the meta data of the parent secondary asp that hold<BR>this property</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r63"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ProcessSpiSampleRequest.html"><SPAN CLASS="f18">ProcessSpiSampleRequest</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">An extension of the verison 1.0 message that allows the host specific<BR>information to be included in the sample request. This allows data to<BR>be submitted about remote hosts.</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/complexTypes/ProcessSpiSampleRequest.html"><SPAN CLASS="f18">msgs1_0:ProcessSpiSampleRequest</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><A NAME="r58"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ProcessSpiSampleRequest.html#r4"><SPAN CLASS="f18">host</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">required</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><A NAME="r59"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ProcessSpiSampleRequest.html#r5"><SPAN CLASS="f18">ip-address</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">optional</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><A NAME="r60"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ProcessSpiSampleRequest.html#r6"><SPAN CLASS="f18">os-name</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">optional</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><A NAME="r61"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ProcessSpiSampleRequest.html#r7"><SPAN CLASS="f18">os-version</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">optional</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><A NAME="r62"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/ProcessSpiSampleRequest.html#r3"><SPAN CLASS="f18">arch</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:string</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">use</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">optional</SPAN><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r64"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/Placeholder.html"><SPAN CLASS="f18">Placeholder</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/UpstreamContentBlock.html"><SPAN CLASS="f18">msgs1_1:UpstreamContentBlock</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r68"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/AgentPropertyChangeRequest.html"><SPAN CLASS="f18">AgentPropertyChangeRequest</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"><SPAN CLASS="f17">Called by discovery code to change properties on an agent.</SPAN></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/UpstreamAgentBlock.html"><SPAN CLASS="f18">msgs1_1:UpstreamAgentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><A NAME="r65"><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/AgentPropertyChangeRequest.html#r5"><SPAN CLASS="f18">primaryasp</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/complexTypes/PrimaryASP.html"><SPAN CLASS="f18">msgs1_0:PrimaryASP</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p14"></DIV><A NAME="r66"><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/AgentPropertyChangeRequest.html#r6"><SPAN CLASS="f18">secondaryasp</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SecondaryASP.html"><SPAN CLASS="f18">msgs1_1:SecondaryASP</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:choice</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><A NAME="r67"><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">default</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">true</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/AgentPropertyChangeRequest.html#r3"><SPAN CLASS="f18">disable-change-listener</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">xsd:boolean</SPAN><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p16"><SPAN CLASS="f17">Set attribute to false to receive updated Properties after being<BR>persisted on the server. This is useful when changing the bound<BR>list of a SecondaryASP. The default is to disable the change<BR>listener while these property changes are being persisted as there<BR>is no need for the agent to act on the change event initiated from<BR>the Persistence store as the agent already has the lastest properties<BR>stored locally</SPAN></DIV><DIV CLASS="p15"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:documentation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p15"></DIV><DIV CLASS="p14"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:annotation</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:attribute</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><A NAME="r71"><DIV CLASS="p10"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/AgentPropertyChange.html"><SPAN CLASS="f18">AgentPropertyChange</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">base</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/DownstreamAgentBlock.html"><SPAN CLASS="f18">msgs1_1:DownstreamAgentBlock</SPAN></A><SPAN CLASS="f14">&quot;&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p14"></DIV><A NAME="r69"><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/AgentPropertyChange.html#r3"><SPAN CLASS="f18">primaryasp</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="../messages_1_0_xsd/complexTypes/PrimaryASP.html"><SPAN CLASS="f18">msgs1_0:PrimaryASP</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p14"></DIV><A NAME="r70"><DIV CLASS="p14"><SPAN CLASS="f14">&lt;</SPAN><SPAN CLASS="f16">xsd:element</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">maxOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">unbounded</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">minOccurs</SPAN><SPAN CLASS="f14">=&quot;</SPAN><SPAN CLASS="f17">0</SPAN><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">name</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/AgentPropertyChange.html#r4"><SPAN CLASS="f18">secondaryasp</SPAN></A><SPAN CLASS="f14">&quot;</SPAN><SPAN CLASS="f7"> </SPAN><SPAN CLASS="f16">type</SPAN><SPAN CLASS="f14">=&quot;</SPAN><A HREF="complexTypes/SecondaryASP.html"><SPAN CLASS="f18">msgs1_1:SecondaryASP</SPAN></A><SPAN CLASS="f14">&quot;/&gt;</SPAN></DIV></A><DIV CLASS="p14"></DIV><DIV CLASS="p13"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:sequence</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p13"></DIV><DIV CLASS="p12"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:extension</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p12"></DIV><DIV CLASS="p11"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexContent</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV><DIV CLASS="p11"></DIV><DIV CLASS="p10"><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:complexType</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A><DIV CLASS="p10"></DIV><DIV><SPAN CLASS="f14">&lt;/</SPAN><SPAN CLASS="f16">xsd:schema</SPAN><SPAN CLASS="f14">&gt;</SPAN></DIV></A></TD>
+</TR>
+</TABLE></DIV>
+</A><DIV CLASS="p21"><HR CLASS="hr1"></DIV>
+<DIV CLASS="p22">
+<TABLE WIDTH="100%" BGCOLOR="#E7EDF6" CELLSPACING="0" CELLPADDING="5" BORDER="0" CLASS="brdr1">
+<TR>
+<TD CLASS="brdr2"><SPAN CLASS="f21">XML Schema documentation generated with <A HREF="http://www.filigris.com/products/docflex_xml/#editions.freeware" TARGET="_blank">DocFlex/XML (Kit)</A> v1.6.8</SPAN><DIV CLASS="p21"><SPAN CLASS="f21"><A HREF="http://www.filigris.com/products/docflex_xml/#freeware_edition" TARGET="_blank">DocFlex/XML (Kit)</A> is a freeware edition of <A HREF="http://www.filigris.com/products/docflex_xml/" TARGET="_blank">DocFlex/XML</A>, which is a powerful template-driven documentation and report generator from any data stored in XML files. Based on an innovative technology developed by <A HREF="http://www.filigris.com" TARGET="_blank">FILIGRIS WORKS</A>, this new tool offers virtuoso data querying and formatting capabilities not found in anything else!</SPAN></DIV><DIV CLASS="p21"><SPAN CLASS="f21">Need to convert your XML data into a clear nice-looking documentation or reports? Web-ready hypertext HTML or printable MS Word / OpenOffice.org friendly RTF? <A HREF="http://www.filigris.com/products/docflex_xml/" TARGET="_blank">DocFlex/XML</A> may be a cheap, quick and effective solution exactly for this task!</SPAN></DIV><DIV CLASS="p21"><SPAN CLASS="f21">Have questions? Not sure how to use it? Just send us e-mail to <A HREF="mailto:contact@filigris.com">contact@filigris.com</A> and we are always happy to help you! See also our <A HREF="http://www.filigris.com/company/services.php" TARGET="_blank">services</A> at <A HREF="http://www.filigris.com" TARGET="_blank">www.filigris.com</A></SPAN></DIV></TD>
+</TR>
+</TABLE></DIV>
+</DIV>
+        <DIV style="border: 1px solid #999999; padding: 0.5em; margin-top: 10px; font-size: smaller;">
+          <p>
+            &#169; 2013 Quest Software Inc.<br/>
+            ALL RIGHTS RESERVED.
+            </p>
+            <p>
+            This guide contains proprietary information protected by copyright. The software 
+                described in this guide is furnished under a software license or nondisclosure 
+                agreement. This software may be used or copied only in accordance with the 
+                terms of the applicable agreement. No part of this guide may be reproduced 
+                or transmitted in any form or by any means, electronic or mechanical, 
+                including photocopying and recording for any purpose other than the 
+                purchaser's personal use without the written permission of Quest Software Inc.
+            </p>
+            <p>
+            The information in this document is provided in connection with Quest Software products. 
+                No license, express or implied, by estoppel or otherwise, to any intellectual 
+                property right is granted by this document or in connection with the sale of 
+                Quest Software products. EXCEPT AS SET FORTH IN QUEST SOFTWARE'S TERMS AND CONDITIONS AS 
+                SPECIFIED IN THE LICENSE AGREEMENT FOR THIS PRODUCT, QUEST SOFTWARE ASSUMES NO 
+                LIABILITY WHATSOEVER AND DISCLAIMS ANY EXPRESS, IMPLIED OR STATUTORY 
+                WARRANTY RELATING TO ITS PRODUCTS INCLUDING, BUT NOT LIMITED TO, THE 
+                IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, 
+                OR NON-INFRINGEMENT. IN NO EVENT SHALL QUEST SOFTWARE BE LIABLE FOR ANY DIRECT, 
+                INDIRECT, CONSEQUENTIAL, PUNITIVE, SPECIAL OR INCIDENTAL DAMAGES (INCLUDING, 
+                WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION OR 
+                LOSS OF INFORMATION) ARISING OUT OF THE USE OR INABILITY TO USE THIS 
+                DOCUMENT, EVEN IF QUEST SOFTWARE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH 
+                DAMAGES. Quest Software makes no representations or warranties with respect to 
+                the accuracy or completeness of the contents of this document and 
+                reserves the right to make changes to specifications and product 
+                descriptions at any time without notice. Quest Software does not make any 
+                commitment to update the information contained in this document.
+            </p>
+            <p>    
+            If you have any questions regarding your potential use of this material, 
+                contact:
+            <address>
+            Quest Software Inc.<br/>
+            Attn: LEGAL Dept<br/>
+            5 Polaris Way<br/>
+            Aliso Viejo, CA 92656<br/>
+            <a href="http://www.quest.com">www.quest.com</a><br/>
+            email: <a href="mailto:legal@quest.com">legal@quest.com</a><br/>
+            </address>
+            Refer to our Web site for regional and international office information.
+            </p>
+            <p>
+                Quest, Quest Software, the Quest logo, Foglight, IntelliProfile, PerformaSure, 
+                Spotlight, StealthCollect, TOAD, Tag and Follow, Vintela Single Sign-on for Java, and 
+                vFoglight are trademarks and registered trademarks of Quest Software Inc in the United 
+                States of America and other countries. For a complete list of Quest Software's trademarks, 
+                please see 
+                <a href="http://www.quest.com/legal/trademark-information.aspx">http://www.quest.com/legal/trademark-information.aspx</a>. 
+                Other trademarks and registered trademarks are property of their respective owners.
+            </p>
+        </DIV>
+    </BODY>
+</HTML>

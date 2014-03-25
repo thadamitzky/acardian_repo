@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:common="urn:X-quest.com:glue/common/1.2" 
+            elementFormDefault="unqualified">
+
+    <!-- Include Common types -->
+    <xsd:import namespace="urn:X-quest.com:glue/common/1.2" schemaLocation="common.1.2.xsd"/>
+
+    <!-- Top level element, required for JAXB to unmarshal file's using the schema -->    
+    <xsd:element name="types">
+        <xsd:complexType>
+    	    <xsd:sequence>
+                <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element name="type" type="TopologyType" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:choice>
+    		</xsd:sequence>
+            <xsd:attribute name="domain" use="optional" type="xsd:string"/>
+    	</xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="TopologyType">
+		<xsd:sequence>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element name="annotation" type="TopologyAnnotation" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="property"   type="TopologyProperty" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="instances"  type="TypeInstances" minOccurs="0" maxOccurs="1"/>
+            </xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="name" use="required" type="common:JavaIdentifier">
+		    <xsd:annotation>
+		        <xsd:documentation>
+                The name of the type being defined.  This name must be globally
+                unique.  Convention is to use a common prefix for all related
+                topology types (e.g. "J2EE").
+                </xsd:documentation>
+		    </xsd:annotation></xsd:attribute>
+        <xsd:attribute name="extends" type="common:JavaIdentifier">
+            <xsd:annotation>
+                <xsd:documentation>
+                The name of the topology type that this type extends.  This can be
+                any type that is defined in the same XML document, or is known to
+                be available in the topology.  All core types are defined in the server's
+                dist/config/topology-types.xml file.
+                </xsd:documentation>
+            </xsd:annotation></xsd:attribute>
+		<xsd:attribute name="instance-class" type="xsd:string">
+		    <xsd:annotation>
+		        <xsd:documentation>
+                The fully qualified name of the Java class that represents an instance
+                of this type.  The instance class used is typically inherited from that
+                of the super type.  If no super type is specified, then this type is
+                considered to be a primitive type and this attribute must be specified.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+	</xsd:complexType>
+
+    <xsd:complexType name="TopologyAnnotation">
+        <xsd:sequence>
+            <xsd:element name="value" type="AnnotationValue" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:documentation>
+                    An element used to contain an annotation's value.  This element is
+                    only used if the &quot;value&quot; attribute has not been specified.
+                    </xsd:documentation>
+               </xsd:annotation>
+           </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="name" use="required" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                The name of the annotation being defined.  The annotation name is the
+                name of a type that extends the &quot;Annotation&quot; type.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="value" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>The value of the annotation.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="AnnotationValue" mixed="true"/>
+ 
+    <xsd:complexType name="TopologyProperty">
+        <xsd:sequence>
+            <xsd:element name="annotation" type="TopologyAnnotation" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" use="required" type="common:JavaIdentifier">
+            <xsd:annotation>
+                <xsd:documentation>
+                The name of the property. This must be unique across all properties
+                added to this type or inherited from super types.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+		<xsd:attribute name="type" use="required" type="xsd:string">
+		    <xsd:annotation>
+		        <xsd:documentation>The name of the property's value type.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="is-many" type="xsd:boolean">
+            <xsd:annotation>
+                <xsd:documentation>
+                A flag indicating whether the property value is actually a list of
+                values of the property type.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="is-containment" type="xsd:boolean">
+            <xsd:annotation>
+                <xsd:documentation>
+                A flag indicating whether the object referenced by the property's
+                value is considered to be logically contained by the referencing
+                object.  This flag should only be set when the property's type is a
+                subtype of the DataObject type.  When establishing containment
+                relationships, care should be taken to ensure that there are no
+                cycles in the containment graph.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="is-identity" type="xsd:boolean">
+            <xsd:annotation>
+                <xsd:documentation>
+                A flag to indicate whether the property's value forms part of the
+                object's identity.  Each type that extends the TopologyObject type
+                must have at least one identity property.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="default" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>The default value of the property.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="unit-name" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                The units in which the properties value is recorded.  Units are
+                typically only provided for numeric or metric properties.
+                </xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="TypeInstances">
+        <xsd:annotation>
+            <xsd:documentation>
+            Element to define a list of instances of a type that are created
+            when the type is deployed.  This is typically used to pre-create
+            instances of Enumeration subtypes.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="instance" type="TypeInstance" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="TypeInstance">
+        <xsd:annotation>
+            <xsd:documentation>
+            Element to contain the property values used to create a single instance.
+            A property value must be specified for each identity property in the
+            type.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="property-value" type="PropertyValue" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PropertyValue">
+        <xsd:annotation>
+            <xsd:documentation>
+            Element to define a single property/value pair.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="value" type="AnnotationValue" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" use="required" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>The name of the property being specified.</xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="value" use="optional" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                The value of the property being specified.  For complex values, a
+                &quot;value&quot; child element can be used in the place of this attribute.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+</xsd:schema>

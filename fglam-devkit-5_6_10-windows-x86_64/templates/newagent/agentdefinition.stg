@@ -1,0 +1,80 @@
+/*
+ * Copyright 2013 Dell Inc.
+ * ALL RIGHTS RESERVED.
+ * 
+ * This software is the confidential and proprietary information of
+ * Dell Inc. ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered
+ * into with Dell Inc.
+ * 
+ * DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ * THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ * NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ * DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ * OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ */  
+
+/* copyright.stg automagically imported */ 
+import "collectors.stg"
+import "callbacks.stg"
+import "properties.stg"
+
+/**
+ * The agent-definition file for the agent. This file uses % as the macro delimiter
+ */ 
+agentdefinition(agent, prefix) ::= <<
+<?xml version="1.0" encoding="UTF-8"?>
+%copyrightxml(agent.year)%
+
+<agent-definition xmlns="urn:X-quest.com:glue/agent/definition/%agent.schemaVersion%"
+                  name="%agent.agentName%" 
+                  allow-asynchronous-access="true"
+                  ver="%agent.cartridgeVersion%">
+                  
+    <!-- Since this configuration was generated with version %agent.devkitVersion% of the 
+         developer's kit, it requires at least a matching version of FglAM -->
+    <host-version min="%agent.devkitVersion%"/>                   
+
+    %if(agent.topologyFile)%
+    <topology-types package="%agent.agentPackage%.samples">
+        <!-- Relative file names are resolved against the directory
+             that this file is in -->
+        <topology-file filename="../%agent.topologyFileSafeForXML%"/>
+        <!-- Other topology files can be included here if necessary -->
+    </topology-types>
+    %endif%
+    
+    <agent name="%agent.agentName%" package="%agent.agentPackage%" class-name="%agent.agentName%Impl">
+        %if(agent.collectors)%
+        <!-- Collectors -->
+        <data-collection enable-cron="%agent.enableCronCollectors%">
+          %agent.collectors:collectorxml()%
+        </data-collection>
+        %endif%
+        
+        %if(agent.properties)%
+        <!-- Properties -->
+        %agent.properties:propertiesxml()%
+        %endif%
+        
+        %if(agent.callbacks)%
+        <!-- Callbacks -->
+        %agent.callbacks:callbackxml()%
+        %endif%
+        
+        %if(agent.buildSimulator)%
+        <!-- 
+          Tell the simulator builder which of the topology types form the top
+          of a sample submission 
+        -->
+        <!--
+         <simulator-sample name="%agent.agentName%SomeTopologyType"/>
+        -->     
+        %endif%
+    </agent>
+
+</agent-definition>
+>> 

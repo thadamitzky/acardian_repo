@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:X-quest.com:glue/messages/4"
+            xmlns:msgs4="urn:X-quest.com:glue/messages/4"
+            xmlns:msgs1_3="urn:X-quest.com:glue/messages/1.3"
+			xmlns:msgs1_2="urn:X-quest.com:glue/messages/1.2"
+			xmlns:msgs1_1="urn:X-quest.com:glue/messages/1.1"
+			xmlns:msgs1_0="urn:X-quest.com:glue/messages/1.0"
+			elementFormDefault="qualified">
+      
+    <!-- Added in version 5.5.5 (Wolverine) -->   
+
+	<!-- Import the Message 1.0 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/1.0" schemaLocation="messages.1.0.xsd" />
+	<!-- Import the Message 1.1 XSD -->
+	<xsd:import namespace="urn:X-quest.com:glue/messages/1.1" schemaLocation="messages.1.1.xsd" />
+	<!-- Import the Message 1.2 XSD -->
+	<xsd:import namespace="urn:X-quest.com:glue/messages/1.2" schemaLocation="messages.1.2.xsd" />
+    <!-- Import the Message 1.3 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/1.3" schemaLocation="messages.1.3.xsd" />
+
+	<xsd:element name="downstream-envelope">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="msgs4:Envelope">
+					<xsd:sequence>
+						<xsd:element name="messages" type="msgs4:DownstreamMessages"
+									 maxOccurs="unbounded" minOccurs="0" />
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+    <xsd:element name="upstream-envelope">
+            <xsd:complexType>
+                <xsd:complexContent>
+                    <xsd:extension base="msgs4:Envelope">
+                        <xsd:sequence>
+                            <xsd:element name="messages" type="msgs4:UpstreamMessages"
+                                         maxOccurs="unbounded" minOccurs="0" />
+                        </xsd:sequence>
+                    </xsd:extension>
+                </xsd:complexContent>
+            </xsd:complexType>
+        </xsd:element>
+
+	<xsd:complexType name="Envelope" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="headers" type="msgs1_3:Headers" maxOccurs="1" minOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+		We are defining the ContentBlock here so that we can identify newly created
+		ContentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="ContentBlock" abstract="true" block="restriction">
+		<xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:ContentBlock to denote new Content Blocks that have been
+				added to the 1.3 schema
+            </xsd:documentation>
+        </xsd:annotation>
+    	<xsd:attribute name="msgid" type="msgs1_0:UUID" use="required"/>
+    	<xsd:attribute name="response-to" type="msgs1_0:UUID" use="optional"/>
+		<xsd:attribute name="sequence-key" use="required" type="xsd:long">
+			<xsd:annotation>
+				<xsd:documentation>
+					When the message center is initialized a sequence key will be generated.
+					This key will be held by the downstream hosts that will process the message. When
+					the downstream hosts see that this value has changed, they will then reset their
+					sequence number counters.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="sequence-number" use="optional" default="1">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sequence number to denote message instance counts. This can be used to help
+					determine if a ordered set of messages is received out of order or if conflicting
+					message 'contents' should process only newer instances.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:long">
+					<xsd:minExclusive value="0"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<!--
+		We are defining the UpstreamContentBlock here so that we can identify newly created
+		UpstreamContentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="UpstreamContentBlock" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:UpstreamContentBlock to denote new Upstream Content Block
+				based messages that have been added to the 1.3 schema
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+    		<xsd:extension base="msgs4:ContentBlock"/>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+	<!--
+		We are defining the UpstreamAgentBlock here so that we can identify newly created
+		UpstreamAgentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="UpstreamAgentBlock" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:UpstreamAgentBlock to denote new Upstream Agent Block
+				based messages that have been added to the 1.3 schema
+			</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+			<xsd:extension base="msgs4:UpstreamContentBlock">
+				<xsd:attribute name="agentid" type="msgs1_0:UUID"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="UpstreamMessages">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines all UpstreamMessages that can be handled in this schema version
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_3:UpstreamMessages">
+				<xsd:sequence>
+					<xsd:group ref="msgs4:UpstreamMessageTypes_v1_0_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+					<xsd:group ref="msgs4:UpstreamMessageTypes_v1_1_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+					<xsd:group ref="msgs4:UpstreamMessageTypes_v1_2_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+                    <xsd:group ref="msgs4:UpstreamMessageTypes_v1_3_Extensions"
+                               maxOccurs="unbounded"
+                               minOccurs="0" />
+					<xsd:group ref="msgs4:UpstreamMessageTypes_v4"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.0 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_0_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.0 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.1 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_1_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.1 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.2 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_2_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.2 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+    <!--
+     Only list elements that are extending an existing UpstreamContentBlock from the
+     1.3 messages schema.
+     -->
+    <xsd:group name="UpstreamMessageTypes_v1_3_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List UpstreamContentBlock messages that extend existing 1.2 UpstreamContentBlocks
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+	Only list elements that are implementing new UpstreamContentBlock messages.
+	-->
+	<xsd:group name="UpstreamMessageTypes_v4">
+		<xsd:annotation>
+			<xsd:documentation>
+				List new UpstreamContentBlock messages that have been added to the 1.3 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+            <xsd:element name="bridge-request" type="msgs4:BridgeRequest"/>
+            <xsd:element name="topology-data"  type="msgs4:TopologyData"/>
+            <xsd:element name="cancel-upstream-transfer" type="msgs4:CancelUpstreamTransfer"/>
+			<xsd:element name="credential-query" type="msgs4:CredentialQuery"/>
+			<xsd:element name="credential-agent-query" type="msgs4:CredentialAgentQuery"/>
+			<xsd:element name="credential-event" type="msgs4:CredentialEvent"/>
+			<xsd:element name="credential-agent-event" type="msgs4:CredentialAgentEvent"/>
+			<xsd:element name="credential-query-keychains-result" type="msgs4:CredentialQueryKeychainsResult"/>
+			<xsd:element name="credential-connection-test-result" type="msgs4:CredentialConnectionTestResult"/>
+			<xsd:element name="credential-key-exchange-bob" type="msgs4:CredentialKeyExchangeResponse"/>
+        </xsd:choice>
+	</xsd:group>
+
+    <xsd:complexType name="DownstreamMessages">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines all DownstreamMessages that can be handled in this schema version
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs1_3:DownstreamMessages">
+				<xsd:sequence>
+					<xsd:group ref="msgs4:DownstreamMessageTypes_v1_0_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs4:DownstreamMessageTypes_v1_1_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs4:DownstreamMessageTypes_v1_2_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+                    <xsd:group ref="msgs4:DownstreamMessageTypes_v1_3_Extensions" maxOccurs="unbounded"
+                           minOccurs="0" />
+					<xsd:group ref="msgs4:DownstreamMessageTypes_v4" maxOccurs="unbounded"
+						   minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	We are defining the DownstreamContentBlock here so that we can identify newly created
+	DownstreamContentBlock in this schema. We need to know this so that we can add the Message to
+	the appropriate DownstreamMessages list
+	-->
+	<xsd:complexType name="DownstreamContentBlock" abstract="true">
+    	<xsd:complexContent>
+    		<xsd:extension base="msgs4:ContentBlock"/>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+	<!--
+	We are defining the DownstreamAgentBlock here so that we can identify newly created
+	DownstreamAgentBlock in this schema. We need to know this so that we can add the Message to
+	the appropriate DownstreamMessages list
+	-->
+	<xsd:complexType name="DownstreamAgentBlock" abstract="true">
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:DownstreamContentBlock">
+				<xsd:attribute name="agentid" type="msgs1_0:UUID"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.0 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_0_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.0 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.1 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_1_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.1 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.2 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_2_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.2 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			
+		</xsd:choice>
+	</xsd:group>
+
+    <!--
+     Only list elements that are extending an existing DownstreamContentBlock from the
+     1.3 messages schema.
+     -->
+    <xsd:group name="DownstreamMessageTypes_v1_3_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List DownstreamContentBlock messages that extend existing 1.2 DownstreamContentBlock
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+	Only list elements that are implementing new DownstreamContentBlock messages.
+	-->
+	<xsd:group name="DownstreamMessageTypes_v4">
+		<xsd:annotation>
+			<xsd:documentation>
+				List new DownstreamContentBlock messages that have been added to the 1.3 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+            <xsd:element name="bridge-response" type="msgs4:BridgeResponse"/>
+            <xsd:element name="upload-support-bundle-request" type="msgs4:UploadSupportBundleRequest"/>
+            <xsd:element name="credential-query-result" type="msgs4:CredentialQueryResult"/>
+			<xsd:element name="credential-grant-keychain" type="msgs4:CredentialGrantKeychain"/>
+			<xsd:element name="credential-query-keychains" type="msgs4:CredentialQueryKeychains"/>
+			<xsd:element name="credential-policy-update" type="msgs4:CredentialPolicyUpdate"/>
+			<xsd:element name="credential-connection-test" type="msgs4:CredentialConnectionTest"/>
+			<xsd:element name="credential-key-exchange-alice" type="msgs4:CredentialKeyExchangeRequest"/>
+        </xsd:choice>
+	</xsd:group>
+
+    <xsd:complexType name="UploadSupportBundleRequest">
+        <xsd:annotation>
+            <xsd:documentation>
+                Nothing actually in this:  it's just a single to FglAM that it should generate and
+                upload a support bundle to the FMS.  FglAM should use this message's ID as the
+                transfer ID.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="msgs4:DownstreamContentBlock"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="TopologyData">
+        <xsd:complexContent>
+            <xsd:extension base="msgs4:UpstreamAgentBlock">                
+                <xsd:sequence>
+                    <xsd:element name="nodes" type="msgs1_3:TopologyDataNode" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="host" type="xsd:string" use="required"/>
+                <xsd:attribute name="ip-address" type="xsd:string" use="optional"/>
+                <xsd:attribute name="os-name" type="xsd:string" use="optional"/>
+                <xsd:attribute name="os-version" type="xsd:string" use="optional"/>
+                <xsd:attribute name="arch" type="xsd:string" use="optional"/>
+                <xsd:attribute name="format" type="xsd:string" use="optional"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="BridgeRequest">
+        <xsd:annotation>
+            <xsd:documentation>
+                Creates a new Agent instance
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexContent>
+            <xsd:extension base="msgs4:UpstreamContentBlock">
+                <xsd:choice minOccurs="1" maxOccurs="1">
+                    <xsd:element name="request">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:whiteSpace value="preserve"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="BridgeResponse">
+        <xsd:annotation>
+            <xsd:documentation>
+                A string response send by the FMS containing the results of a legacy fog4 BRIDGE
+                command.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexContent>
+            <xsd:extension base="msgs4:DownstreamContentBlock">
+                <xsd:choice minOccurs="1" maxOccurs="1">
+                    <xsd:element name="response" minOccurs="1" maxOccurs="1">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:whiteSpace value="preserve"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="CancelUpstreamTransfer">
+		<xsd:annotation>
+            <xsd:documentation>
+                Sent by a remote FglAM host when it cannot process
+				a file upload request.
+				This message's corresponding handler will cancel the
+				pending upstream transfer listener
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexContent>
+            <xsd:extension base="msgs4:UpstreamContentBlock">
+                <xsd:attribute name="transfer-id" type="msgs1_0:UUID">
+					<xsd:annotation>
+						<xsd:documentation>
+							The UUID of the assigned upstream transfer that
+							is to be cancelled.
+						</xsd:documentation>
+					</xsd:annotation>
+                </xsd:attribute>
+				<xsd:attribute name="message" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>
+							A message that describes the reason for the upstream
+							transfer cancellation
+						</xsd:documentation>
+					</xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="CredentialQueryType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A credential query request that this passed to the FMS.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string" maxOccurs="unbounded" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="target-host" type="xsd:string"/>
+		<xsd:attribute name="target-port" type="xsd:int"/>
+		<xsd:attribute name="purpose" type="xsd:string"/>
+		<xsd:attribute name="target-address" type="xsd:string"/>
+		<xsd:attribute name="source-host" type="xsd:string"/>
+		<xsd:attribute name="source-address" type="xsd:string"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialQuery">
+		<xsd:annotation>
+			<xsd:documentation>
+				A credential query request that this passed to the FMS.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="query" type="msgs4:CredentialQueryType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="CredentialAgentQuery">
+		<xsd:annotation>
+			<xsd:documentation>
+				A credential agent query request that this passed to the FMS.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:UpstreamAgentBlock">
+				<xsd:sequence>
+					<xsd:element name="query" type="msgs4:CredentialQueryType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialQueryResult">
+		<xsd:annotation>
+			<xsd:documentation>
+				Response from the server to a client's credential query request
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:DownstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential" type="msgs4:CredentialType" maxOccurs="unbounded" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Base credential definition.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="secured" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+			<xsd:element name="policies" type="msgs4:CredentialPolicyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" use="required" type="msgs1_0:UUID"/>
+		<xsd:attribute name="purpose" use="required"/>
+		<xsd:attribute name="keychain-id" use="required" type="msgs1_0:UUID"/>
+		<xsd:attribute name="type" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialPolicyType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Policy definitions to apply to a Credential. All policy attributes
+				are stored in a map
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="parameters" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" use="required" type="msgs1_0:UUID"/>
+		<xsd:attribute name="critical" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="type" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialEvent">
+		<xsd:annotation>
+			<xsd:documentation>
+				A when a credential usage results in an event, this message will be generated
+				by the agent using the credential and report it back to the FMS
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential-event" type="msgs4:CredentialEventType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialAgentEvent">
+		<xsd:annotation>
+			<xsd:documentation>
+				A when a credential usage results in an event, this message will be generated
+				by the agent using the credential and report it back to the FMS
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:UpstreamAgentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential-event" type="msgs4:CredentialEventType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialKeyExchangeRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				The GlueCredentialClient will always initiate a credential key exchange sequence.
+				This message contain's Alice's public key and should be use by
+				Bob to initialize his SecretKey
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:DownstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="alice-public-key" type="msgs4:KeyExchangeType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialKeyExchangeResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				The CredentialManager on FglAM will initialize its KeyExchange
+				with Alice's public key. It will respond with Bob's public key
+				so that Alice may init her SecretKey
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="bob-public-key" type="msgs4:KeyExchangeType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialGrantKeychain">
+		<xsd:annotation>
+			<xsd:documentation>
+				The FMS will periodically assign a remote FglAM client a credential
+				decryption key.
+				This message type handles the transmission of the decryption key
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:DownstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="secure-key" type="msgs4:KeyExchangeType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialQueryKeychains">
+		<xsd:annotation>
+			<xsd:documentation>
+				The FMS would like to know what Keychain Id's are currently
+				installed on the remote FglAM client
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:DownstreamContentBlock"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialQueryKeychainsResult">
+		<xsd:annotation>
+			<xsd:documentation>
+				Response to the server query for what keychain-ids are installed on the FglAM client
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="keychain-ids" type="msgs1_0:UUID" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialPolicyUpdate">
+		<xsd:annotation>
+			<xsd:documentation>
+				When Credential Policies are updated on the FMS, the remote FglAM
+				client must be notified and instructed to requery for all credentials
+				that are encrypted with the provided keychain id
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:DownstreamContentBlock">
+				<xsd:attribute name="keychain-id" use="required" type="msgs1_0:UUID"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialConnectionTest">
+		<xsd:annotation>
+			<xsd:documentation>
+				When new credentials are added to the FMS, the Admin may wish to test the
+				authentication parameters of making a connection with the provided credentials.
+				This message contains the complete credential definition and remote host connection
+				URI to validate the credentials on.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:DownstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential" type="msgs4:CredentialType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="resource-location" use="required" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>
+							The host or resource to connect to. This will more than likely be a URI
+							but you should be able to tell from the 'type' attribute of the Credential
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialConnectionTestResult">
+		<xsd:annotation>
+			<xsd:documentation>
+				The result from the server initiated credential connection test
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs4:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential-event" type="msgs4:CredentialEventType" maxOccurs="unbounded" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialEventType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A CredentialEventType is used by credential clients for passing parameters of credential-related
+ 				errors to the server.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="error-code" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a well-known code for this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="keychain-id" type="msgs1_0:UUID" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The keychain-id associated with this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="credential-id" type="msgs1_0:UUID" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The Credential id associated with this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="policy-id" type="msgs1_0:UUID" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The Policy id associated with this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="root-cause" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a plain text message describing the root cause of this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="severity" type="msgs4:CredentialEventSeverity" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the severity of the event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="KeyExchangeType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Base content type for transferring keys.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="keychain-id" use="required" type="msgs1_0:UUID">
+			<xsd:annotation>
+				<xsd:documentation>
+					A unique identifier for this key.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="key" use="required" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					Key to transfer. Value has been Hex-ified
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="key-algorithm" use="required" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					The key's algorithm.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="hash-value" use="required" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					Hash value for encoded key
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="hash-algorithm" use="optional" type="xsd:string" default="SHA-256">
+			<xsd:annotation>
+				<xsd:documentation>
+					The MessageDigest algorithm used to generate the key's hash value.
+					Default value is SHA-256
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="type" use="required" type="msgs4:CryptoKeyType">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the type of key. These values are defined in the javax.crypto.Cipher class
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:simpleType name="CredentialEventSeverity">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="INFO"/>
+			<xsd:enumeration value="WARN"/>
+			<xsd:enumeration value="ERROR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CryptoKeyType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="private-key"/>
+			<xsd:enumeration value="secret-key"/>
+			<xsd:enumeration value="public-key"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

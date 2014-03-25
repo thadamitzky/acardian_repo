@@ -1,0 +1,266 @@
+/*
+ * Copyright 2013 Dell Inc.
+ * ALL RIGHTS RESERVED.
+ */
+/*
+ * This stylesheet should conform to the current CSS specification. You
+ * can check that by using the CSS validator at <http://jigsaw.w3.org/css-validator/>
+ */
+
+body {
+    color: black;
+    /* font-family: Tahoma,Arial,Helvetica,sans-serif; */
+    /* font-size: smaller; */
+}
+body.babel {
+    margin-top: 85px;
+}
+h1, h2, h3, h4 {
+    color: #666699;
+    font-weight: bold;
+    margin-bottom: 0em;
+}
+h4 {
+    font-variant: small-caps;
+}
+
+a.menulink {
+    font-weight: bold;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	border-left: solid 1px #666699;
+    text-align: center;
+    min-width: 10em;
+}
+
+small {
+    font-size: 85%;
+}
+table {
+    border-collapse: collapse;
+    /* font-family: Tahoma,Arial,Helvetica,sans-serif; */
+    /* font-size: small; */
+}
+table.border {
+    border: solid 1px #666699;
+}
+table.input {
+}
+tr.shaded {
+    background-color: #f4f4f4;
+}
+th {
+    color: #666699;
+    background-color: #eaeaea;
+    font-weight : bold;
+    border-bottom: 1px solid #666699;
+    border-right: 1px solid #666699;
+}
+td {
+    vertical-align: top;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+td.actions {
+    text-align: center;
+    width: 10%;
+    white-space: nowrap;
+    border-left: 1px solid #666699;
+    border-right: 1px solid #666699;
+}
+pre {
+    font-family: "courier new", courier, monospace;
+    border: none;
+    background-color: #eaeaea;
+}
+pre.programlisting {
+    padding-left: 0.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: smaller;
+}
+pre.literallayout {
+    padding-left: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    font-size: smaller;
+}
+
+div.indent {
+    padding-left: 30px;
+}
+img {
+    border: none;
+}
+img.led {
+    vertical-align: middle;
+    padding-left: 0.15em;
+    padding-right: 0.15em;
+}
+img.status {
+    vertical-align: middle;
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+}
+tr.border {
+    border-bottom: solid 1px #666699;
+}
+tr.separator {
+    color: #666699;
+    background-color: #eaeaea;
+    font-weight : bold;
+    font-size: larger;
+    font-style: italic;
+    text-align : left;
+    border-top: 1px solid #666699;
+    border-bottom: 1px solid #666699;
+}
+th.day {
+    border-right: solid 1px #666699;
+    color: #666699;
+    font-weight : bold;
+    background-color: #ffffff;
+}
+th.night {
+    border-right: solid 1px #666699;
+    color: #666699;
+    background-color: #eeeeee;
+    font-weight : bold;
+}
+td.noborder {
+    padding-left: 1px;
+    padding-right: 1px;
+    cursor: default;
+}
+td.border {
+    border-right: solid 1px #666699;
+    padding-left: 1px;
+    padding-right: 1px;
+    cursor: default;
+}
+td.centerImage {
+    text-align: center;
+}
+td.centerImageLeftBorder {
+    text-align: center;
+    border-left: solid 1px #666699;
+}
+td.low {
+    color: green;
+    text-align: right;
+}
+td.medium {
+    color: blue;
+    text-align: right;
+}
+td.high {
+    color: red;
+    font-weight : bold;
+    text-align: right;
+}
+label {
+    font-weight : bold;
+}
+.menu {
+    color: #666699;
+    background-color: #eaeaea;
+    font-weight : bold;
+    text-align: right;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-right: solid 2px #666699;
+}
+.error {
+    color: red;
+    font-weight : bold;
+}
+.comment {
+    color: green;
+    font-style: italic;
+}
+.success {
+    color: blue;
+}
+.failure {
+    color: red;
+}
+.label {
+    font-weight : bold;
+}
+/* div.sidebar is used by the manual */
+div.sidebar, .boxed {
+    border: 1px solid #666699;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+#tooltip {
+    position: absolute;
+    font-size: small;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
+    width: 220px;
+    visibility: hidden;
+    background-color: #ffffe6;
+    padding: 6px;
+    border: 1px solid black;
+}
+#header {
+    position: fixed;
+    top: 0px;
+    bottom: auto;
+    right: 0px;
+    left: 0px;
+    width: auto;
+    height: auto;
+    background: white;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+#body {
+}
+
+/* Common footer at the bottom of each page */
+div.footer {
+    margin-top: 0.5em;
+	font-size: smaller;
+	font-style: italic;
+	color: #908c90;
+	border-top: solid 1px #666699;
+}
+/* The HTML and CSS logos in the common footer */
+div.footer div.htmllogos {
+    text-align: right;
+    margin-top: -1em;
+}
+
+/* 
+ * The muttons we include at the page to trumpet our standards compliance. 
+ * Use: span class="cssbutton"><span class="buttonleft">W3C</span><span class="buttonright">HTML 4.01</span></span>
+ */
+.cssbutton {
+    background: #ffffff;
+    padding: 1px;
+    font-family: Geneva, Vera, Arial, Helvetica, sans-serif;
+    font-size: x-small;
+	font-style: normal;
+    /*font-variant : small-caps;*/
+    border : 1px solid #aaa;
+}
+.cssbutton .buttonleft {
+    color: #666699;
+    background: #ffffff;
+    padding: 0px 3px 0px 3px;
+    font-weight: bold;
+}
+.cssbutton .buttonright {
+    color: #f8f8f8;
+    background: #888d78;
+    padding: 0px 10px 0px 3px;
+  }

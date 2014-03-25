@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<agent-definition xmlns="urn:X-quest.com:glue/agent/definition/1.9.1"
+                  name="FglAMExample" allow-asynchronous-access="false"
+                  ver="5.6.10">
+
+    <!-- A pointer to where the topology definition files are. While this
+         very small example does not need multiple topology files, it is a 
+         good way to demonstrate the feature. Topology files are loaded in
+         the order they are defined in this file, so later definitions can
+         refer to earlier definitions. -->
+    <topology-types package="com.quest.fglam.example.time.samples">
+        <topology-file filename="timeagent-topology.xml"/>
+        <topology-file filename="timeagent-topology-detailed.xml">
+            <!-- Some examples of how to insert arbitrary information 
+                 into the generated cdt.xml -->
+            <cdt-fragment node="TimeAgentDetailedSample" property="isSynced" location="after">
+                <!-- This will be inserted after TimeAgentDetailedSample/isSynced -->
+                <expression var="_is_synced">
+                    <param val="{$__enum_value__}"/>
+                    <expr_text><![CDATA[
+                        import org.apache.log4j.Logger;
+                        def LOG = Logger.getLogger("FglAMExample-5.6.10-cdtExample");
+                        syncEnumValue = args[1];
+                        if ( syncEnumValue == 0 ) {
+                            // log a message. This is better done as an alarm, but I needed
+                            // something to use an as example
+                            LOG.warn("Example log message, printed when the FglAM host clock is out of sync");
+                        }
+                        else {
+                            LOG.info("Example log message, printed when the FglAM host clock is in sync");
+                        }]]>
+                    </expr_text>
+                </expression>
+            </cdt-fragment>
+        </topology-file>
+        <!-- If the generated CDT receives a data submission containing this top level node, it will
+             abort silently. This is useful if you want to include your own CDT alongside the
+             generated CDT -->
+        <cdt-abort name="__my_custom_node__"/>
+    </topology-types>
+
+    <agent name="TimeAgent" package="com.quest.fglam.example.time" class-name="TimeAgentImpl">
+        <data-collection enable-cron="true">
+            <collector name="Normal Collection" method-name="normalCollection" value="* */5 * ? * *" unit="cron">
+                <fast-mode value="10" unit="seconds" max-count="12"/>
+            </collector>
+            <collector name="Full Detail" method-name="fullDetailCollection" value="1" unit="hours"/>
+        </data-collection>
+        <properties>
+            <group id="base" label="Configuration">
+                <boolean id="enableSampleCount" default="true" label="Enable Sample Counting"/>
+                <secondary id="events" size="128" label="Label Event Times" default="Quest_Acquisitions">
+                    <cols>
+                        <string id="name" size="64" label="Name"/>
+                        <integer id="month" canBeBlank="false" notEqualZero="true" label="Month"/>
+                        <integer id="day" canBeBlank="false" notEqualZero="true" label="Day"/>
+                    </cols>
+                    <list id="Foglight_Milestones">
+                        <row>
+                            <string id="name" value="Foglight Server First Release"/>
+                            <integer id="month" value="3"/>
+                            <integer id="day" value="21"/>
+                        </row>
+                        <row>
+                            <string id="name" value="FglAM Project Starts"/>
+                            <integer id="month" value="6"/>
+                            <integer id="day" value="15"/>
+                        </row>
+                        <row>
+                            <string id="name" value="FglAM First Release"/>
+                            <integer id="month" value="1"/>
+                            <integer id="day" value="7"/>
+                        </row>
+                    </list>
+                    <list id="Quest_Acquisitions" label="Quest Acquisitions">
+                        <row>
+                            <string id="name" value="Quest acquires Sitraka"/>
+                            <integer id="month" value="10"/>
+                            <integer id="day" value="23"/>
+                        </row>
+                        <row>
+                            <string id="name" value="Quest acquires VisionCore"/>
+                            <integer id="month" value="1"/>
+                            <integer id="day" value="28"/>
+                        </row>
+                        <row>
+                            <string id="name" value="Quest acquires MonoSphere"/>
+                            <integer id="month" value="1"/>
+                            <integer id="day" value="13"/>
+                        </row>
+                        <row>
+                            <string id="name" value="Quest acquires NetPro"/>
+                            <integer id="month" value="9"/>
+                            <integer id="day" value="12"/>
+                        </row>
+                    </list>
+                </secondary>
+            </group>
+        </properties>
+
+        <!-- A example callback method that can be triggered from the server -->
+        <callback name="resetSampleCount"/>
+        
+        <!-- Tell the simulator builder which of the topology types form the top
+             of a sample submission -->
+        <simulator-sample name="TimeAgentCurrentTime"/>
+        <simulator-sample name="TimeAgentDetailedSample"/>
+    </agent>
+
+
+</agent-definition>

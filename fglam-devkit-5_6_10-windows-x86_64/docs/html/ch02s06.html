@@ -1,0 +1,1277 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>2.6. Writing Your First Agent</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch02.html" title="Chapter 2. Creating Agents"/><link rel="prev" href="ch02s05.html" title="2.5. Thread Safety"/><link rel="next" href="ch02s07.html" title="2.7. Submission of Historical Data"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.6. Writing Your First Agent</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s05.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 2. Creating Agents</th><td width="20%" align="right"> <a accesskey="n" href="ch02s07.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="2.6. Writing Your First Agent"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="creating-agents-firstagent"/>2.6. Writing Your First Agent</h2></div></div></div><p>
+          This tutorial provides a brief introduction to the process of
+          developing a new agent from scratch. It walks you through the
+          steps of configuring your build environment, creating the agent
+          definition, implementing and compiling the Java code for your agent,
+          and finally, deploying the agent. A copy of the final product is
+          available in the Foglight Agent Manager distribution.
+      </p><p>
+          For the sake of convenience, this tutorial creates an agent on the Windows
+          platform. The SDK tools use <a class="ulink" href="http://ant.apache.org/" target="_top">Apache Ant</a> and
+          Java, so the development process is almost identical on any UNIX
+          system.
+      </p><div class="section" title="2.6.1. Agent Build Environment"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agent-build-environment"/>2.6.1. Agent Build Environment</h3></div></div></div><p>
+              The SDK shipped with FglAM contains a number of tools that automate
+              many agent development tasks. This
+              includes creating artifacts required by the server to store
+              properties specific to the agent, processing any generated data,
+              and so on. The coding of these by hand is prone to errors, so we 
+              recommend that you use the FglAM tools.
+          </p><p>
+              The tools must be aware of their location so that they can
+              correctly call each other. You provide them with this information 
+              by setting a <code class="varname">FGLAM_DEVKIT_HOME</code> environment variable
+              to point to the root of the FglAM Developer's Kit distribution.
+          </p><p>
+              For the purposes of this tutorial the root of the agent
+              source directories, <code class="varname">AGENT_HOME</code>, is exported so
+              that it can be referenced in a generic manner. It is assumed that
+              you will be using the Ant scripts provided for your build process.
+          </p><p>
+              Set these variables by executing the following, substituting
+              paths that are correct for your local system. Then move into the
+              agent's directory.
+</p><pre class="programlisting">
+set FGLAM_DEVKIT_HOME=C:\Quest_Software\Foglight_Agent_Manager\Developer_Kit
+set AGENT_HOME=C:\Quest_Software\MyFglAMAgent
+cd %AGENT_HOME%
+</pre><p>
+
+          </p></div><div class="section" title="2.6.2. Filesystem Layout"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agent-project"/>2.6.2. Filesystem Layout</h3></div></div></div><p>
+              Create a <code class="filename">AGENT_HOME</code> directory. Under this directory create the
+              <code class="filename">config</code> and <code class="filename">src</code> directories. All of the devkit agent
+              implementation files can go under these two directories. A typical file system layout is as follows:
+              </p><pre class="programlisting">
+                agent_home_dir
+                -+config/
+                ---+agent_definition.xml
+                ---+topology.xml
+                ---+rules.xml
+                ---+wcf/
+                ------+wcf_module/
+                ----------+wcf_related_files
+                ---+locale/
+                ------+TopologyLocale.properties
+                -+src/
+                ---+agent_package/
+                ------+agent_implementation_files
+              </pre><p>
+          </p><p>
+              The <code class="filename">config</code> directory contains the <a class="link" href="ch02s06.html#creating-agent-definition" title="2.6.4. Agent Definition">agent
+              definition</a> file, the <a class="link" href="ch02s06.html#creating-agents-associatingdata" title="2.6.6. Associating Data With Agents">topology.xml</a> file,
+              rules.xml for any rules associated with the agent and any wcf modules or locales defined for the agent.
+          </p><p>
+              The actual agent implementation and associated files go under the <code class="filename">src</code> directory.
+          </p></div><div class="section" title="2.6.3. Build Script"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agent-build-script"/>2.6.3. Build Script</h3></div></div></div><p>
+              You can greatly simplify the process of building an agent
+              by using a build script which automates many of the steps involved in the
+              development cycle. This section describes how to create the empty Ant script
+              that later steps build upon to create a fully functional agent.
+          </p><p>
+              Begin by opening the <span class="emphasis"><em>%AGENT_HOME%/build.xml</em></span> file in your
+              favourite editor.
+          </p><p>
+              As part of your build environment, a set of Ant build macros are provided that
+              will assist you in building the various packaging and deployment resources for your
+              agent. These artifacts are available under the
+              <span class="emphasis"><em>%FGLAM_DEVKIT_HOME%/buildtools</em></span> directory and need to be imported into
+              your build script before they can be used. The following is an empty script that
+              imports all of the required tools.
+</p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;project</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span>
+                      <span class="hl-attribute" style="color: #993399;">xmlns:fglam</span>=<span class="hl-value" style="color: #993300">"fglam:/ant/macros"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Add the external environment and find the FglAM installation --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">environment</span>=<span class="hl-value" style="color: #993300">"env"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"fglam.devkit.home"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${env.FGLAM_DEVKIT_HOME}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;fail&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;condition&gt;</b><b class="hl-tag" style="color: #3333FF;">&lt;not&gt;</b>
+          <b class="hl-tag" style="color: #3333FF;">&lt;and&gt;</b>
+              <b class="hl-tag" style="color: #3333FF;">&lt;available</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}"</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"dir"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+              <b class="hl-tag" style="color: #3333FF;">&lt;available</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/buildtools/lib/devkit-ant.jar"</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"file"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+          <b class="hl-tag" style="color: #3333FF;">&lt;/and&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/not&gt;</b><b class="hl-tag" style="color: #3333FF;">&lt;/condition&gt;</b>.
+        The specified FglAM developer's kit location, ${fglam.devkit.home},
+        does not appear to exist as a valid directory or does not contain a
+        recognized FglAM developer's kit.
+    <b class="hl-tag" style="color: #3333FF;">&lt;/fail&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Import the FglAM Tooling Macro-Defs --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;import</b> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${fglam.devkit.home}/buildtools/fglam-ant-macros.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- Define some directories used throughout the build process --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.src.dir"</span>         <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${basedir}/urlavailabilityagent/src"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.config.dir"</span>      <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${basedir}/urlavailabilityagent/config"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.build.dir"</span>       <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${basedir}/build/urlavailabilityagent"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.build.test.dir"</span>  <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/test"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.tooling.output"</span>  <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/tooling"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.dist.dir"</span>        <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/dist"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.test.dir"</span>        <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${basedir}/test"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent.java.test.dir"</span>   <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.test.dir}/java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+<b class="hl-tag" style="color: #3333FF;">&lt;/project&gt;</b></pre><p>
+          </p><p>
+              The first line starts a new Ant project named "URLAvailabilityAgent" and imports
+              the FglAM tools namespace. Namespaces are used to implement
+              versioning in the FglAM API. When FglAM macros are changed or removed, these
+              changes are made in a new FglAM namespace and the old version is preserved.
+              This allows the FglAM developers to implement new and deprecate old functionality
+              without breaking legacy FglAM agents.
+          </p><p>
+              The next two lines define properties that are useful throughout the build
+              system. First the external OS environment is imported into the Ant script
+              so that the variables set in "creating-agent-build-environment" can be
+              accessed. Then the <code class="varname">FGLAM_DEVKIT_HOME</code> variable is assigned to an Ant property for
+              easy reference.
+          </p><p>
+              Finally, some variables are set that refer to directories that were created
+              in "creating-agent-project" so they can be easily referenced throughout the
+              build process.
+          </p><p>
+              The <code class="varname">fglam.devkit.home</code> can be set directly in the build file
+              instead of in the external environment by replacing the first two lines with:
+</p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"fglam.devkit.home"</span>
+    <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"C:\Quest_Software\Foglight_Agent_Manager\Developer_Kit"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b></pre><p>
+
+              This approach simplifies initial startup but ties the build script to a
+              particular filesystem layout that might not be available across all
+              developer machines.
+          </p><p>
+              At this point you should be able to save your file, and, from within
+              <code class="filename">%AGENT_HOME%</code>, run the <span class="command"><strong>ant</strong></span> command to
+              execute the build script. Upon completion, Ant returns a
+              <code class="computeroutput">BUILD SUCCESSFUL</code> message.
+          </p><div class="section" title="2.6.3.1.  How to use components/features from a newer FMS than the devkit default"><div class="titlepage"><div><div><h4 class="title"><a id="d0e705"/>2.6.3.1. 
+                  How to use components/features from a newer FMS than the devkit default
+              </h4></div></div></div><p>
+                  Sometimes agent developers need to build an agent which uses features or components from a newer FMS.
+                  The devkit, by default, builds an agent which depends on the minimum FMS version required by the FglAM
+                  runtime. For all 5.5.5.* versions of FglAM, that is FMS 5.6.0.
+
+                  In general, to point to a different FMS rather than the default version, set the
+                  <code class="function">foglightVersion</code> attribute. An example of where to set the
+                  attribute:                  
+
+                  </p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;car</b> <span class="hl-attribute" style="color: #993399;">destdir</span>=<span class="hl-value" style="color: #993300">"${dist.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;cartridge</b>
+          <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span>
+          <span class="hl-attribute" style="color: #993399;">final</span>=<span class="hl-value" style="color: #993300">"true"</span>
+          <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.ver}"</span>
+          <span class="hl-attribute" style="color: #993399;">buildid</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.build-id}"</span>
+          <span class="hl-attribute" style="color: #993399;">author</span>=<span class="hl-value" style="color: #993300">"FglAM Agent Developers"</span>
+          <span class="hl-attribute" style="color: #993399;">foglightVersion</span>=<span class="hl-value" style="color: #993300">"5.6.0"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                  </pre><p>
+
+              </p><p>
+                  <span class="emphasis"><em>Replacing the default Ant CAR task with a version from a newer FMS devkit release:</em></span>
+              </p><p>
+                  To manually change the build process so that it does not use the Ant task bundled with the FglAM
+                  devkit, but instead, uses the one built with the newer FMS, download the <span class="emphasis"><em>fglant.zip</em></span>
+                  located in the tools directory of the FMS build:
+
+                  <span class="emphasis"><em>/path/to/FMS_BUILD/Java/Dist/dest/tools/fglant.zip</em></span>
+
+                  Extract the contents to a directory. Add a &lt;taskdef&gt; pointing to the FMS version of the
+                  Ant task into the <span class="emphasis"><em>build.xml</em></span> before the <span class="emphasis"><em>fglam-ant-macros.xml</em></span> file is imported.
+
+                  </p><pre class="programlisting">
+<b class="hl-tag" style="color: #3333FF;">&lt;taskdef</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"task_name"</span> <span class="hl-attribute" style="color: #993399;">classname</span>=<span class="hl-value" style="color: #993300">"com.quest.nitro.tools.ant.cartridge.Car"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;classpath&gt;</b>
+      <b class="hl-tag" style="color: #3333FF;">&lt;pathelement</b> <span class="hl-attribute" style="color: #993399;">location</span>=<span class="hl-value" style="color: #993300">"/path/to/foglight-ant.jar"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;/classpath&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/taskdef&gt;</b>
+                  </pre><p>
+
+                  Now invoke the new CAR task:
+
+                  </p><pre class="programlisting">
+<b class="hl-tag" style="color: #3333FF;">&lt;task_name</b> <span class="hl-attribute" style="color: #993399;">destdir</span>=<span class="hl-value" style="color: #993300">"${dist.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;cartridge</b>
+            <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span>
+            <span class="hl-attribute" style="color: #993399;">final</span>=<span class="hl-value" style="color: #993300">"true"</span>
+            <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.ver}"</span>
+            <span class="hl-attribute" style="color: #993399;">buildid</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.build-id}"</span>
+            <span class="hl-attribute" style="color: #993399;">author</span>=<span class="hl-value" style="color: #993300">"FglAM Agent Developers"</span>
+            <span class="hl-attribute" style="color: #993399;">foglightVersion</span>=<span class="hl-value" style="color: #993300">"5.6.0"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;installers</b>
+            <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.name}-Installers"</span>
+            <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.ver}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;installer</b>
+                <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.name}"</span>
+                <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.ver}"</span>
+                <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${build.dir}/gar/${fglam.agent-manifest.name}.gar"</span>
+                <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"fglam-client-pkg"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/installers&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;topologytypes</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.name}-Topology-Types"</span>
+            <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.ver}"</span>
+            <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${tooling.output}/topology.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;monitoringpolicy</b>
+            <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.name}-Properties"</span>
+            <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${fglam.agent-manifest.ver}"</span>
+            <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${tooling.output}/monitoring-policy.xml"</span>
+            <span class="hl-attribute" style="color: #993399;">forceDeployment</span>=<span class="hl-value" style="color: #993300">"true"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            .
+            .
+<b class="hl-tag" style="color: #3333FF;">&lt;/task_name&gt;</b>
+                  </pre><p>
+
+                  The first &lt;taskdef&gt; takes priority and will be in scope even for uses of the &lt;car&gt;
+                  task within the <span class="emphasis"><em>fglam-ant-macros.xml</em></span> file. Now the new features implemented for the &lt;car&gt;
+                  task can be used.
+              </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"/></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+                  The &lt;car&gt; task will set the minimum FMS version dependency to the version of the &lt;car&gt;
+                  task used.
+              </td></tr></table></div><p>
+                  <span class="emphasis"><em>Using comms/credentials services in the FglAM devkit requires at least FMS 5.6.0:</em></span>
+              </p><p>
+                  Agents that use the comms/credentials services in FglAM 5.5.5.* devkits must depend on a 5.6.0 or
+                  later FMS. FMS versions prior to that do not have working credential support, which means that the agent
+                  will not be able to connect. Manual override of the minimum FMS version is required in the &lt;car&gt;
+                  task when the agent cartridge is built.
+                  
+                  This can be done, as specified above, by setting the <code class="function">foglightVersion</code>
+                  attribute in the &lt;car&gt; task.
+              
+                  Attempting to install the agent cartridge on an earlier FMS version will give the following error:
+                  </p><pre class="programlisting">
+VERBOSE [FglAMAdapterPool-<span class="hl-number">1</span>-<span class="hl-number">1</span>] com.quest.glue.adapter.service.GlueRemoteAgentManager - CredentialService is not available.
+com.quest.nitro.extension.ServiceNotAvailableException: Service 
+  <strong class="hl-string"><em style="color:red">'com.quest.nitro.service.agent.spi.AgentCredentialManager'</em></strong> is not available
+    at com.quest.nitro.service.extension.AutoRegistrationService$LookupContext.getService(AutoRegistrationService.java:<span class="hl-number">149</span>)
+    at com.quest.glue.adapter.service.GlueAdapterService.registerCredentialClient(GlueAdapterService.java:<span class="hl-number">325</span>)
+    at com.quest.glue.adapter.service.GlueCredentialClient.setCredentialManager(GlueCredentialClient.java:<span class="hl-number">193</span>)
+    at com.quest.glue.adapter.service.GlueCredentialClient.&lt;init&gt;(GlueCredentialClient.java:<span class="hl-number">93</span>)
+    at com.quest.glue.adapter.service.GlueRemoteAgentManager.&lt;init&gt;(GlueRemoteAgentManager.java:<span class="hl-number">136</span>)
+    at com.quest.glue.adapter.service.RemoteHosts$RemoteOps.&lt;init&gt;(RemoteHosts.java:<span class="hl-number">383</span>)
+    at com.quest.glue.adapter.service.RemoteHosts$RemoteOps.&lt;init&gt;(RemoteHosts.java:<span class="hl-number">370</span>)
+    at com.quest.glue.adapter.service.RemoteHosts.getOpsForHost(RemoteHosts.java:<span class="hl-number">344</span>)
+    at com.quest.glue.adapter.service.RemoteHosts.hostConnected(RemoteHosts.java:<span class="hl-number">77</span>)
+    at com.quest.glue.common.comms.ParallelHostStatusNotifier$<span class="hl-number">3</span>$1.run(ParallelHostStatusNotifier.java:<span class="hl-number">72</span>)
+    at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:<span class="hl-number">441</span>)
+    at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:<span class="hl-number">303</span>)
+    at java.util.concurrent.FutureTask.run(FutureTask.java:<span class="hl-number">138</span>)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:<span class="hl-number">886</span>)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:<span class="hl-number">908</span>)
+    at java.lang.Thread.run(Thread.java:<span class="hl-number">619</span>)</pre><p>
+              </p></div></div><div class="section" title="2.6.4. Agent Definition"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agent-definition"/>2.6.4. Agent Definition</h3></div></div></div><p>
+              Many of the artifacts generated by the FglAM tooling, such as cartridge manifests, 
+              monitoring policies, and topology objects, are platform and language independent. 
+              To generate these, an XML file describing the agent is provided as
+              input to various FglAM tools and macros. Later steps turn this file into
+              language-dependant wrappers that are tailored specifically to your agent.
+          </p><p>
+              The file <span class="emphasis"><em>%AGENT_HOME%/config/agent-definition.xml</em></span> is a high-level 
+              view of the agent that gets processed by the FglAM tooling. The example below defines
+              a simple agent that finds out URL-related information.
+          </p><p>
+              The <span class="emphasis"><em>agent-definition.xml</em></span> file for the example url agent:
+              </p><pre class="programlisting"><span class="hl-directive" style="color: maroon">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span>
+<em class="hl-tag" style="color: green">&lt;!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--&gt;</em>
+<b class="hl-tag" style="color: #3333FF;">&lt;agent-definition</b> <span class="hl-attribute" style="color: #993399;">xmlns</span>=<span class="hl-value" style="color: #993300">"urn:X-quest.com:glue/agent/definition/1.9.1"</span>
+			      <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span> <span class="hl-attribute" style="color: #993399;">ver</span>=<span class="hl-value" style="color: #993300">"@product.version@"</span> <span class="hl-attribute" style="color: #993399;">allow-asynchronous-access</span>=<span class="hl-value" style="color: #993300">"true"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!-- A pointer to where the topology definition file is --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;topology-types</b> <span class="hl-attribute" style="color: #993399;">package</span>=<span class="hl-value" style="color: #993300">"com.quest.fglam.example.url.samples"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;topology-file</b> <span class="hl-attribute" style="color: #993399;">filename</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-topology.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/topology-types&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;agent</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span> <span class="hl-attribute" style="color: #993399;">package</span>=<span class="hl-value" style="color: #993300">"com.quest.fglam.example.url"</span> <span class="hl-attribute" style="color: #993399;">class-name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgentImpl"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <em class="hl-tag" style="color: green">&lt;!-- List all the topology types that we will be directly submitting.
+             The topology types referenced by these submitted sample do not need
+             to be listed. --&gt;</em>
+         <b class="hl-tag" style="color: #3333FF;">&lt;data-collection&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;collector</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"metrics"</span> <span class="hl-attribute" style="color: #993399;">method-name</span>=<span class="hl-value" style="color: #993300">"collectMetrics"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"1"</span> <span class="hl-attribute" style="color: #993399;">unit</span>=<span class="hl-value" style="color: #993300">"minutes"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/data-collection&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;properties&gt;</b>
+        	<b class="hl-tag" style="color: #3333FF;">&lt;group</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"settings"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Settings"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;secondary</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"urlList"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"URL List"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                  <b class="hl-tag" style="color: #3333FF;">&lt;cols&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"hostname"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Hostname"</span> <span class="hl-attribute" style="color: #993399;">canBeBlank</span>=<span class="hl-value" style="color: #993300">"false"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"url"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"URL"</span> <span class="hl-attribute" style="color: #993399;">canBeBlank</span>=<span class="hl-value" style="color: #993300">"false"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;integer</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"port"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Port"</span> <span class="hl-attribute" style="color: #993399;">default</span>=<span class="hl-value" style="color: #993300">"80"</span> <span class="hl-attribute" style="color: #993399;">canBeBlank</span>=<span class="hl-value" style="color: #993300">"false"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"customHeader"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Custom Header"</span> <span class="hl-attribute" style="color: #993399;">canBeBlank</span>=<span class="hl-value" style="color: #993300">"true"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                  <b class="hl-tag" style="color: #3333FF;">&lt;/cols&gt;</b>
+                  <b class="hl-tag" style="color: #3333FF;">&lt;list</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"defaultURLList"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/secondary&gt;</b>    
+        	<b class="hl-tag" style="color: #3333FF;">&lt;/group&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/properties&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/agent&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/agent-definition&gt;</b>
+              </pre><p>
+          </p><p>
+              This definition file:
+              </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+                          Provides the minimum hosting application version. This value represents 
+                          the earliest version of FglAM that supports the hosting of this agent.
+                      </p></li><li class="listitem"><p>
+                          Provides the name of the topology types XML file where all the
+                          topology types used by this agent are defined.
+                      </p></li><li class="listitem"><p>
+                          Creates an agent named <code class="varname">URLAvailabilityAgent</code> with a
+                          secondary ASP property.
+                      </p></li><li class="listitem"><p>
+                        Indicates which of the topology types defined in the topology types
+                        file will be directly submitted. Only the top level topology types you
+                        are going to create should be specified here. Referenced topology
+                        types will be handled automatically.
+                    </p></li></ul></div><p>
+          </p><div class="section" title="2.6.4.1. Listing agents in the topology-sample element"><div class="titlepage"><div><div><h4 class="title"><a id="creating-agents-topologysample"/>2.6.4.1. Listing agents in the topology-sample element</h4></div></div></div><p>
+                        Listing a topology type in <code class="varname">topology-sample</code> will cause the devkit
+                        tooling to add a public <code class="function">submit()</code> method, in the generated class for that
+                        topology type, which you can call directly. If you do not list it with the
+                        <code class="function">topology-sample</code> element, then it can only be submitted if some other type
+                        references it.
+                  </p></div><div class="section" title="2.6.4.2. Defining ASP Properties"><div class="titlepage"><div><div><h4 class="title"><a id="asp.property.definition"/>2.6.4.2. Defining ASP Properties</h4></div></div></div><p>
+                  Property definitions within the <span class="emphasis"><em>agent-definition.xml</em></span> are first structured
+                  within <span class="emphasis"><em>groups</em></span>. This will allow you to organize the properties of
+                  your agent into distinct configuration areas when they are displayed by the Agent Properties
+                  editor on the FMS.
+              </p><p>
+                  Within each <span class="emphasis"><em>group</em></span> you can define any number of type-safe properties that
+                  can be used to configure your agent.
+                  The available property types are:
+                  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                          String
+                      </li><li class="listitem">
+                          Boolean
+                      </li><li class="listitem">
+                          Integer
+                      </li><li class="listitem">
+                          Float
+                      </li><li class="listitem">
+                          Enum
+                      </li><li class="listitem">
+                          SecondaryASP
+                      </li></ul></div><p>
+              </p><p>
+                  All property types have a set of attributes that help to define both validation and display
+                  characteristics. (Note: Not all attributes are applicable to each property type.)
+                  </p><div class="table"><a id="d0e844"/><p class="title"><strong>Table 2.4. Property Attributes</strong></p><div class="table-contents"><table summary="Property Attributes" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th>Name</th><th>Description</th><th>Use</th></tr></thead><tbody><tr><td>id</td><td>Key/Name of the property.
+                                      Restriction: id attribute value must be a valid Java Identifier</td><td>Required</td></tr><tr><td>label</td><td>Display name for this property. If left blank, then the value in the id attribute
+                                    will be used.</td><td>Optional</td></tr><tr><td>canBeBlank</td><td>Set to determine whether this property's value can be left blank when
+                                    configuring the agent instance. (default: false)</td><td>Optional</td></tr><tr><td>renderInline</td><td>Set to true if this property should be displayed in the Administration UI on the same
+                                    line as the property defined before it. (default: false)</td><td>Optional</td></tr><tr><td>hidden</td><td>Sets a property as hidden in the Administration UI. (default: false)</td><td>Optional</td></tr><tr><td>encrypted</td><td>Set to true if this property value should be encrypted. This will result in the
+                                    value being masked in the Administration UI as well as being persisted with an encrypted
+                                    value. (default: false)</td><td>Optional</td></tr><tr><td>gtEqualZero</td><td>Validates whether the property value set is greater than or equal to zero.
+                                    (default: false)</td><td>Optional</td></tr><tr><td>equalZero</td><td>Validates whether the property value set is equal to zero. (default: false)</td><td>Optional</td></tr><tr><td>notEqualZero</td><td>Validates whether the property value set is not equal to zero. (default: false)</td><td>Optional</td></tr><tr><td>ltEqualZero</td><td>Validates whether the property value set is less than or equal to zero.
+                                    (default: false)</td><td>Optional</td></tr><tr><td>size</td><td>Sets the maximum length of this string value. Used in the Admininstration UI to
+                                    validate the length of a property's value.</td><td>Optional</td></tr></tbody></table></div></div><p><br class="table-break"/>
+              </p><p>
+                 We would like to single out a couple of property type definitions, because they are more complex
+                  in their composition.
+                  </p><div class="table"><a id="d0e937"/><p class="title"><strong>Table 2.5. Defining Enum and SecondaryASP Properties</strong></p><div class="table-contents"><table summary="Defining Enum and SecondaryASP Properties" border="1"><colgroup><col width="50%"/><col width="50%"/></colgroup><thead><tr><th>Property Type</th><th>Description</th></tr></thead><tbody><tr><td>Enum</td><td>
+                                    When using the Enum property, you may configure the Enum values that are displayed
+                                    in the UI to be more reader-friendly. For example:
+                                    <pre class="programlisting">
+<b class="hl-tag" style="color: #3333FF;">&lt;enum</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"starbucks"</span> <span class="hl-attribute" style="color: #993399;">default</span>=<span class="hl-value" style="color: #993300">"TALL"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;const</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"SHORT"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Short (8oz)"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;const</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"TALL"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Tall (12oz)"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;const</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"GRANDE"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Grande (16oz)"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;const</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"VENTI"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Venti (20oz)"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/enum&gt;</b>
+                                    </pre>
+                                    <p>
+                                    Setting the <code class="function">label</code> attribute (optional) allows the
+                                    Enum display values in the UI to be more descriptive, while the generated
+                                    PropertiesWrapper class will utilize the more program-friendly CONST.id attribute.
+                                    </p>
+                                    <p>
+                                    You can mix the CONST entries so that some have the label attribute defined and others
+                                    do not. For those that do not contain a label value, the id value will be used in the
+                                    UI.
+                                    </p>
+                                    In addition, the <code class="function">default</code> attribute must be assigned when
+                                    defining an Enum. The value you set here must match one of the defined CONST.id
+                                    values; otherwise, a validation error will be thrown at design/compile time.
+                                </td></tr><tr><td>SecondaryASP</td><td>SecondaryASP properties are defined in two parts. The first lays out how
+                                the SecondaryASP 'table' will be defined. Here you can set all of the column
+                                types by defining what property types they will hold. SecondaryASPs can be defined
+                                to hold all base property types except other SecondaryASPs.
+                                <p>
+                                In our URLAvailabilityAgent example, the URL List SecondaryASP is comprised of four
+                                property types.
+                                </p>
+                                <pre class="programlisting">
+<b class="hl-tag" style="color: #3333FF;">&lt;secondary</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"urlList"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"URL List"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;cols&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"hostname"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Hostname"</span> <span class="hl-attribute" style="color: #993399;">canBeBlank</span>=<span class="hl-value" style="color: #993300">"false"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"url"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"URL"</span> <span class="hl-attribute" style="color: #993399;">canBeBlank</span>=<span class="hl-value" style="color: #993300">"false"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;integer</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"port"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Port"</span> <span class="hl-attribute" style="color: #993399;">default</span>=<span class="hl-value" style="color: #993300">"80"</span> <span class="hl-attribute" style="color: #993399;">canBeBlank</span>=<span class="hl-value" style="color: #993300">"false"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"customHeader"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"Custom Header"</span> <span class="hl-attribute" style="color: #993399;">canBeBlank</span>=<span class="hl-value" style="color: #993300">"true"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;/cols&gt;</b>   ....
+<b class="hl-tag" style="color: #3333FF;">&lt;/secondary&gt;</b>
+                                    </pre>
+                                    <p>
+                                    If you think of a SecondaryASP as a table, then the COLS element describes
+                                    the column headings and the type-safe property types.
+                                    </p>
+                                    <p>
+                                    Once the columns are defined, you may provide 'instances' of these tables
+                                    with preset row values.
+                                    </p>
+<pre class="programlisting">
+<b class="hl-tag" style="color: #3333FF;">&lt;secondary</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"urlList"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"URL List"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+  ....
+  <b class="hl-tag" style="color: #3333FF;">&lt;list</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"google.com"</span> <span class="hl-attribute" style="color: #993399;">label</span>=<span class="hl-value" style="color: #993300">"google.com"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;row&gt;</b>
+      <b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"hostname"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"google.com"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+      <b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"url"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"/"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+      <b class="hl-tag" style="color: #3333FF;">&lt;integer</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"port"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">"80"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+      <b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"customHeader"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">""</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/row&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;/list&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/secondary&gt;</b>
+                                    </pre>
+                                    <p>
+                                    The row-column ordering should match the same order that was defined in the
+                                    COLS element set. If not, then the devkit will try to figure out where
+                                    the property value belongs within the columns.
+                                    </p>
+                                    <p>
+                                    This ordering/validation is done by the id attribute value on the property
+                                    value entry. This id must match one of those defined in the COLS properties
+                                    definition.
+                                    </p>
+                                    <p>
+                                    The VALUE attribute is there to permit you to set an initial value for this
+                                    property. Note: The meta data attributes for the property values are not defined
+                                    here. That information is set in the property definitions in the COLS block set.
+                                    </p>
+                                    <p>
+                                    You may define any number of LIST nodes within the SecondaryASP definition.
+                                    For the list to be displayed as the default when the property is displayed,
+                                    you must set the DEFAULT attribute on the SecondaryASP property to be the
+                                    value of the id on the LIST node that you want to assign.
+                                    </p>
+                                </td></tr></tbody></table></div></div><p><br class="table-break"/>
+              </p></div><p>
+              Once the definition file has been written it gets used by the FglAM tooling to create the           
+            various artifacts required to build and deploy your agent package.
+</p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"tooling-artifacts"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;fglam:generator</b> <span class="hl-attribute" style="color: #993399;">agent-definition</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.config.dir}/agent-definition.xml"</span>
+                    <span class="hl-attribute" style="color: #993399;">output-dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <em class="hl-tag" style="color: green">&lt;!-- Load the generated agent.manifest to initialize build properties
+         for use in the fglam ant macros --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;fglam:init-agent-manifest-props</b> <span class="hl-attribute" style="color: #993399;">agent-manifest</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/agent.manifest"</span> <span class="hl-attribute" style="color: #993399;">prefix</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b>
+        </pre><p>
+          </p><p>
+              By default, all tooling artifacts are generated when you call the 
+              <code class="varname">fglam:generator</code> macro with only the required attributes.
+              The contents generated are placed in an output directory defined by you in 
+              the <code class="function">outputDir</code> attribute.
+          </p><p>
+              When the tooling has completed, one of the artifacts that it generates is the <code class="varname">agent.manifest</code>.
+              This manifest is used by the imported Ant macro definitions later on in the build process to determine
+              names, versions, and other information for each agent.
+              </p><div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"/></td><th align="left">Caution</th></tr><tr><td align="left" valign="top"><p>
+                  Windows has no built-in association for the extension <span class="emphasis"><em>.manifest</em></span>,
+                  so you probably will not be able to open it in a text editor simply by 
+                  double-clicking it.
+              </p></td></tr></table></div><p>
+          </p><p>
+              At this point you should be able to successfully run <span class="command"><strong>ant tooling-artifacts</strong></span> from the 
+              command line to generate all of the tooling artifacts under the
+              <span class="emphasis"><em>%AGENT_HOME%/build/tooling</em></span> location.
+              Here you will find the artifacts for the monitoring policy, the topology
+              objects, and the canonical data transformation (CDT). In addition, the generated Java source files for the
+              Property wrapper and the Sample data objects are stored under the <code class="varname">java-gen</code>
+              child directory.
+        </p><p>
+            For more information on agent tooling, see
+            <a class="link" href="ch04s05.html#runningCodeGenerator" title="4.5.6. Running the Code Generator">Running the Code Generator</a>.
+          </p></div><div class="section" title="2.6.5. Generated Topology Classes"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-generatedclasses"/>2.6.5. Generated Topology Classes</h3></div></div></div><p>
+            The classes generated by the tooling for all the classes in your agent's
+            topology types file can be used in several different ways. It is up to
+            the agent developer to decide which method is most suitable.
+        </p><p>
+          </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+               <span class="emphasis"><em>Use the classes directly:</em></span>. 
+               The topology objects can be used directly to store the data collected by
+               the agent and submit it directly to the server. This prevents the need to
+               store the data in the agent's custom written classes and then copy
+               it to the generated classes for submission.
+            </p></li><li class="listitem"><p>
+               <span class="emphasis"><em>Use the classes only for data submission:</em></span>.
+               If the generated classes are not convenient for storing the data as it
+               is collected by the agent, then agent developers can store the data themselves
+               and copy it into the generated topology object wrappers only when submitting the
+               data.             
+            </p></li><li class="listitem"><p>
+               <span class="emphasis"><em>Subclass the generated classes:</em></span>.
+               If agent developers need to store more information than they actually submit, 
+               they are free to create subclasses of the generated topology wrapper classes
+               and use those. Only the data fields specified in the topology types file
+               will be submitted to the server.
+            </p><p>
+              An example of this might be a database agent that needs to store connection 
+              information and credentials for the database it is monitoring but does not wish
+              to submit that information to the server. A subclass of the topology object
+              representing that database can be created to hold this extra information.
+            </p></li></ul></div><p>
+        </p></div><div class="section" title="2.6.6. Associating Data With Agents"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-associatingdata"/>2.6.6. Associating Data With Agents</h3></div></div></div><p>
+          By default, the data your agent generates and submits using the 
+          <a class="link" href="ch03s03.html" title="3.3. TopologyDataSubmissionService3">TopologyDataSubmissionService3</a>
+          is not directly associated with your agent, rather it exists independent
+          of any agent. Often this is not what is desired. When an alarm is generated
+          as a result of the data being submitted, a reference to the agent
+          that submitted the data is usually required. Also, if you are writing data-triggered 
+          callbacks, you will need to know the agent associated with the data.
+        </p><p>
+          The way to associate data with an agent is to add the agent as a property or
+          identity property for the topology object tree you are submitting. This is 
+          done in the topology types file for your agent. An example from the URLAvailabilityAgent
+          might look like this:
+            </p><pre class="programlisting"><span class="hl-directive" style="color: maroon">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;</span>
+<em class="hl-tag" style="color: green">&lt;!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--&gt;</em>
+
+
+<b class="hl-tag" style="color: #3333FF;">&lt;types&gt;</b>
+    <em class="hl-tag" style="color: green">&lt;!-- ********************  ROOT DEFINITIONS ******************** --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;type</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'MonitoredURLRoot'</span> <span class="hl-attribute" style="color: #993399;">extends</span>=<span class="hl-value" style="color: #993300">'CollectionModelRoot'</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;annotation</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"LabelProperty"</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">'name'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'name'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'String'</span>	<span class="hl-attribute" style="color: #993399;">is-identity</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'instances'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'MonitoredURL'</span> <span class="hl-attribute" style="color: #993399;">is-many</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/type&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;type</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"MonitoredURL"</span> <span class="hl-attribute" style="color: #993399;">extends</span>=<span class="hl-value" style="color: #993300">"CollectionModelInstance"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <em class="hl-tag" style="color: green">&lt;!-- Ids --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'urlPath'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'URLPath'</span>	<span class="hl-attribute" style="color: #993399;">is-identity</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'urlServerInstance'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'URLServerInstance'</span>	<span class="hl-attribute" style="color: #993399;">is-identity</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'monitoredHost'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'Host'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"monitoringAgent"</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"Agent"</span><b class="hl-tag" style="color: #3333FF;"> /&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- Metrics --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'availability'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'Metric'</span> <span class="hl-attribute" style="color: #993399;">is-containment</span>=<span class="hl-value" style="color: #993300">'true'</span> <span class="hl-attribute" style="color: #993399;">unit-name</span>=<span class="hl-value" style="color: #993300">'percent'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'pageGetTime'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'Metric'</span> <span class="hl-attribute" style="color: #993399;">is-containment</span>=<span class="hl-value" style="color: #993300">'true'</span> <span class="hl-attribute" style="color: #993399;">unit-name</span>=<span class="hl-value" style="color: #993300">'millisecond'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'responseTime'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'Metric'</span> <span class="hl-attribute" style="color: #993399;">is-containment</span>=<span class="hl-value" style="color: #993300">'true'</span> <span class="hl-attribute" style="color: #993399;">unit-name</span>=<span class="hl-value" style="color: #993300">'millisecond'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'errorCode'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'Integer'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"url"</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"String"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/type&gt;</b>
+
+    <em class="hl-tag" style="color: green">&lt;!--
+    Both URLPath and URLServerInstance property types have a property, monitoredURLs. It is a special property called
+    a dynamic property. It is special because agent does not need to submit anything for the property. While referring
+    to such a property, FMS will return the script result as the value of the property. Here, the monitoredURLs is a
+    list of all the url instances associated with the current URLPath returned by the query.
+    --&gt;</em>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;type</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLPath"</span> <span class="hl-attribute" style="color: #993399;">extends</span>=<span class="hl-value" style="color: #993300">"TopologyObject"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'path'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'String'</span>	<span class="hl-attribute" style="color: #993399;">is-identity</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'protocol'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'String'</span>	<span class="hl-attribute" style="color: #993399;">is-identity</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>         
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'monitoredURLs'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'MonitoredURL'</span> <span class="hl-attribute" style="color: #993399;">is-many</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;annotation</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'DerivationExprType'</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">'Script'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;annotation</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'DerivationExpression'</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;value&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;![CDATA[</b>
+                #!MonitoredURL: urlPath = $scope#.topologyObjects
+                <b class="hl-tag" style="color: #3333FF;">]]&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/value&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/annotation&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/property&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/type&gt;</b>
+
+    <b class="hl-tag" style="color: #3333FF;">&lt;type</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLServerInstance"</span> <span class="hl-attribute" style="color: #993399;">extends</span>=<span class="hl-value" style="color: #993300">"TopologyObject"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'host'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'Host'</span>	<span class="hl-attribute" style="color: #993399;">is-identity</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'port'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'Integer'</span> <span class="hl-attribute" style="color: #993399;">is-identity</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;property</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'monitoredURLs'</span> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">'MonitoredURL'</span> <span class="hl-attribute" style="color: #993399;">is-many</span>=<span class="hl-value" style="color: #993300">'true'</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;annotation</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'DerivationExprType'</span> <span class="hl-attribute" style="color: #993399;">value</span>=<span class="hl-value" style="color: #993300">'Script'</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;annotation</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">'DerivationExpression'</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;value&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;![CDATA[</b>
+                #!MonitoredURL: urlServerInstance = $scope#.topologyObjects
+                <b class="hl-tag" style="color: #3333FF;">]]&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/value&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/annotation&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/property&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/type&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/types&gt;</b></pre><p>
+        </p><p>
+          If you examine the topology definition for <code class="varname">Agent</code>, you will 
+          notice that it contains a single identity property called 
+          <code class="varname">agentID</code>. Normally, your agent would be responsible for 
+          providing this value when creating an instance of the generated class. However,
+          in this case, this is not possible as the <code class="varname">agentID</code> for
+          an agent is known only to the server. The tooling-generated class
+          instead hides this property completely and automatically submits a placeholder
+          value to the server. The FglAM adapter on the server will scan the submitted
+          data for this placeholder and replace it with the actual agent id of the agent
+          that is submitting this data. 
+        </p><div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"/></td><th align="left">Warning</th></tr><tr><td align="left" valign="top"><p>
+          This means that you can only associate data with the agent that is submitting it.
+          It is not currently possible to do anything else and should you require this 
+          functionality, you should contact the FglAM team with as much information about
+          your use case as possible, so that we can determine a way to support the behavior
+          you need.           
+        </p></td></tr></table></div></div><div class="section" title="2.6.7. Required Host and Agent Properties"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-hostandagentproperties"/>2.6.7. Required Host and Agent Properties</h3></div></div></div><p>
+          The two most commonly created topology objects are the <code class="code">Host</code> and <code class="code">Agent</code>
+          topology objects. The properties for these objects fall into two categories: required
+          and optional. When using the generated topology classes that correspond to these topology
+          objects, all required properties are in the constructor for the Java class. All
+          other properties are optional. 
+        </p><p>
+          When a topology object is submitted to the server, it is merged with any existing topology
+          object that has the same identity (required) properties. All optional properties will be 
+          filled in with existing values from the previous version of the object, assuming that they
+          have been set at least once. For common topology objects such as <code class="code">Host</code> and
+          <code class="code">Agent</code>, it is likely that these objects have already been populated with
+          the optional data, but that does not prevent an agent developer from re-submitting this
+          optional data. 
+        </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+               For the <code class="code">Agent</code> topology object, there are no required identity properties
+               that can be set by the agent itself. The unique numeric identifer for the agent, which
+               is required, will be automatically provided as the data is transmitted and cannot be
+               set by agent developers.
+            </p></li><li class="listitem"><p>
+              For the <code class="code">Host</code> topology object, only the name of the host is required.
+            </p></li></ul></div><p>
+          There are many <a class="link" href="ch03.html" title="Chapter 3. Agent Services">Agent Services</a> available
+          that can provide the information necessary to populate the optional properties of these
+          topology objects. The following are some examples of the services that can be used to obtain
+          the information required to populate a few of these optional properties.
+        </p><div class="table"><a id="d0e1133"/><p class="title"><strong>Table 2.6. Services For Obtaining Host and Agent Properties</strong></p><div class="table-contents"><table summary="Services For Obtaining Host and Agent Properties" border="1"><colgroup><col width="33%"/><col width="33%"/><col width="34%"/></colgroup><thead><tr><th align="left">Topology Object</th><th align="left">Property</th><th align="left">Related Services</th></tr></thead><tbody><tr><td align="left">Host</td><td align="left">name</td><td align="left">
+                <code class="code">CanonicalNameService</code>, <code class="code">SystemInfoService3</code>,
+                <code class="code">SSHConnection2</code>, <code class="code">WMIConnection2</code>
+              </td></tr><tr><td align="left"> </td><td align="left">OperatingSystem</td><td align="left">
+                <code class="code">CanonicalNameService</code>, <code class="code">SystemInfoService3</code>,
+                <code class="code">SSHConnection2</code>, <code class="code">WMIConnection2</code>
+              </td></tr><tr><td align="left"> </td><td align="left">IPAddress</td><td align="left"><code class="code">DNSResolverService</code></td></tr><tr><td align="left">Agent</td><td align="left">name</td><td align="left"><code class="code">AgentMetaDataService2</code></td></tr><tr><td align="left"> </td><td align="left">agentVersion</td><td align="left"><code class="code">AgentMetaDataService2</code></td></tr><tr><td align="left"> </td><td align="left">agentName</td><td align="left"><code class="code">AgentMetaDataService2</code></td></tr><tr><td align="left"> </td><td align="left">build</td><td align="left"><code class="code">AgentMetaDataService2</code></td></tr><tr><td align="left"> </td><td align="left">hostName</td><td align="left">
+                <code class="code">CanonicalNameService</code>, <code class="code">SystemInfoService3</code>,
+                <code class="code">SSHConnection2</code>, <code class="code">WMIConnection2</code>, 
+                <code class="code">DNSResolverService</code>
+              </td></tr></tbody></table></div></div><br class="table-break"/></div><div class="section" title="2.6.8. Agent Implementation"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-implementation"/>2.6.8. Agent Implementation</h3></div></div></div><p>
+              Finally, it is time to implement the agent itself. The FglAM framework
+              provides generic APIs that can be used to submit sample data and to work with
+              agent properties. To provide a layer of type safety (so that the compiler can
+              do most of the agent validation), the FglAM SDK provides tools for generating
+              agent-specific wrappers around the generic API.
+          </p><p>
+              The wrapper classes have already been defined by the <code class="varname">tooling-artifacts</code> 
+              target which has generated the type-safe wrapper classes and placed them in
+              <span class="emphasis"><em>%AGENT_HOME%/build/urlavailabilityagent/tooling/java-gen/com/quest/fglam/example/url/samples
+              </em></span>.
+              In this case, the classes are <span class="emphasis"><em>URLPath.java</em></span> and
+              <span class="emphasis"><em>URLServerInstance.java</em></span> that contains type-safe operations for the
+              agent and <span class="emphasis"><em>URLAvailabilityAgentPropertyWrapper.java</em></span>
+              that provides type-safe access to the URLAvailabilityAgent's ASP properties.
+          </p><p>
+              The implementation of this agent is fairly trivial.  Edit the file
+              <span class="emphasis"><em>%AGENT_HOME%/java/com/quest/fglam/example/url/URLAvailabilityAgentImpl.java</em></span>. The
+              source is below:
+              </p><pre class="programlisting"><em class="hl-tag" style="color: green">/*
+ * Copyright 2013 Dell Inc.
+ * ALL RIGHTS RESERVED.
+ * 
+ * This software is the confidential and proprietary information of
+ * Dell Inc. ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered
+ * into with Dell Inc.
+ * 
+ * DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ * THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ * NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ * DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ * OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ */</em>
+
+<strong class="hl-keyword">package</strong> com.quest.fglam.example.url;
+
+<strong class="hl-keyword">import</strong> com.quest.fglam.example.url.URLAvailabilityAgentPropertyWrapper.UrlList;
+<strong class="hl-keyword">import</strong> com.quest.fglam.example.url.samples.*;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.*;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.ServiceFactory;
+<strong class="hl-keyword">import</strong> com.quest.glue.api.services.TopologyDataSubmissionService3;
+
+<strong class="hl-keyword">import</strong> java.io.IOException;
+<strong class="hl-keyword">import</strong> java.lang.Exception;
+<strong class="hl-keyword">import</strong> java.net.HttpURLConnection;
+<strong class="hl-keyword">import</strong> java.net.InetAddress;
+<strong class="hl-keyword">import</strong> java.net.MalformedURLException;
+<strong class="hl-keyword">import</strong> java.net.URL;
+<strong class="hl-keyword">import</strong> java.util.ArrayList;
+<strong class="hl-keyword">import</strong> java.util.Collections;
+<strong class="hl-keyword">import</strong> java.util.List;
+
+<strong class="hl-keyword">import</strong> java.util.concurrent.TimeoutException;
+
+
+<em class="hl-tag" style="color: green">/**
+ * URLAvailabilityAgent takes in a list of urls in agent properties, and returns metrics, such as Response Code, of urls.
+ */</em>
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">class</strong> URLAvailabilityAgentImpl <strong class="hl-keyword">implements</strong> com.quest.glue.api.agent.Agent, ASPPropertyListener, URLAvailabilityAgentCollectors {
+
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> LogService.Logger mLogger;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> RegistrationService mRegistrationService;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> UnitService mUnitsService;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> URLAvailabilityAgentPropertyWrapper mURLAvailabilityAgentProperty;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> AgentMetadataService2 mAgentInfo;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> SystemInfoService4 mSystemInfo;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> DnsResolverService mResolverService;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> Agent mAgent;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> AgentDataProvider mDataProvider;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> Host mFglamHost;
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">final</strong> TopologyDataSubmissionService3 mSubmissionService;
+
+<em class="hl-tag" style="color: green">/**
+ * Called by FglAM to create a new instance
+ *
+ * of this agent. All this constructor does is
+ * is to call the constructor with a new AgentDataProvider object
+ *
+ * @param serviceFactory ServiceFactory Object
+ * @throws ServiceFactory.ServiceNotAvailableException exception
+ */</em>
+<strong class="hl-keyword">public</strong> URLAvailabilityAgentImpl(ServiceFactory serviceFactory) <strong class="hl-keyword">throws</strong> ServiceFactory.ServiceNotAvailableException {
+    <strong class="hl-keyword">this</strong>(serviceFactory, <strong class="hl-keyword">new</strong> AgentDataProvider());
+}
+
+<em class="hl-tag" style="color: green">/**
+ * This constructor is used in the unit tests so that we can use a mock implementation
+ * of the AgentDataProvider to provide well-known values instead of real data
+ *
+ * @param serviceFactory ServiceFactory object
+ * @param dataProvider AgentDataProvider Object
+ * @throws ServiceFactory.ServiceNotAvailableException exception
+ */</em>
+<strong class="hl-keyword">public</strong> URLAvailabilityAgentImpl(ServiceFactory serviceFactory, AgentDataProvider dataProvider)
+        <strong class="hl-keyword">throws</strong> ServiceFactory.ServiceNotAvailableException {
+    mLogger = serviceFactory.getService(LogService.<strong class="hl-keyword">class</strong>).getLogger(URLAvailabilityAgentImpl.<strong class="hl-keyword">class</strong>);
+    mRegistrationService = serviceFactory.getService(RegistrationService.<strong class="hl-keyword">class</strong>);
+    mSubmissionService = serviceFactory.getService(TopologyDataSubmissionService3.<strong class="hl-keyword">class</strong>);
+    mUnitsService = serviceFactory.getService(UnitService.<strong class="hl-keyword">class</strong>);
+    ASPService3 mASPService = serviceFactory.getService(ASPService3.<strong class="hl-keyword">class</strong>);
+    mAgentInfo = serviceFactory.getService(AgentMetadataService2.<strong class="hl-keyword">class</strong>);
+    mSystemInfo = serviceFactory.getService(SystemInfoService4.<strong class="hl-keyword">class</strong>);
+    mURLAvailabilityAgentProperty = <strong class="hl-keyword">new</strong> URLAvailabilityAgentPropertyWrapper(mASPService);
+    mResolverService = serviceFactory.getService(DnsResolverService.<strong class="hl-keyword">class</strong>);
+    <em class="hl-tag" style="color: green">// the agent id is the only required identity property for agent</em>
+    <em class="hl-tag" style="color: green">// topology types and the server fills that in automatically for us.</em>
+    mAgent = <strong class="hl-keyword">new</strong> Agent();
+    mFglamHost = <strong class="hl-keyword">new</strong> Host(mSystemInfo.getHostname());
+
+    <em class="hl-tag" style="color: green">// we'll eplace all the calls to System.currentTimeMillis(), IPAddresses, URL response codes with the</em>
+    <em class="hl-tag" style="color: green">// AgentDataProvider's methods so that we can easily override all of this data in the unit tests</em>
+    mDataProvider = dataProvider;
+}
+
+<em class="hl-tag" style="color: green">/**
+ * This is called when an agent is deactivated.
+ * Note that on Agent Deployment, agent is activated and then deactivated once.
+ */</em>
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> destroy() <strong class="hl-keyword">throws</strong> Exception {
+    mRegistrationService.unregisterAllListeners(<strong class="hl-keyword">this</strong>);
+    mLogger.log(<strong class="hl-string"><em style="color:red">"agentDestroyed"</em></strong>);
+}
+
+<em class="hl-tag" style="color: green">/**
+ * This is called if the user clicked "Start Data Collection" button.
+ * This is called automatically after the constructor if the user clicked on "Active" button.
+ */</em>
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> startDataCollection() <strong class="hl-keyword">throws</strong> Exception {
+    mLogger.log(<strong class="hl-string"><em style="color:red">"startingDataCollection"</em></strong>);
+
+    <strong class="hl-keyword">try</strong> {
+        <strong class="hl-keyword">final</strong> List&lt;DnsResolvedHost&gt; allHostNames =
+                mResolverService.getHostByName(mSystemInfo.getHostname(),
+                                               <span class="hl-number">0</span>,      <em class="hl-tag" style="color: green">// standard priority</em>
+                                               <span class="hl-number">30000</span>,  <em class="hl-tag" style="color: green">// 30 second timeout</em>
+                                               true); <em class="hl-tag" style="color: green">// return canonical names</em>
+        <em class="hl-tag" style="color: green">// This will initialize the host object with information obtained from the</em>
+        <em class="hl-tag" style="color: green">// system info service and environment. This should only be done when the</em>
+        <em class="hl-tag" style="color: green">// host being monitored is the current host.</em>
+        <em class="hl-tag" style="color: green">//</em>
+        <em class="hl-tag" style="color: green">// This will also add OperatingSystem information as well as IPAddresses.</em>
+        <em class="hl-tag" style="color: green">// You can always override this with different/more detailed information if</em>
+        <em class="hl-tag" style="color: green">// necessary.</em>
+        mFglamHost.initialize(mSystemInfo.getCommonTopologyProvider(), allHostNames);
+    }
+    <strong class="hl-keyword">catch</strong> ( InterruptedException ie ) {
+        mLogger.errorUnexpected(<strong class="hl-string"><em style="color:red">"Interrupted with obtained a list of host names"</em></strong>, ie);
+        <strong class="hl-keyword">return</strong>;
+    }
+    <strong class="hl-keyword">catch</strong> ( IOException ie ) {
+        mLogger.errorUnexpected(<strong class="hl-string"><em style="color:red">"Could not obtain local topology data"</em></strong>, ie);
+    }
+    <strong class="hl-keyword">catch</strong> ( TimeoutException ie ) {
+        mLogger.errorUnexpected(<strong class="hl-string"><em style="color:red">"Could not obtain local topology data"</em></strong>, ie);
+    }
+    
+    <em class="hl-tag" style="color: green">// This will automatically fill in information about the current agent</em>
+    <em class="hl-tag" style="color: green">// and set the monitored host to the provided value. It will also update</em>
+    <em class="hl-tag" style="color: green">// the list of agents in the provided host to include the agent.</em>
+    <em class="hl-tag" style="color: green">// This can be called for both local and remotely monitored hosts.</em>
+
+    <em class="hl-tag" style="color: green">// the monitored host in this case is set to null. This is to prevent topology churn</em>
+    <em class="hl-tag" style="color: green">// due to many monitored hosts per agent (depending on the number of URLs being monitored.)</em>
+    mAgent.initialize(mAgentInfo, mSystemInfo, null);
+}
+
+<em class="hl-tag" style="color: green">/**
+ * This is called if the user clicked "Stop Data Collection" button.
+ * This is called automatically before destroy() if the user clicked on "Deactivate" button when the agent started data collection.
+ */</em>
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> stopDataCollection() <strong class="hl-keyword">throws</strong> Exception {
+    mLogger.log(<strong class="hl-string"><em style="color:red">"stoppingDataCollection"</em></strong>);
+}
+
+<em class="hl-tag" style="color: green">/**
+ * This is called when agent properties are changed.
+ */</em>
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> propertiesChanged() {
+    <em class="hl-tag" style="color: green">// no-op</em>
+}
+
+<em class="hl-tag" style="color: green">/**
+ * Construct URL from a user input url entry
+ * 
+ * @param urlEntry provided url
+ * @return URL object
+ * @throws MalformedURLException exception
+ */</em>
+<strong class="hl-keyword">private</strong> java.net.URL generateURL(UrlList urlEntry) <strong class="hl-keyword">throws</strong> MalformedURLException {
+    StringBuilder sb = <strong class="hl-keyword">new</strong> StringBuilder();
+    sb.append(<strong class="hl-string"><em style="color:red">"http://"</em></strong>)
+        .append(urlEntry.getHostname())
+        .append(urlEntry.getPort() == <span class="hl-number">80</span> ? <strong class="hl-string"><em style="color:red">""</em></strong> : <strong class="hl-string"><em style="color:red">":"</em></strong> + String.valueOf(urlEntry.getPort()))
+        .append(urlEntry.getUrl().startsWith(<strong class="hl-string"><em style="color:red">"/"</em></strong>) ? urlEntry.getUrl() : <strong class="hl-string"><em style="color:red">"/"</em></strong> + urlEntry.getUrl());
+
+    <strong class="hl-keyword">return</strong> <strong class="hl-keyword">new</strong> java.net.URL(sb.toString());
+}
+
+<em class="hl-tag" style="color: green">/**
+ * The scheduled call back that submits the collected metrics
+ * 
+ * @param expectedFrequency collection frequency 
+ */</em>
+<strong class="hl-keyword">public</strong> <strong class="hl-keyword">void</strong> collectMetrics(<strong class="hl-keyword">long</strong> expectedFrequency) {
+    mLogger.debug(<strong class="hl-string"><em style="color:red">"Metrics collection begins"</em></strong>);
+    <strong class="hl-keyword">try</strong> {
+        TopologyDataSubmissionService3.TopologySubmitter3 submitter = mSubmissionService.getTopologySubmitter();
+        MonitoredURLRoot mRootTopology = <strong class="hl-keyword">new</strong> MonitoredURLRoot(<strong class="hl-string"><em style="color:red">"MonitoredURLRoot"</em></strong>);
+        <strong class="hl-keyword">final</strong> URLServerMap serverMap = <strong class="hl-keyword">new</strong> URLServerMap(<strong class="hl-keyword">this</strong>.mURLAvailabilityAgentProperty.getUrlist());
+        <strong class="hl-keyword">for</strong>(String hostname : serverMap.getHostnameList()) {
+            <strong class="hl-keyword">for</strong>(Integer port : serverMap.getPortList(hostname))	{
+                URLServerInstance webServer = null;
+                <strong class="hl-keyword">try</strong> {
+                    webServer = createWebServerInstance(hostname, port);
+                } <strong class="hl-keyword">catch</strong> (InterruptedException e) {
+                    mLogger.log(<strong class="hl-string"><em style="color:red">"interruptedException"</em></strong>, e);
+                }
+                <strong class="hl-keyword">if</strong> (webServer != null){
+                    <strong class="hl-keyword">for</strong>(UrlList urlEntry : serverMap.getURLList(hostname, port)) {
+                        <em class="hl-tag" style="color: green">// collect url information and compose the topology</em>
+                        mRootTopology.getInstances().add(collectURLTopology(urlEntry, webServer, mAgent));
+                    }
+                }
+            }
+        }
+        <strong class="hl-keyword">try</strong> {
+            mFglamHost.submit(submitter, mUnitsService, expectedFrequency, System.currentTimeMillis());
+            mRootTopology.submit(submitter, mUnitsService, expectedFrequency, System.currentTimeMillis());
+        } <strong class="hl-keyword">catch</strong> (TopologyException e) {
+            mLogger.log(<strong class="hl-string"><em style="color:red">"cannotSubmitData"</em></strong>, e);
+        }
+    } <strong class="hl-keyword">catch</strong> (ServiceFactory.ServiceNotAvailableException e) {
+        mLogger.log(<strong class="hl-string"><em style="color:red">"serviceNotAvailableException"</em></strong>, e);
+    }
+
+    mLogger.debug(<strong class="hl-string"><em style="color:red">"Metrics collection ends"</em></strong>);
+}
+
+
+<em class="hl-tag" style="color: green">/**
+ * Using the server name provided for the URL, populated the host properties
+ *
+ * @param hostname url server name
+ * @param port url port
+ * @return URLServerInstance object
+ * @throws InterruptedException exception
+ */</em>
+<strong class="hl-keyword">private</strong> URLServerInstance createWebServerInstance(String hostname, Integer port) <strong class="hl-keyword">throws</strong> InterruptedException {
+    <strong class="hl-keyword">final</strong> Host monitoredHost = <strong class="hl-keyword">new</strong> Host(hostname);
+    <strong class="hl-keyword">final</strong> List&lt;DnsResolvedHost&gt; hostNames =
+                     mResolverService.getHostByName(hostname,
+                                                    <span class="hl-number">0</span>,      <em class="hl-tag" style="color: green">// standard priority</em>
+                                                    <span class="hl-number">30000</span>,  <em class="hl-tag" style="color: green">// 30 second timeout</em>
+                                                    true);  <em class="hl-tag" style="color: green">// return canonical names</em>
+    <strong class="hl-keyword">boolean</strong> primary_set = false;
+    <strong class="hl-keyword">for</strong> (DnsResolvedHost resHost: hostNames) {
+        InetAddress [] ipAddresses = resHost.getResolved();
+        <em class="hl-tag" style="color: green">// sort the IP Addresses as String.</em>
+        ArrayList&lt;String&gt; ipAddressAsString = <strong class="hl-keyword">new</strong> ArrayList&lt;String&gt;();
+        <strong class="hl-keyword">for</strong> (InetAddress anIp : ipAddresses){
+            ipAddressAsString.add(anIp.getHostAddress());
+        }
+        Collections.sort(ipAddressAsString);
+
+        <strong class="hl-keyword">for</strong> (String ip_address : ipAddressAsString) {
+            <strong class="hl-keyword">final</strong> IPAddress top_ip_address = <strong class="hl-keyword">new</strong> IPAddress(ip_address);
+            monitoredHost.getIpAddresses().add(top_ip_address);
+        }
+    }
+
+ 	URLServerInstance webServer = <strong class="hl-keyword">new</strong> URLServerInstance(monitoredHost, port);
+ 	monitoredHost.getDetail().add(webServer);
+
+ 	<strong class="hl-keyword">return</strong> webServer; 
+}
+
+<em class="hl-tag" style="color: green">/**
+ * Return the corrected url string
+ *
+ * @param urlPath the url provided
+ * @return Corrected URL String 
+ */</em>
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">static</strong> String getNormalizedURLPath(String urlPath) {
+    <strong class="hl-keyword">return</strong> urlPath.startsWith(<strong class="hl-string"><em style="color:red">"/"</em></strong>) ? urlPath : <strong class="hl-string"><em style="color:red">"/"</em></strong> + urlPath;
+}
+
+<em class="hl-tag" style="color: green">/**
+ * Get the response code, error code, availability, etc of the URL given
+ *
+ * @param urlEntry URL properties  
+ * @param webServer URL webserver name
+ * @param monitoringAgent associated agent
+ * @return MonitoredURL Object
+ */</em>
+<strong class="hl-keyword">private</strong> MonitoredURL collectURLTopology(UrlList urlEntry, URLServerInstance webServer, Agent monitoringAgent) {
+    <strong class="hl-keyword">final</strong> URL url;
+    <strong class="hl-keyword">final</strong> MonitoredURL urlTopology = createMonitoredURLTopology(urlEntry, webServer, monitoringAgent);
+    <em class="hl-tag" style="color: green">// initialize some of the url properties to avoid n/a's</em>
+    urlTopology.setAvailability(<span class="hl-number">0.0</span>);
+    urlTopology.setResponseTime(<span class="hl-number">0.0</span>);
+    urlTopology.setPageGetTime(<span class="hl-number">0.0</span>);
+    String headerProperties = urlEntry.getCustomHeader();
+
+    <strong class="hl-keyword">try</strong> {
+ 	    url = generateURL(urlEntry);
+ 	} <strong class="hl-keyword">catch</strong> (MalformedURLException e) {
+     	mLogger.log(<strong class="hl-string"><em style="color:red">"malformedURL"</em></strong>, e);
+        <strong class="hl-keyword">return</strong> urlTopology;
+ 	}
+
+    urlTopology.setUrl(url.toString());
+    
+    <strong class="hl-keyword">try</strong> {
+        <em class="hl-tag" style="color: green">// replacing System.currentTimeMillis() with the getCurrentMethod to facilitate</em>
+        <em class="hl-tag" style="color: green">// replacement with mock data during unit testing</em>
+        <strong class="hl-keyword">long</strong> bforeConnection = mDataProvider.getCurrentTime();
+        HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+        urlTopology.setResponseTime((<strong class="hl-keyword">double</strong>)(mDataProvider.getCurrentTime() - beforeConnection));
+        setCustomerHeaderRequestProperties(urlc, headerProperties);
+        <em class="hl-tag" style="color: green">// reset time to current</em>
+        beforeConnection = mDataProvider.getCurrentTime();
+        urlc.connect();
+        urlTopology.setPageGetTime((<strong class="hl-keyword">double</strong>)(mDataProvider.getCurrentTime() - beforeConnection));
+        <em class="hl-tag" style="color: green">// the response code can now be mocked during the unit test</em>
+        <em class="hl-tag" style="color: green">// by using MockAgentDataProvider's getResponseCode() method</em>
+        urlTopology.setErrorCode(mDataProvider.getResponseCode(urlc));
+        <em class="hl-tag" style="color: green">// check for the range of ok messages</em>
+        <strong class="hl-keyword">if</strong>(urlTopology.getErrorCode() &gt;= HttpURLConnection.HTTP_OK &amp;&amp; urlTopology.getErrorCode() &lt; HttpURLConnection.HTTP_BAD_REQUEST){
+            urlTopology.setAvailability(<span class="hl-number">100.0</span>);
+        }
+    }
+    <strong class="hl-keyword">catch</strong>(IOException ioe){
+        mLogger.errorUnexpected(ioe.toString());
+    }
+    <strong class="hl-keyword">return</strong> urlTopology;
+}
+
+<em class="hl-tag" style="color: green">/**
+ *  Create the topology object
+ *
+ * @param urlEntry URL details
+ * @param webServer host/port details
+ * @param monitoringAgent associated agent
+ * @return MonitoredURL object
+ */</em>
+<strong class="hl-keyword">private</strong> MonitoredURL createMonitoredURLTopology(UrlList urlEntry, URLServerInstance webServer, Agent monitoringAgent) {     
+    String urlPathString = getNormalizedURLPath(urlEntry.getUrl());
+    URLPath urlPath = <strong class="hl-keyword">new</strong> URLPath(urlPathString, <strong class="hl-string"><em style="color:red">"http"</em></strong>);
+    MonitoredURL urlTopology = <strong class="hl-keyword">new</strong> MonitoredURL(urlPath, webServer);
+    urlTopology.setMonitoringAgent(monitoringAgent);
+    <strong class="hl-keyword">return</strong> urlTopology;
+}
+
+<em class="hl-tag" style="color: green">/**
+ * Set header properties 
+ *
+ * @param urlc url connected
+ * @param headerProperties ASP properties provided
+ */</em>
+<strong class="hl-keyword">private</strong> <strong class="hl-keyword">void</strong> setCustomerHeaderRequestProperties(HttpURLConnection urlc, String headerProperties) {
+    <em class="hl-tag" style="color: green">// wget --header="Host: www.yahoo.com" http://192.168.1.1/htmstart.asp</em>
+    String[] lines = headerProperties.split(<strong class="hl-string"><em style="color:red">"\\s+"</em></strong>);
+    String propertyName = null;
+    String propertyValue;
+    <strong class="hl-keyword">for</strong>(String line : lines) {
+        <strong class="hl-keyword">if</strong>(line.endsWith(<strong class="hl-string"><em style="color:red">":"</em></strong>)) {
+            propertyName = line.substring(<span class="hl-number">0</span>, line.length() - <span class="hl-number">1</span>);
+        }
+        <strong class="hl-keyword">else</strong> <strong class="hl-keyword">if</strong>(propertyName != null) {
+            propertyValue = line;
+            urlc.setRequestProperty(propertyName, propertyValue);
+            propertyName = null;
+        }
+    }
+}
+
+}
+              </pre><p>
+          </p><p>
+              This shows the main boilerplate code usually used to implement an agent:
+              </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+                          The agent is declared to implement the <code class="varname">Agent</code> and
+                          <code class="varname">ASPService3.Listener</code> interfaces, and any interfaces
+                          generated by the tooling based on the agent definition file. 
+                          Every agent must implement the <code class="varname">Agent</code> interface (or a later
+                          version) so that FglAM knows how to work with the agent. The other
+                          interfaces are optional. <code class="varname">ASPService3.Listener</code> allows
+                          the agent to register for property changes, and 
+                          <code class="varname">URLAvailabilityAgentCollectors</code> allows FglAM to call this agent when it is time to
+                          submit a data sample.
+                      </p></li><li class="listitem"><p>
+                          The agent's constructor tests for any services that the agent will
+                          use. Resources that span the entire lifetime of the agent are
+                          typically allocated here.
+                      </p></li><li class="listitem"><p>
+                          The <code class="function">destroy()</code> method is empty in this case, since
+                          there are no resources that need to be deallocated. Note that the
+                          services provided by FglAM are handled by the framework itself.
+                      </p></li><li class="listitem"><p>
+                          When data collection starts, the instances of the generated topology
+                          objects are created with the required identity properties. Metric
+                          values for these topology objects are filled in when the samples
+                          need to be submitted.
+                      </p></li><li class="listitem"><p>
+                          Property changes are detected and, in this case, logged.
+                      </p></li><li class="listitem"><p>
+                          When notified by FglAM that a data sample is required (through the
+                          <code class="function">collectMetrics()</code> method), the metrics
+                          are added to the topology object tree and submitted through the
+                          TopologyDataService's submitter.
+                      </p></li></ul></div><p>
+          </p><p>
+              A new build target in <span class="emphasis"><em>%AGENT_HOME%/build.xml</em></span> is used to build the
+              agent and create a <span class="emphasis"><em>.jar</em></span> file containing all the compiled classes.
+</p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"compile-and-jar"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"tooling-artifacts"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;fglam:compile-and-jar</b> <span class="hl-attribute" style="color: #993399;">build-dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;compile-options&gt;</b>
+      <em class="hl-tag" style="color: green">&lt;!-- set the path to the tooling generated java source files --&gt;</em>
+      <b class="hl-tag" style="color: #3333FF;">&lt;src</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/java-gen"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+      <em class="hl-tag" style="color: green">&lt;!-- set the path to your agent implementation java source files --&gt;</em>
+      <b class="hl-tag" style="color: #3333FF;">&lt;src</b> <span class="hl-attribute" style="color: #993399;">path</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.src.dir}/java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+      <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"**/*.java"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/compile-options&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;jar-options&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${basedir}"</span> <span class="hl-attribute" style="color: #993399;">includes</span>=<span class="hl-value" style="color: #993300">"**/*.properties"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;/jar-options&gt;</b>
+  <b class="hl-tag" style="color: #3333FF;">&lt;/fglam:compile-and-jar&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b></pre><p>
+          </p><p>
+              Execute the command <span class="command"><strong>ant compile-and-jar</strong></span> to
+              compile all the agent source files into <span class="emphasis"><em>%AGENT_HOME%/build/classes</em></span>
+              and store them in <span class="emphasis"><em>%AGENT_HOME%/build/jars/agent.jar</em></span>.
+          </p></div><div class="section" title="2.6.9. Packaging, Distribution, and Cleanup"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-dist"/>2.6.9. Packaging, Distribution, and Cleanup</h3></div></div></div><p>
+              For the completed agent artifacts to be deployed to a Foglight Management Server, they
+              need to be packaged into a cartridge file. This is accomplished using the
+              <code class="varname">urlavailabilityagent-dist</code> build target.
+</p><pre class="programlisting">
+    <em class="hl-tag" style="color: green">&lt;!-- Creates a distribution which results in a FMS deployable cartridge file --&gt;</em>
+    <b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-dist"</span> <span class="hl-attribute" style="color: #993399;">depends</span>=<span class="hl-value" style="color: #993300">"compile-and-jar"</span>
+            <span class="hl-attribute" style="color: #993399;">description</span>=<span class="hl-value" style="color: #993300">"Builds a deployable cartridge with a GAR installer"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- create the dist output directory --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;mkdir</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.dist.dir}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:gar</b> <span class="hl-attribute" style="color: #993399;">agent-manifest</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/agent.manifest"</span>
+                  <span class="hl-attribute" style="color: #993399;">agent-lib-dir</span> =<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/jars"</span>
+                  <span class="hl-attribute" style="color: #993399;">build-dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}"</span>
+                  <span class="hl-attribute" style="color: #993399;">prefix</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>Making topology in ${urlavailabilityagent.dist.dir}<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>CDT file ${urlavailabilityagent.tooling.output}/cdt.xml<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>Topology file ${urlavailabilityagent.tooling.output}/topology.xml<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>Monitoring Policy file ${urlavailabilityagent.tooling.output}/monitoring-policy.xml<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;echo&gt;</b>WCF (input) file ${urlavailabilityagent.config.dir}/wcf.xml<b class="hl-tag" style="color: #3333FF;">&lt;/echo&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;car</b> <span class="hl-attribute" style="color: #993399;">destdir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.dist.dir}"</span> <span class="hl-attribute" style="color: #993399;">buildLocalizableCar</span>=<span class="hl-value" style="color: #993300">"false"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;cartridge</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}"</span>
+                    <span class="hl-attribute" style="color: #993399;">final</span>=<span class="hl-value" style="color: #993300">"true"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                    <span class="hl-attribute" style="color: #993399;">buildid</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.build-id}"</span>
+                    <span class="hl-attribute" style="color: #993399;">author</span>=<span class="hl-value" style="color: #993300">"FglAM Agent Developers"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;installers</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}-Installers"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;installer</b>
+                        <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}"</span>
+                        <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                        <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}/gar/${urlavailabilityagent.agent-manifest.name}.gar"</span>
+                        <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"fglam-client-pkg"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <em class="hl-tag" style="color: green">&lt;!-- This installer contains the following agent types. Each agent
+                             type in the cartridge must be listed here. --&gt;</em>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;agent</b> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent"</span> <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                                                    <span class="hl-attribute" style="color: #993399;">build</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.build-id}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                    <b class="hl-tag" style="color: #3333FF;">&lt;/installer&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/installers&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;topologytypes</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}-Topology-Types"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                    <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/urlavailabilityagent-topology.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;monitoringpolicy</b>
+                    <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.name}-Properties"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                    <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/monitoring-policy.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;cdt</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-CDT"</span>
+                    <span class="hl-attribute" style="color: #993399;">version</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.agent-manifest.ver}"</span>
+                    <span class="hl-attribute" style="color: #993399;">adapter</span>=<span class="hl-value" style="color: #993300">"FglAM"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                        <b class="hl-tag" style="color: #3333FF;">&lt;binding</b> <span class="hl-attribute" style="color: #993399;">type</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span> <span class="hl-attribute" style="color: #993399;">file</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/cdt.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;/cdt&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/cartridge&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/car&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- Create a Simulator CAR for this Agent Package --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;fglam:dev-kit-simulator</b> <span class="hl-attribute" style="color: #993399;">build-dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.build.dir}"</span> <span class="hl-attribute" style="color: #993399;">output</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}"</span> <span class="hl-attribute" style="color: #993399;">input</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/simulator/simulator.xml"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+
+        <em class="hl-tag" style="color: green">&lt;!-- Move the generated simulator CAR into our dist directory --&gt;</em>
+        <b class="hl-tag" style="color: #3333FF;">&lt;move</b> <span class="hl-attribute" style="color: #993399;">todir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.dist.dir}"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;fileset</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${urlavailabilityagent.tooling.output}/simulator/dist"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+                <b class="hl-tag" style="color: #3333FF;">&lt;include</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"*.car"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+            <b class="hl-tag" style="color: #3333FF;">&lt;/fileset&gt;</b>
+        <b class="hl-tag" style="color: #3333FF;">&lt;/move&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b></pre><p>
+          </p><p>
+              This step:
+              </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+                          Builds a <span class="emphasis"><em>.gar</em></span> file that is used to distribute the
+                          agent binary files to FglAM instances using the manifest built
+                          in the <code class="varname">tooling-artifacts</code> target.
+                      </p></li><li class="listitem"><p>
+                          Creates a <span class="emphasis"><em>.car</em></span> containing the <span class="emphasis"><em>.gar</em></span>
+                          package as well as the other server artifacts built in earlier steps. This
+                          cartridge is the final product that will be deployed into server instances.
+                          It can be found in <span class="emphasis"><em>%AGENT_HOME%/build/dist/</em></span>.
+                      </p><p>
+                          Creates a Simulator Addon <span class="emphasis"><em>.car</em></span> that can be deployed along 
+                          side the <span class="emphasis"><em>FglAMExample.car</em></span> on the FMS server.
+                          See <a class="link" href="ch04s04.html#simulator.title">FglAM Simulator Builder</a> 
+                          for more details.
+                      </p></li></ul></div><p>
+          </p><p>
+              An additional build target named <code class="varname">clean</code> is useful during development to
+              remove any artifacts generated by the build process.
+</p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;target</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"clean"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;delete</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${build.dir}"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+    <b class="hl-tag" style="color: #3333FF;">&lt;delete</b> <span class="hl-attribute" style="color: #993399;">dir</span>=<span class="hl-value" style="color: #993300">"${src.dir}/java-gen"</span><b class="hl-tag" style="color: #3333FF;">/&gt;</b>
+<b class="hl-tag" style="color: #3333FF;">&lt;/target&gt;</b></pre><p>
+          </p><p>
+              Finally, the <code class="varname">urlavailabilityagent-dist</code> build target can be set as the default. This 
+              causes the entire agent package to be built when <span class="command"><strong>ant</strong></span> is run in the
+              command line without a target explicitly specified. Add the <code class="function">default</code>
+              attribute to the <code class="varname">&lt;project&gt;</code> tag at the beginning of
+              <span class="emphasis"><em>%AGENT_HOME%/build.xml</em></span>.
+</p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;project</b> <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"URLAvailabilityAgent"</span> <span class="hl-attribute" style="color: #993399;">default</span>=<span class="hl-value" style="color: #993300">"urlavailabilityagent-dist"</span>
+<span class="hl-attribute" style="color: #993399;">xmlns:fglam</span>=<span class="hl-value" style="color: #993300">"fglam:/ant/macros"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b></pre><p>
+          </p><p>
+              The final agent package can now be built by running <span class="command"><strong>ant</strong></span> from the
+              command line. Now your agent is ready to collect data.
+          </p></div><div class="section" title="2.6.10. Topology Localizations"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-localization"/>2.6.10. Topology Localizations</h3></div></div></div><p>
+            Note the use of the  
+</p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;localizations</b>
+  <span class="hl-attribute" style="color: #993399;">name</span>=<span class="hl-value" style="color: #993300">"topology-localizations"</span>
+  <span class="hl-attribute" style="color: #993399;">...</span><b class="hl-tag" style="color: #3333FF;">
+/&gt;</b></pre><p>
+            section which includes a topology localization file for this agent. The
+            example agent includes a sample localization file in 
+            <span class="emphasis"><em>example/config/locale/TopologyLocale.properties</em></span> which
+            matches the topology used by the example agent.             
+          </p><p>
+            The cartridge component must use the "<code class="varname">topology-localizations</code>" name 
+            and the basename must be the name of your properties file without any locale suffixes 
+            or file extensions. If your properties file is 
+            <span class="emphasis"><em>cart-topo-localizations.properties</em></span>, then the basename would have
+            to be "<code class="varname">cart-topo-localizations</code>". To see the new localized names 
+            go to the Schema Browser, select one of your topology types, and hover over the 
+            property name. The page itself should show the camelCase name, but the hover should 
+            show the new localized name.
+          </p><p>
+            The example agent includes a default localization file called 
+            <span class="emphasis"><em>TopologyLocale.properties</em></span>. To localize the topology to different
+            languages, you must create a file with the same <code class="varname">basename</code> and 
+            extension, with a suffix that matches the locale (and optionally, the specialization)
+            of the language. This naming convention follows that of the Java 
+            <code class="varname">ResourceBundle</code>. 
+          </p><p>
+            For example, both "<code class="varname">TopologyLocale</code>" and 
+            "<code class="varname">TopologyLocale_de</code>" may have a String that is 
+            used on a button for cancelling operations. In "<code class="varname">TopologyLocale</code>" 
+            the String may contain "Cancel" and in "<code class="varname">TopologyLocale_de</code>" it 
+            may contain "Abbrechen". If there are different resources for different countries, 
+            you can make specializations: For example, "<code class="varname">TopologyLocale_de_CH</code>" 
+            contains objects for the German language (de) in Switzerland (CH). If you want only to 
+            modify some of the resources in the specialization, you can do so. 
+          </p></div><div class="section" title="2.6.11. Using the New Agent Wizard"><div class="titlepage"><div><div><h3 class="title"><a id="creating-agents-wizard"/>2.6.11. Using the New Agent Wizard</h3></div></div></div><p>
+          A great deal of the initial work required to create a new agent is identical no matter
+          what the agent is intended to collect or how it is structured. This includes creating
+          a <code class="filename">build.xml</code> file to build the agent, filling in the basics of
+          an <code class="filename">agent-definition.xml</code> and creating the main class of the 
+          agent.
+        </p><p>
+          To assist with this, the FglAM Developer's Kit includes a wizard that can be used to
+          create the beginning framework of an agent. After the wizard is complete and you have 
+          answered all the required questions, you will have an agent that is ready to be built,
+          deployed and run. 
+        </p><p>
+          The new agent wizard is started using <code class="filename">bin\new-agent-wizard.cmd</code>
+          on Windows or <code class="filename">bin/new-agent-wizard.sh</code> on Unix or Linux systems.
+          The only requirement for running it is that you have the <code class="varname">JAVA_HOME</code>
+          environment variable set to a Java 6 installation. Once the new agent wizard is started
+          you will be able to fill in
+        </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">The name of the cartridge that will contain the agent</li><li class="listitem">The version of the cartridge</li><li class="listitem">The name of the agent and it's version</li><li class="listitem">The directory into which all created files will be placed</li><li class="listitem">The package to use for all Java classes belonging to the agent</li><li class="listitem">Any collectors or callbacks that should be associated with the agent</li></ul></div><p>
+          When the wizard is finished, it will have created
+        </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">A <code class="filename">build.xml</code> that can build the agent and cartridge</li><li class="listitem">A <code class="filename">agent-definition.xml</code> file describing the agent</li><li class="listitem">An empty <code class="filename">topology.xml</code> where you can define the topology 
+                    types for the agent</li><li class="listitem">The main class for the agent</li><li class="listitem">A class where you can customize what information is included in the support 
+                    bundle from your agent</li><li class="listitem">A starting class for writing unit tests for your agent</li></ul></div></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s05.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s07.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">2.5. Thread Safety </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 2.7. Submission of Historical Data</td></tr></table></div></body></html>

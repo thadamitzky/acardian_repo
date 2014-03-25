@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>3.10. ASPService</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch03.html" title="Chapter 3. Agent Services"/><link rel="prev" href="ch03s09.html" title="3.9. AgentResourceService"/><link rel="next" href="ch03s11.html" title="3.11. MemoryWarningService"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.10. ASPService</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s09.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 3. Agent Services</th><td width="20%" align="right"> <a accesskey="n" href="ch03s11.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="3.10. ASPService"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="agentservices-ASPService"/>3.10. ASPService</h2></div></div></div><p>
+            The <code class="function">ASPService</code> allows access to assigned agent properties. This service enables
+            an agent instance to inspect and modify property values. In most instances it is recommended that all
+            property access be through the generated <code class="function">PropertiesWrapper</code> class that is created 
+            by the FglAM devkit for your agent project. However, for situations in which you wish to code against the 
+            <code class="function">ASPService</code> directly, a number of details about how properties are dealt with need 
+            to be addressed.
+        </p><p>
+            An ASP property can be one of two types:
+            </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">PrimaryASP</li><li class="listitem">SecondaryASP</li></ul></div><p>
+            Both property types store their values within a Map&lt;String,Object&gt;. SecondaryASPs differ
+            only in that they hold lists of these maps.
+            Access to the properties contained in these maps requires that you know both the name (ref: key)
+            and the object type of the value (that is, how to cast the returned Object to the required Java type).
+            All of this logic is handled for you by the <code class="function">Typesafe</code> mutators in the devkit 
+            <code class="function">PropertiesWrapper</code>, but you must be aware of these details when working with the 
+            <code class="function">ASPService</code> directly.
+        </p><div class="section" title="3.10.1. PrimaryASP"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-ASPService-PrimaryASP"/>3.10.1. PrimaryASP</h3></div></div></div><p>
+            To access a property value from a PrimaryASP, you require knowledge of both the property name and the object type.
+            For example, a property defined in your <span class="emphasis"><em>agent-definition.xml</em></span> as:
+            </p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;string</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"hostname"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b></pre><p>
+            can be retrieved at runtime through your <code class="function">ASPService</code> instance from the agent with:
+            </p><pre class="programlisting">String hostname = (String)myASPService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"hostname"</em></strong>);</pre><p>
+            </p><p>
+            With the exception of Booleans, all property types are accessed in this manner. Since ASPs are a legacy implementation
+            of properties from pre-Foglight 5.0, they originally treated Booleans as integers (0/1). As a result,
+            when you declare
+            </p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;boolean</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"isEnabled"</span> <span class="hl-attribute" style="color: #993399;">default</span>=<span class="hl-value" style="color: #993300">"true"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b></pre><p>,
+            in order to access the result, you will need to handle the returned value as an integer, not as a Boolean object.
+            </p><pre class="programlisting"><strong class="hl-keyword">boolean</strong> isEnabled = (Integer)myASPService.getPrimaryASP(<strong class="hl-string"><em style="color:red">"isEnabled"</em></strong>) == <span class="hl-number">1</span>;</pre><p>
+            </p><p>
+            When setting a Boolean property, the value should be a Boolean, not an integer. For example:
+            </p><pre class="programlisting">myASPService.setPrimaryASP(<strong class="hl-string"><em style="color:red">"isEnabled"</em></strong>, isEnabled);</pre><p>
+            </p></div><div class="section" title="3.10.2. SecondaryASP"><div class="titlepage"><div><div><h3 class="title"><a id="agentservices-ASPService-SecondaryASP"/>3.10.2. SecondaryASP</h3></div></div></div><p>
+            SecondaryASPs are lists of map data. They are similar to PrimaryASPs, except that in a SecondaryASP each row is a map of columns 
+            where the column name is the key and each cell value is the value.
+            To retrieve a SecondaryASP (or perform any of the allowed modification actions), you need to provide the name of the SecondaryASP.
+            This is not the list or instance name of the property, but the actual id of the SecondaryASP property definition.
+            </p><pre class="programlisting"><b class="hl-tag" style="color: #3333FF;">&lt;secondary</b> <span class="hl-attribute" style="color: #993399;">id</span>=<span class="hl-value" style="color: #993300">"mySecondary"</span> <span class="hl-attribute" style="color: #993399;">default</span>=<span class="hl-value" style="color: #993300">"myDefaultValues"</span><b class="hl-tag" style="color: #3333FF;">&gt;</b></pre><p>
+            To access this property:
+            </p><pre class="programlisting">List&lt;Map&lt;String,Object&gt;&gt; rowSet = myASPService.getSecondaryASP(<strong class="hl-string"><em style="color:red">"mySecondary"</em></strong>);</pre><p>
+            When accessing these properties, you will be returned the entire row set. You can then interate over the rows and
+            access each of the properties within the row map.
+            </p><div class="section" title="3.10.2.1. Add a row entry"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-ASPService-SecondaryASP-Add"/>3.10.2.1. Add a row entry</h4></div></div></div><p>
+                To add a new row to an existing SecondaryASP you need to provide a list of all column values. You do not need to provide
+                the column names, but the order in which the objects are added is critical to the success of the modification. Each value
+                must match up with the appropriate column name of the defined SecondaryASP.
+                </p></div><div class="section" title="3.10.2.2. Delete a row entry"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-ASPService-SecondaryASP-Del"/>3.10.2.2. Delete a row entry</h4></div></div></div><p>
+                Deleting an existing row of a SecondaryASP requires knowledge of the row index within the current row set of the property.
+                </p></div><div class="section" title="3.10.2.3. Modifying a row entry"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-ASPService-SecondaryASP-Mod"/>3.10.2.3. Modifying a row entry</h4></div></div></div><p>
+                Modifying an existing row requires the same constraints that a row addition entails, but also requires the index of the row
+                set that you are modifying.
+                </p></div><div class="section" title="3.10.2.4. Cloning a SecondaryASP"><div class="titlepage"><div><div><h4 class="title"><a id="agentservices-ASPService-SecondaryASP-Clone"/>3.10.2.4. Cloning a SecondaryASP</h4></div></div></div><p>
+                To clone a SecondaryASP is, essentially, to copy the current row set and give it a new name. Cloning is a server-side operation,
+                so you will need to implement the <code class="function">ASPCloneNotificationListener</code> in order to receive notification when the 
+                cloning process is complete.
+                </p></div></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s09.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s11.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">3.9. AgentResourceService </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 3.11. MemoryWarningService</td></tr></table></div></body></html>

@@ -1,0 +1,53 @@
+/*
+ * Copyright 2013 Dell Inc.
+ * ALL RIGHTS RESERVED.
+ * 
+ * This software is the confidential and proprietary information of
+ * Dell Inc. ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered
+ * into with Dell Inc.
+ * 
+ * DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ * THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ * NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ * DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ * OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ */
+
+/* copyright.stg automagically imported */
+
+/**
+ * This generates an empty topology file
+ */
+topology(agent) ::= <<
+<?xml version="1.0" encoding="UTF-8"?>
+%copyrightxml(agent.year)%
+
+<!--
+  This is an empty topology file for the %agent.agentName% agent
+
+  Your agent will be able to use all the core topology types (like Host)
+  without having to redefine them. It is recommended that you prefix
+  all the topology types you do define with your agent type. For example:
+
+  <type name="%agent.agentName%URL" extends="TopologyObject">
+      <property name="host"     type="Host"    is-identity="true"/>
+      <property name="protocol" type="String"  is-identity="true"/>
+      <property name="port"     type="Integer" is-identity="true"/>
+      <property name="path"     type="String"  is-identity="true"/>
+  </type>
+
+  <type name="%agent.agentName%WebPageInfo" extends="TopologyObject">
+     <property name="url"          type="%agent.agentName%URL" is-identity="true"/>
+     <property name="responseTime" type="Metric"/>
+  </type>
+-->
+<types>
+  <!-- Since building a simulator for the cartridge requires at least on topology type,
+       we'll add in a simple example. -->
+  <type name='%agent.cartridgeName%ExampleTopologyType' extends='TopologyObject'/>     
+</types>
+>>

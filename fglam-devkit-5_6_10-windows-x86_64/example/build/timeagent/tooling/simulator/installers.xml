@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installers>
+	<installer name="FglAMExample-Simulator-Addon-Installer" version="5.6.10" filename="FglAMExample-Simulator-Addon-5_6_10.gar" type="fglam-client-pkg"/>
+</installers>

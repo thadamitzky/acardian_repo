@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<agent-definition xmlns="urn:X-quest.com:glue/agent/definition/1.9.1"
+			      name="URLAvailabilityAgent" ver="5.6.10" allow-asynchronous-access="true">
+
+    <!-- A pointer to where the topology definition file is -->
+    <topology-types package="com.quest.fglam.example.url.samples">
+        <topology-file filename="urlavailabilityagent-topology.xml"/>
+    </topology-types>
+
+    <agent name="URLAvailabilityAgent" package="com.quest.fglam.example.url" class-name="URLAvailabilityAgentImpl">
+        <!-- List all the topology types that we will be directly submitting.
+             The topology types referenced by these submitted sample do not need
+             to be listed. -->
+         <data-collection>
+            <collector name="metrics" method-name="collectMetrics" value="1" unit="minutes"/>
+        </data-collection>
+        <properties>
+        	<group id="settings" label="Settings">
+                <secondary id="urlList" label="URL List">
+                  <cols>
+                    <string id="hostname" label="Hostname" canBeBlank="false"/>
+                    <string id="url" label="URL" canBeBlank="false"/>
+                    <integer id="port" label="Port" default="80" canBeBlank="false"/>
+                    <string id="customHeader" label="Custom Header" canBeBlank="true"/>
+                  </cols>
+                  <list id="defaultURLList"/>
+                </secondary>    
+        	</group>
+        </properties>
+    </agent>
+</agent-definition>

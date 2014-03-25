@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Appendix F. Canonical Platform Names</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="prev" href="ape.html" title="Appendix E. URLAvailabilityAgentImpl.java Source Code for Included Example Agent"/><link rel="next" href="apg.html" title="Appendix G. Agent Harness Supported Platform Mappings"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix F. Canonical Platform Names</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ape.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="apg.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="appendix" title="Appendix F. Canonical Platform Names"><div class="titlepage"><div><div><h2 class="title"><a id="platformnames"/>Appendix F. Canonical Platform Names</h2></div></div></div><div class="abstract" title="Abstract"><div class="titlepage"/><p>
+        This is the list of canonical platform name mappings used by this version of the FglAM API and core code.
+      </p></div><p>
+        </p><pre class="literallayout">
+#  Copyright 2013 Dell Software Inc.
+#  ALL RIGHTS RESERVED.
+#  
+#  This software is the confidential and proprietary information of
+#  Dell Software Inc. ("Confidential Information"). You shall not
+#  disclose such Confidential Information and shall use it only in
+#  accordance with the terms of the license agreement you entered
+#  into with Dell Software Inc.
+#  
+#  DELL SOFTWARE INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+#  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+#  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+#  NON-INFRINGEMENT. DELL SOFTWARE SHALL NOT BE LIABLE FOR ANY
+#  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+#  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+
+#
+# For operating systems
+# ---------------------
+# The left hand side will be "os." + the OS name 
+# in lower case as returned by the Java system 
+# property os.name in the current Java VM. Make 
+# sure you escape spaces and colons when you add
+# new entries
+#
+# You can also use regular expressions for the OS name.
+# The format is slightly different and looks like:
+#
+#   "os.regex." + OS name + "=" + regular expression
+#
+# For architectures
+# -----------------
+# The left hand side is "arch." + the architecture 
+# name in lower case as returned by the Java system 
+# property os.arch in the current Java VM. Make 
+# sure you escape spaces and colons when you add 
+# new entries
+#
+# You can also use regular expressions for the architecture.
+# The format is slightly different and looks like:
+#
+#   "arch.regex." + architecture name + "=" + regular expression
+#
+
+# ************************************************
+# Mapping of all the different OS name variations 
+# to the canonical form
+# ************************************************
+
+# Windows
+os.windows=windows
+os.windows\ 2000=windows
+os.windows\ 2000\ server=windows
+os.windows\ xp=windows
+os.windows\ 2003=windows
+os.windows\ server\ 2003=windows
+os.windows\ server\ 2008=windows
+os.windows\ server\ 2008\ r2=windows
+os.windows\ server\ 2012=windows
+os.windows\ vista=windows
+os.windows\ 7=windows
+os.windows\ 8=windows
+
+# Incorrect ID for unpatched Java on Windows 8 / Windows Server 2012
+# http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7170169
+os.windows\ nt\ (unknown)=windows
+
+# generic catch-all for Windows
+os.regex.windows=.*Windows.*
+
+
+# Linux
+os.linux=linux
+
+# AIX
+os.aix=aix
+
+# HP-UX
+os.hpux=hpux
+os.hp-ux=hpux
+
+# Solaris
+os.solaris=solaris
+os.sunos=solaris
+
+# Mac, mac, mac, mac, mac ....
+os.macosx=macosx
+os.mac\ os\ x=macosx
+
+# ************************************************
+# Mapping of all the different architecture name 
+# variations to the canonical form
+# ************************************************
+
+# Intel 32-bit PC's
+arch.ia32=ia32
+arch.x86=ia32
+arch.i386=ia32
+arch.i486=ia32
+arch.i586=ia32
+arch.i686=ia32
+# value returned by uname(2) on Solaris-Intel
+arch.i86pc=ia32
+
+# Intel Itanium (64-bit) PC's
+arch.ia64=ia64
+# 32-bit Itanium
+arch.ia64n=ia64
+# 64-bit Itanium
+arch.ia64w=ia64
+# WMI exposes this name, assume 64-bit Itanium
+arch.itanium=ia64
+
+# Intel and AMD x86-64 chips
+arch.amd64=x86_64
+arch.x86-64=x86_64
+arch.x86_64=x86_64
+arch.em64t=x86_64
+arch.x64=x86_64
+
+# PowerPC
+arch.powerpc=powerpc
+arch.ppc=powerpc
+
+# PowerPC 64 (Power 5 chip)
+arch.ppc64=powerpc64
+arch.powerpc64=powerpc64
+
+# PA-RISC
+arch.parisc=parisc
+arch.pa_risc=parisc
+arch.pa-risc=parisc
+arch.pa_risc2.0=parisc
+
+# SPARC (32-bit)
+arch.sparc=sparc
+arch.sun4u=sparc
+arch.sun4v=sparc
+
+# SPARC (64-bit)
+arch.sparcv9=sparc64
+
+# Linux/390
+arch.s390=s390
+arch.s390x=s390
+arch.390=s390
+
+# MIPS (WMI exposes this, but we don't run on it)
+arch.mips=mips
+
+# Alpha (WMI exposes this, but we don't run on it)
+arch.alpha=alpha
+
+        </pre><p>
+      </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ape.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="apg.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">Appendix E. URLAvailabilityAgentImpl.java Source Code for Included Example Agent </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> Appendix G. Agent Harness Supported Platform Mappings</td></tr></table></div></body></html>

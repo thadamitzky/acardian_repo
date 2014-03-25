@@ -1,0 +1,39 @@
+2014-03-20 10:18:03.174 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent> VERBOSE [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Creating agent
+2014-03-20 10:18:03.205 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> INFO [AgentInstancePanel[11]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Agent hadaSogetiAgent (version 1.0.0) created
+2014-03-20 10:18:03.221 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent> INFO [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Created agent
+2014-03-20 10:18:03.236 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent> VERBOSE [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Starting data collection
+2014-03-20 10:18:03.236 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [AgentInstancePanel[11]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Data collection started
+2014-03-20 10:18:03.236 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent> INFO [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Started data collection
+2014-03-20 10:18:03.236 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:18:03.236 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 10:18:29.632 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent> VERBOSE [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Stopping data collection
+2014-03-20 10:18:29.632 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent> INFO [AgentInstancePanel[11]-0] com.quest.glue.core.agent.AgentInstance - Stopped data collection
+2014-03-20 10:18:29.632 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [AgentInstancePanel[11]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Stopping data collection
+2014-03-20 10:19:37.148 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [UpdateAgentProperties[9]-1] de.com.aca.hada.agent.hadaSogetiAgentImpl - Property change notification received
+2014-03-20 10:19:38.303 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [UpdateAgentProperties[9]-1] de.com.aca.hada.agent.hadaSogetiAgentImpl - Property change notification received
+2014-03-20 10:19:38.490 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [UpdateAgentProperties[9]-1] de.com.aca.hada.agent.hadaSogetiAgentImpl - Property change notification received
+2014-03-20 10:19:38.662 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [UpdateAgentProperties[9]-1] de.com.aca.hada.agent.hadaSogetiAgentImpl - Property change notification received
+2014-03-20 10:19:38.849 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [UpdateAgentProperties[9]-1] de.com.aca.hada.agent.hadaSogetiAgentImpl - Property change notification received
+2014-03-20 10:19:42.359 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent> VERBOSE [AgentInstancePanel[11]-1] com.quest.glue.core.agent.AgentInstance - Starting data collection
+2014-03-20 10:19:42.359 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [AgentInstancePanel[11]-1] de.com.aca.hada.agent.hadaSogetiAgentImpl - Data collection started
+2014-03-20 10:19:42.359 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent> INFO [AgentInstancePanel[11]-1] com.quest.glue.core.agent.AgentInstance - Started data collection
+2014-03-20 10:19:42.359 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:19:42.359 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 10:24:42.366 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:24:42.366 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 10:29:42.370 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:29:42.370 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 10:34:42.359 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:34:42.359 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 10:39:42.374 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:39:42.374 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 10:44:42.364 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:44:42.364 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 10:49:42.368 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:49:42.368 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 10:54:42.373 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:54:42.373 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 10:59:42.367 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 10:59:42.367 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed
+2014-03-20 11:04:42.371 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Normal Collection collector invoked
+2014-03-20 11:04:42.371 ECHO    <hadaSogetiAgent/1.0.0/hadaSogetiAgent/TestAgent-agent> DEBUG [Quartz[0]-0] de.com.aca.hada.agent.hadaSogetiAgentImpl - Metrics collection processed

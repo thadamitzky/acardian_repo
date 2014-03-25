@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3-000" display-name="TimeAgent" last-entity-id="9">
+    <context-help>Views and queries related to the example agent provided with the Foglight Agent Manager Developer Kit</context-help>
+    <relevant-role name="Advanced Operator"/>
+    <relevant-role name="Operator"/>
+    <query id="1" display-name="Time Agent Detailed Query" ts="1250637702983" root-query="true" datasource-type="foglight-5" root="/TimeAgentCurrentTime" select="TimeAgentDetailedSample">
+        <uuid>c27a15da-416c-4df0-a992-9a3978f5bb87</uuid>
+        <order-by>
+            <key path="host" order="asc"/>
+        </order-by>
+    </query>
+    <query id="5" display-name="Get Last (Non Detailed) Update Time" ts="1232047877362" public="false" datasource-type="foglight-5" root="/TimeAgentCurrentTime" select="TimeAgentCurrentTime">
+        <uuid>1c0940fe-f72e-4d62-acdb-80efa9d23c91</uuid>
+        <parameters>
+            <parameter name="host" type-name="Host"/>
+        </parameters>
+        <where>
+            <comparison path="host" operator="equals" compared-value="{host}"/>
+        </where>
+    </query>
+    <view id="3" display-name="Host Clock Skew" ts="1238528181910" public="false" refresh-interval="300" component="wcf.table.row-table">
+        <uuid>210b1d90-8a6c-4dad-af82-9f80b9d351f7</uuid>
+        <purpose name="dashboard"/>
+        <purpose name="monitor"/>
+        <purpose name="pagelet"/>
+        <size width="500" height="300"/>
+        <inputs>
+            <entry key="timeRange" data-type="wcf:TimeRange"/>
+            <entry key="detailed_sample" data-type="foglight-5:TimeAgentCurrentTime" usage="optional" implicit="true"/>
+        </inputs>
+        <flow>
+            <on action="rowSelection">
+                <generated-context output-key="selectedRow" custom-key="detailed_sample"/>
+                <next-page id="system:foglight_hosts.10">
+                    <context>
+                        <entry key="host">
+                            <context-rv input-key="detailed_sample" path="host"/>
+                        </entry>
+                    </context>
+                </next-page>
+            </on>
+            <on action="dwell">
+                <generated-context output-key="selectedRow" custom-key="detailed_sample"/>
+                <popup id="system:time20agent.6" type="temporary"/>
+            </on>
+        </flow>
+        <tree-config>
+            <property name="rows">
+                <query-selection-rv query="system:time20agent.1"/>
+            </property>
+            <property name="columns">
+                <list-item>
+                    <property name="value">
+                        <context-rv input-key="currentRow" path="host/name"/>
+                    </property>
+                    <property name="id">
+                        <string xml:space="preserve"><![CDATA[c_0]]></string>
+                    </property>
+                    <property name="header">
+                        <string xml:space="preserve"><![CDATA[Host]]></string>
+                    </property>
+                </list-item>
+                <list-item>
+                    <property name="value">
+                        <context-rv input-key="currentRow" path="timeDifference/current/average"/>
+                    </property>
+                    <property name="id">
+                        <string xml:space="preserve"><![CDATA[c_1]]></string>
+                    </property>
+                    <property name="header">
+                        <string xml:space="preserve"><![CDATA[Clock Skew]]></string>
+                    </property>
+                    <property name="headerTooltip">
+                        <string xml:space="preserve"><![CDATA[Difference in the host's clock and the server's clock. Negative values indicate that the host's clock is behind the server's.]]></string>
+                    </property>
+                </list-item>
+                <list-item>
+                    <property name="value">
+                        <context-rv input-key="currentRow" path="isSynced/current/value/value" renderer-id="system:time20agent.2"/>
+                    </property>
+                    <property name="id">
+                        <string xml:space="preserve"><![CDATA[c_2]]></string>
+                    </property>
+                    <property name="header">
+                        <string xml:space="preserve"><![CDATA[Sync'd]]></string>
+                    </property>
+                    <property name="headerTooltip">
+                        <string xml:space="preserve"><![CDATA[Whether or not the times on the host and the server are close enough to be considered in synchronization.]]></string>
+                    </property>
+                </list-item>
+                <list-item>
+                    <property name="value">
+                        <context-rv input-key="currentRow" path="timestamp/current/value" renderer-id="system:system.dateRenderer"/>
+                    </property>
+                    <property name="id">
+                        <string xml:space="preserve"><![CDATA[c_3]]></string>
+                    </property>
+                    <property name="header">
+                        <string xml:space="preserve"><![CDATA[Last Check]]></string>
+                    </property>
+                    <property name="headerTooltip">
+                        <string xml:space="preserve"><![CDATA[The last time the clock skew was measured on the monitored host.]]></string>
+                    </property>
+                </list-item>
+                <list-item>
+                    <property name="value">
+                        <query-selection-rv query="system:time20agent.5" path="timestamp/current/value" results-index="0" renderer-id="system:system.dateRenderer">
+                            <context-rv input-key="currentRow" path="host"/>
+                        </query-selection-rv>
+                    </property>
+                    <property name="id">
+                        <string xml:space="preserve"><![CDATA[c_4]]></string>
+                    </property>
+                    <property name="header">
+                        <string xml:space="preserve"><![CDATA[Last Update]]></string>
+                    </property>
+                    <property name="headerTooltip">
+                        <string xml:space="preserve"><![CDATA[The last time this agent submitted data.]]></string>
+                    </property>
+                </list-item>
+            </property>
+            <property name="multipleSelection">
+                <property name="batchedSubmit">
+                    <boolean value="false"/>
+                </property>
+            </property>
+            <property name="selectionConfiguration">
+                <property name="allowReselection">
+                    <boolean value="true"/>
+                </property>
+            </property>
+        </tree-config>
+    </view>
+    <view id="6" display-name="[chart] Clock Skew History" ts="1232048467363" public="false" component="wcf.chart.time-bar">
+        <uuid>48d89b6c-91be-4d44-9c62-3ad0b28b4e4e</uuid>
+        <purpose name="monitor"/>
+        <purpose name="page"/>
+        <purpose name="pagelet"/>
+        <purpose name="portlet"/>
+        <size width="200" height="200"/>
+        <inputs>
+            <entry key="timeRange" data-type="wcf:TimeRange"/>
+            <entry key="detailed_sample" data-type="foglight-5:TimeAgentDetailedSample"/>
+        </inputs>
+        <flow/>
+        <tree-config>
+            <property name="chartType">
+                <enum value="plot"/>
+            </property>
+            <property name="header">
+                <property name="text">
+                    <i18n-rv key="system:time20agent.plain.7"/>
+                </property>
+            </property>
+            <property name="simpleMetricData">
+                <property name="metricParent">
+                    <context-rv input-key="detailed_sample" path="timeDifference"/>
+                </property>
+                <property name="metricBindings">
+                    <list-item>
+                        <property name="metric">
+                            <context-rv input-key="detailed_sample" path="timeDifference"/>
+                        </property>
+                        <property name="legendLabel">
+                            <context-rv input-key="detailed_sample" path="host/name"/>
+                        </property>
+                    </list-item>
+                </property>
+            </property>
+            <property name="title">
+                <string xml:space="preserve"><![CDATA[Historic Clock Skew]]></string>
+            </property>
+        </tree-config>
+    </view>
+    <renderer id="2" display-name="Time Agent Synced Renderer" ts="1238528222578" public="false" handler="wcf.state-range.state">
+        <uuid>9f2e77d9-8be3-4501-a5de-8234bc8a0064</uuid>
+        <tree-config>
+            <property name="state-list">
+                <list-item>
+                    <property name="state">
+                        <string xml:space="preserve"><![CDATA[0]]></string>
+                    </property>
+                    <property name="icon">
+                        <icon value="system:system.26"/>
+                    </property>
+                    <property name="text">
+                        <string xml:space="preserve"><![CDATA[No]]></string>
+                    </property>
+                </list-item>
+                <list-item>
+                    <property name="state">
+                        <string xml:space="preserve"><![CDATA[1]]></string>
+                    </property>
+                    <property name="icon">
+                        <icon value="system:system.25"/>
+                    </property>
+                    <property name="text">
+                        <string xml:space="preserve"><![CDATA[Yes]]></string>
+                    </property>
+                </list-item>
+            </property>
+        </tree-config>
+    </renderer>
+</module>

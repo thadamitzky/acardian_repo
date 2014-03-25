@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="urn:X-quest.com:glue/hostkeys/1.0"
+            xmlns:hostkeys="urn:X-quest.com:glue/hostkeys/1.0"
+            elementFormDefault="unqualified">
+
+    <!-- Top level element, required for JAXB to unmarshal file's using the schema -->
+    <xsd:element name="host-key-config">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="host-key" type="hostkeys:HostKey" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+            <xsd:attribute name="accept-new" type="xsd:boolean" default="true" use="optional"/>
+            <xsd:attribute name="accept-changed" type="xsd:boolean" default="true" use="optional"/> 
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="HostKey">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="host" type="xsd:string" use="required"/>
+                <xsd:attribute name="type" type="xsd:string" use="required"/>                               
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+</xsd:schema>

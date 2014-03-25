@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+
+<types>
+
+    <type name='TimeAgentDateValue' extends='ObservedValue'>
+        <property name='value' type='Date' is-many='false' is-containment='false'/>
+    </type>
+
+    <!-- New observation types have to extend either the StringObservation or 
+         ComplexObservation type so that the server's persistence service knows how 
+         to handle it. -->
+    <type name='TimeAgentDateObservation' extends='ComplexObservation'>
+        <property name='current' type='TimeAgentDateValue' is-many='false' is-containment='true'/>
+        <property name='latest'  type='TimeAgentDateValue' is-many='false' is-containment='true'/>
+        <property name='history' type='TimeAgentDateValue' is-many='true'  is-containment='true'/>
+    </type>
+
+    <!-- We attach the data model to the "All Data" node by making the top-level type extend 
+         the "ModelRoot" or "CollectionModelRoot" topology type.  The server will automatically 
+         add a root property that returns all instances of that type. Using CollectionModelRoot
+         requires you to set a name of the topology object when you submit it. -->
+    <type name="TimeAgentCurrentTime" extends="CollectionModelRoot">
+        <!-- The identity properties for this agent are the host it is running on and
+             the agent (itself) -->
+        <property name="host"           type="Host" is-containment="true" is-identity="true"/>
+        <property name="agent"          type="Agent" is-containment="true" is-identity="true"/>
+
+        <property name="time"           type="StringObservation" is-containment="true"/>
+        <!--
+             This needs to be an observation, not just a Date, as the server is
+             required to create a new topology object for every sample if
+             anything that is not a Metric or Observation is changed. Making
+             the server create a large number of topology objects is an
+             excellent way to bring it to its knees.
+
+             We cannot use a Metric here as is would not make sense to have these
+             values aggregated together by the server.
+        -->
+        <property name="timestamp"      type="TimeAgentDateObservation" is-containment="true"/>
+        
+        <!-- 
+          We override these properties that we inherit from the base TopologyObject 
+          so we can identify where this topology object came from. 
+        -->
+        <property name='monitoredHost' type='Host'/>
+        <property name='monitoringAgent' type='Agent'/>
+                
+    </type>
+
+</types>

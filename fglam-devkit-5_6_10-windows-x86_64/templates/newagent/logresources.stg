@@ -1,0 +1,39 @@
+/*
+ * Copyright 2013 Dell Inc.
+ * ALL RIGHTS RESERVED.
+ * 
+ * This software is the confidential and proprietary information of
+ * Dell Inc. ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered
+ * into with Dell Inc.
+ * 
+ * DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ * THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ * NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ * DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ * OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ */
+
+/* copyright.stg automagically imported */
+
+logresources(agent) ::= <<
+%copyrightproperties(agent.year)%
+
+# These are the log resources used by all classes in the %agent.agentPackage% 
+# package.
+#
+# Each package in which classes need to log at higher that the DEBUG level 
+# (i.e. VERBOSE, INFO, WARN, ERROR, or FATAL) will need a LogResources.properties file.
+#
+# This file can also be localized by creating a copy with the desired locale appended 
+# to the file name. LogResources_de.properties for German or LogResources_de_CH.properties 
+# for German as it is spoken in Switzerland. The correct log resource bundle will be 
+# automatically selected based on the locale the agent is running in. If there is no 
+# localized version of the file, then the non-localized version (this file) is selected.
+
+%agent.agentName%Impl.agentVersion=Agent {0} (version {1}) created
+%agent.agentName%Impl.agentVersion.level=INFO
+>>

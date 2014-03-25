@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:X-quest.com:glue/messages/8"
+			xmlns:msgs8="urn:X-quest.com:glue/messages/8"
+            xmlns:msgs7="urn:X-quest.com:glue/messages/7"
+			xmlns:msgs6="urn:X-quest.com:glue/messages/6"
+            xmlns:msgs5="urn:X-quest.com:glue/messages/5"
+            xmlns:msgs4="urn:X-quest.com:glue/messages/4"
+            xmlns:msgs1_3="urn:X-quest.com:glue/messages/1.3"
+			xmlns:msgs1_2="urn:X-quest.com:glue/messages/1.2"
+			xmlns:msgs1_1="urn:X-quest.com:glue/messages/1.1"
+			xmlns:msgs1_0="urn:X-quest.com:glue/messages/1.0"
+			elementFormDefault="qualified">
+      
+    <!-- Added in version 5.5.5.5 (Iron Monkey) -->
+
+	<!-- Import the Message 1.0 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/1.0" schemaLocation="messages.1.0.xsd" />
+	<!-- Import the Message 1.1 XSD -->
+	<xsd:import namespace="urn:X-quest.com:glue/messages/1.1" schemaLocation="messages.1.1.xsd" />
+	<!-- Import the Message 1.2 XSD -->
+	<xsd:import namespace="urn:X-quest.com:glue/messages/1.2" schemaLocation="messages.1.2.xsd" />
+    <!-- Import the Message 1.3 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/1.3" schemaLocation="messages.1.3.xsd" />
+    <!-- Import the Message 4 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/4" schemaLocation="messages.4.xsd" />
+	<!-- Import the Message 5 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/5" schemaLocation="messages.5.xsd" />
+    <!-- Import the Message 6 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/6" schemaLocation="messages.6.xsd" />
+	<!-- Import the Message 7 XSD -->
+    <xsd:import namespace="urn:X-quest.com:glue/messages/7" schemaLocation="messages.7.xsd" />
+
+	<xsd:element name="downstream-envelope">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="msgs8:Envelope">
+					<xsd:sequence>
+						<xsd:element name="messages" type="msgs8:DownstreamMessages"
+									 maxOccurs="unbounded" minOccurs="0" />
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+    <xsd:element name="upstream-envelope">
+            <xsd:complexType>
+                <xsd:complexContent>
+                    <xsd:extension base="msgs8:Envelope">
+                        <xsd:sequence>
+                            <xsd:element name="messages" type="msgs8:UpstreamMessages"
+                                         maxOccurs="unbounded" minOccurs="0" />
+                        </xsd:sequence>
+                    </xsd:extension>
+                </xsd:complexContent>
+            </xsd:complexType>
+        </xsd:element>
+
+	<xsd:complexType name="Envelope" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="headers" type="msgs8:Headers" maxOccurs="1" minOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+		We are defining the ContentBlock here so that we can identify newly created
+		ContentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="ContentBlock" abstract="true" block="restriction">
+		<xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:ContentBlock to denote new Content Blocks that have been
+				added to the v5 schema
+            </xsd:documentation>
+        </xsd:annotation>
+    	<xsd:attribute name="msgid" type="msgs1_0:UUID" use="required"/>
+    	<xsd:attribute name="response-to" type="msgs1_0:UUID" use="optional"/>
+		<xsd:attribute name="sequence-key" use="required" type="xsd:long">
+			<xsd:annotation>
+				<xsd:documentation>
+					When the message center is initialized a sequence key will be generated.
+					This key will be held by the downstream hosts that will process the message. When
+					the downstream hosts see that this value has changed, they will then reset their
+					sequence number counters.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="sequence-number" use="optional" default="1">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sequence number to denote message instance counts. This can be used to help
+					determine if a ordered set of messages is received out of order or if conflicting
+					message 'contents' should process only newer instances.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:long">
+					<xsd:minExclusive value="0"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<!--
+	We are defining the DownstreamContentBlock here so that we can identify newly created
+	DownstreamContentBlock in this schema. We need to know this so that we can add the Message to
+	the appropriate DownstreamMessages list
+	-->
+	<xsd:complexType name="DownstreamContentBlock" abstract="true">
+    	<xsd:complexContent>
+    		<xsd:extension base="msgs8:ContentBlock"/>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+	<!--
+		We are defining the UpstreamContentBlock here so that we can identify newly created
+		UpstreamContentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="UpstreamContentBlock" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:UpstreamContentBlock to denote new Upstream Content Block
+				based messages that have been added to the v5 schema
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+    		<xsd:extension base="msgs8:ContentBlock"/>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+	<!--
+		We are defining the UpstreamAgentBlock here so that we can identify newly created
+		UpstreamAgentBlock in this schema. We need to know this so that we can add the Message to
+		the appropriate UpstreamMessages list
+	-->
+	<xsd:complexType name="UpstreamAgentBlock" abstract="true">
+        <xsd:annotation>
+            <xsd:documentation>
+                Extends the msgs1_0:UpstreamAgentBlock to denote new Upstream Agent Block
+				based messages that have been added to the v7 schema
+			</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+			<xsd:extension base="msgs8:UpstreamContentBlock">
+				<xsd:attribute name="agentid" type="msgs1_0:UUID"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="UpstreamMessages">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines all UpstreamMessages that can be handled in this schema version
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs7:UpstreamMessages">
+				<xsd:sequence>
+					<xsd:group ref="msgs8:UpstreamMessageTypes_v1_0_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+					<xsd:group ref="msgs8:UpstreamMessageTypes_v1_1_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+					<xsd:group ref="msgs8:UpstreamMessageTypes_v1_2_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+                    <xsd:group ref="msgs8:UpstreamMessageTypes_v1_3_Extensions"
+                               maxOccurs="unbounded"
+                               minOccurs="0" />
+                    <xsd:group ref="msgs8:UpstreamMessageTypes_v4_Extensions"
+                               maxOccurs="unbounded"
+                               minOccurs="0" />
+					<xsd:group ref="msgs8:UpstreamMessageTypes_v5_Extensions"
+                               maxOccurs="unbounded"
+                               minOccurs="0" />
+					<xsd:group ref="msgs8:UpstreamMessageTypes_v6_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+					<xsd:group ref="msgs8:UpstreamMessageTypes_v7_Extensions"
+							   maxOccurs="unbounded"
+							   minOccurs="0" />
+                    <xsd:group ref="msgs8:UpstreamMessageTypes_v8"
+                               maxOccurs="unbounded"
+                               minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="DownstreamMessages">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines all DownstreamMessages that can be handled in this schema version
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs7:DownstreamMessages">
+				<xsd:sequence>
+					<xsd:group ref="msgs8:DownstreamMessageTypes_v1_0_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs8:DownstreamMessageTypes_v1_1_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs8:DownstreamMessageTypes_v1_2_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+                    <xsd:group ref="msgs8:DownstreamMessageTypes_v1_3_Extensions" maxOccurs="unbounded"
+                           minOccurs="0" />
+					<xsd:group ref="msgs8:DownstreamMessageTypes_v4_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs8:DownstreamMessageTypes_v5_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs8:DownstreamMessageTypes_v6_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+					<xsd:group ref="msgs8:DownstreamMessageTypes_v7_Extensions" maxOccurs="unbounded"
+						   minOccurs="0" />
+                    <xsd:group ref="msgs8:DownstreamMessageTypes_v8" maxOccurs="unbounded"
+                           minOccurs="0" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+    <!--
+    We are defining the DownstreamAgentBlock here so that we can identify newly created
+    DownstreamAgentBlock in this schema. We need to know this so that we can add the Message to
+    the appropriate DownstreamMessages list
+    -->
+    <xsd:complexType name="DownstreamAgentBlock" abstract="true">
+        <xsd:complexContent>
+            <xsd:extension base="msgs8:DownstreamContentBlock">
+                <xsd:attribute name="agentid" type="msgs1_0:UUID"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.0 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_0_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.0 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.1 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_1_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.1 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing UpstreamContentBlock from the
+	 1.2 messages schema.
+	 -->
+	<xsd:group name="UpstreamMessageTypes_v1_2_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List UpstreamContentBlock messages that extend existing 1.2 UpstreamContentBlocks
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+    <!--
+     Only list elements that are extending an existing UpstreamContentBlock from the
+     1.3 messages schema.
+     -->
+    <xsd:group name="UpstreamMessageTypes_v1_3_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List UpstreamContentBlock messages that extend existing 1.3 UpstreamContentBlocks
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+    
+    <!--
+     Only list elements that are extending an existing UpstreamContentBlock from the
+     4 messages schema.
+     -->
+    <xsd:group name="UpstreamMessageTypes_v4_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List UpstreamContentBlock messages that extend existing v4 UpstreamContentBlocks
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+     Only list elements that are extending an existing UpstreamContentBlock from the
+     4 messages schema.
+     -->
+    <xsd:group name="UpstreamMessageTypes_v5_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List UpstreamContentBlock messages that extend existing v5 UpstreamContentBlocks
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+    
+    <!--
+     Only list elements that are extending an existing UpstreamContentBlock from the
+     5 messages schema.
+     -->
+    <xsd:group name="UpstreamMessageTypes_v6_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List UpstreamContentBlock messages that extend existing v6 UpstreamContentBlocks
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+     Only list elements that are extending an existing UpstreamContentBlock from the
+     5 messages schema.
+     -->
+    <xsd:group name="UpstreamMessageTypes_v7_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List UpstreamContentBlock messages that extend existing v7 UpstreamContentBlocks
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+	Only list elements that are implementing new UpstreamContentBlock messages.
+	-->
+	<xsd:group name="UpstreamMessageTypes_v8">
+		<xsd:annotation>
+			<xsd:documentation>
+				List new UpstreamContentBlock messages that have been added to the v6 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="credential-query-keychains-result" type="msgs8:CredentialQueryKeychainsResult"/>
+			<xsd:element name="credential-event" type="msgs8:CredentialEvent"/>
+			<xsd:element name="credential-agent-event" type="msgs8:CredentialAgentEvent"/>
+	    </xsd:choice>
+	</xsd:group>
+
+   	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.0 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_0_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.0 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.1 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_1_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.1 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+	<!--
+	 Only list elements that are extending an existing DownstreamContentBlock from the
+	 1.2 messages schema.
+	 -->
+	<xsd:group name="DownstreamMessageTypes_v1_2_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing 1.2 DownstreamContentBlock
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+		</xsd:choice>
+	</xsd:group>
+
+    <!--
+     Only list elements that are extending an existing DownstreamContentBlock from the
+     1.3 messages schema.
+     -->
+    <xsd:group name="DownstreamMessageTypes_v1_3_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List DownstreamContentBlock messages that extend existing 1.3 DownstreamContentBlock
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+	Only list elements that are implementing new DownstreamContentBlock messages.
+	-->
+	<xsd:group name="DownstreamMessageTypes_v4_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing v4 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+        </xsd:choice>
+	</xsd:group>
+
+	<!--
+	Only list elements that are implementing new DownstreamContentBlock messages.
+	-->
+	<xsd:group name="DownstreamMessageTypes_v5_Extensions">
+		<xsd:annotation>
+			<xsd:documentation>
+				List DownstreamContentBlock messages that extend existing v5 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+
+        </xsd:choice>
+	</xsd:group>
+  
+    <!--
+    Only list elements that are implementing new DownstreamContentBlock messages.
+    -->
+    <xsd:group name="DownstreamMessageTypes_v6_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List DownstreamContentBlock messages that extend existing v6 schema
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+    Only list elements that are implementing new DownstreamContentBlock messages.
+    -->
+    <xsd:group name="DownstreamMessageTypes_v7_Extensions">
+        <xsd:annotation>
+            <xsd:documentation>
+                List DownstreamContentBlock messages that extend existing v6 schema
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+
+        </xsd:choice>
+    </xsd:group>
+
+	<!--
+	Only list elements that are implementing new DownstreamContentBlock messages.
+	-->
+	<xsd:group name="DownstreamMessageTypes_v8">
+		<xsd:annotation>
+			<xsd:documentation>
+				List new DownstreamContentBlock messages that have been added to the v8 schema
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+            <xsd:element name="placeholder-1"    type="msgs8:Placeholder-Downstream-1"/>
+			<xsd:element name="placeholder-2"    type="msgs8:Placeholder-Downstream-2"/>
+        </xsd:choice>
+	</xsd:group>
+
+
+	<xsd:complexType name="Headers">
+		<xsd:annotation>
+			<xsd:documentation>
+				Header elements must appear in the order they are
+				defined in the schema. Specifically:
+				   1) an option single "poll"
+				   2) One or more "host"s and
+				   3) Zero or more "agent"s
+				   4) an optional single 'credentialTimestamp'
+			</xsd:documentation>
+		</xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="msgs6:Headers"/>
+        </xsd:complexContent>		
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialEventType">
+		<xsd:annotation>
+			<xsd:documentation>
+				A CredentialEventType is used by credential clients for passing parameters of credential-related
+ 				errors to the server.
+
+				This version replaces that of the msgs5:CredentialEventType with:
+				- operational sequence number
+				- CredentialQuery
+				- Credential ID is now optional
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="properties" type="msgs5:CredentialEventPropertyType" maxOccurs="unbounded" minOccurs="0"/>
+			<xsd:element name="query-type" type="msgs5:CredentialQueryType" maxOccurs="1" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="error-code" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a well-known code for this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="keychain-id" type="msgs1_0:UUID">
+			<xsd:annotation>
+				<xsd:documentation>
+					The keychain-id associated with this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="credential-id" type="msgs1_0:UUID">
+			<xsd:annotation>
+				<xsd:documentation>
+					The Credential id associated with this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="policy-id" type="msgs1_0:UUID">
+			<xsd:annotation>
+				<xsd:documentation>
+					The Policy id associated with this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="root-cause" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a plain text message describing the root cause of this event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="severity" type="msgs4:CredentialEventSeverity">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the severity of the event
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="timestamp" type="xsd:long">
+			<xsd:annotation>
+				<xsd:documentation>
+					The timestamp at which the associated query was initiated at. CredentialEvents that are generated
+					from the same query execution will share this timestamp value.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="query-id" type="xsd:long">
+			<xsd:annotation>
+				<xsd:documentation>
+					An id generated to identify the query associated with this event. This additional identifier can
+					be used to help group events that are from the same query but execution at different times
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialEvent">
+		<xsd:annotation>
+			<xsd:documentation>
+				A when a credential usage results in an event, this message will be generated
+				by the agent using the credential and report it back to the FMS
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs8:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential-event" type="msgs8:CredentialEventType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialAgentEvent">
+		<xsd:annotation>
+			<xsd:documentation>
+				A when a credential usage results in an event, this message will be generated
+				by the agent using the credential and report it back to the FMS
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs8:UpstreamAgentBlock">
+				<xsd:sequence>
+					<xsd:element name="credential-event" type="msgs8:CredentialEventType" maxOccurs="1" minOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CredentialQueryKeychainsResult">
+		<xsd:annotation>
+			<xsd:documentation>
+				Response to the server query for what keychain-ids are installed on the FglAM client
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="msgs8:UpstreamContentBlock">
+				<xsd:sequence>
+					<xsd:element name="keychain-ids" type="msgs1_0:UUID" maxOccurs="unbounded" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Placeholder-Downstream-1">
+       <xsd:complexContent>
+           <xsd:extension base="msgs8:DownstreamContentBlock"/>
+       </xsd:complexContent>
+   </xsd:complexType>
+	<xsd:complexType name="Placeholder-Downstream-2">
+       <xsd:complexContent>
+           <xsd:extension base="msgs8:DownstreamContentBlock"/>
+       </xsd:complexContent>
+   </xsd:complexType>
+
+</xsd:schema>

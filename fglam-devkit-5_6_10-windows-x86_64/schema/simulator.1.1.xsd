@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="urn:X-quest.com:glue/simulator/1.1"
+        xmlns:simulator="urn:X-quest.com:glue/simulator/1.1"
+        xmlns="urn:X-quest.com:glue/simulator/1.1"
+		xmlns:common="urn:X-quest.com:glue/common/1.1"
+		elementFormDefault="qualified">
+
+	<xsd:element name="simulator-data">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="sim-agent" type="SimAgent" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+			<xsd:attribute name="package" type="xsd:string" use="required"/>
+			<xsd:attribute name="version" type="xsd:string" use="required"/>
+            <xsd:attribute name="config-namespace" type="xsd:string" use="required"/>
+            <xsd:attribute name="build-id" type="xsd:string" use="required"/>
+        </xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="SimAgent">
+		<xsd:sequence>
+			<xsd:element name="table" type="SimTable" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="SimTable">
+		<xsd:sequence>
+			<xsd:element name="identity" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attributeGroup ref="BaseAttrs"/>
+					<xsd:attribute name="unit" use="optional" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="property" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attributeGroup ref="BaseAttrs"/>
+					<xsd:attribute name="value" use="optional" type="xsd:string"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="observation" minOccurs="0" maxOccurs="unbounded" type="ComplexObservation"/>
+			<xsd:element name="metric" minOccurs="0" maxOccurs="unbounded" type="MetricObservation"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="className" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					When defining a TopologyObject based SimTable, we need to provide the tooling
+					generated wrapper class for submitted simulated data through. This attribute
+					holds the java binary classname for this class.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="submitName" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					Some TopologyType definitions prefix their names in oder to provide a
+					namespace for an agent to define a commonly used table name.
+					If a prefixed/namespaced table name is detected, this value can be set
+					to override the default table name used when submitting data for this
+					table instance
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="isSampled" type="xsd:boolean" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The isSampled attributes flags a SimTable as being declared in an
+					Agent as a 'sampletable'. This means that this table will be used
+					to configure metric simulation.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="frequency" type="xsd:integer" default="60">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the frequency for a table.  This frequency is sent along with the samples so that
+					the server can perform averaging over time.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:attributeGroup name="BaseAttrs">
+		<xsd:attribute name="name" use="required" type="xsd:string"/>
+		<xsd:attribute name="type" use="required" type="xsd:string"/>
+		<xsd:attribute name="isComplex" type="xsd:boolean" use="optional" default="false"/>
+		<xsd:attribute name="isMany" type="xsd:boolean" use="optional" default="false"/>
+	</xsd:attributeGroup>
+	
+	<xsd:simpleType name="DistributionTypes">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="random"/>
+			<xsd:enumeration value="linear"/>
+			<xsd:enumeration value="static"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="Observation" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				This abstract Datatype definition defines the common
+				simulator constraints for an observation
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attributeGroup ref="BaseAttrs"/>
+		<xsd:attribute name="unit" use="optional" type="xsd:string" default="count">
+			<xsd:annotation>
+				<xsd:documentation>
+					Defines the unit type for this observation
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="dist" use="optional" type="DistributionTypes" default="random">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the Generator DistributionType for the setting the next observation value
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="low" use="optional" type="xsd:double" default="1">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the lowest value the generator will assign to this observation
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="high" use="optional" type="xsd:double" default="100">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the highest value the generator will assign to this observation
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="seed" use="optional" type="xsd:double" default="1">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the starting value the generator will assign to this observation
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="factor" use="optional" type="xsd:double" default="1">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets the increment value/factor that the generator will assign to this observation
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="values" use="optional" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					A comma delimited list of pre-defined observation values
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="ComplexObservation">
+		<xsd:complexContent>
+			<xsd:extension base="Observation">
+				<xsd:annotation>
+					<xsd:documentation>
+						Represents a ComplexObservation
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="MetricObservation">
+		<xsd:complexContent>
+			<xsd:extension base="Observation">
+				<xsd:annotation>
+					<xsd:documentation>
+						Represents a Metric Observation
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+</xsd:schema>

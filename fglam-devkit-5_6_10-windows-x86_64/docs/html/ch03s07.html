@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>3.7. UpstreamConnectionService</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch03.html" title="Chapter 3. Agent Services"/><link rel="prev" href="ch03s06.html" title="3.6. TimestampService"/><link rel="next" href="ch03s08.html" title="3.8. SupportBundleService"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.7. UpstreamConnectionService</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s06.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 3. Agent Services</th><td width="20%" align="right"> <a accesskey="n" href="ch03s08.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="3.7. UpstreamConnectionService"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="agentservices-UpstreamConnectionService"/>3.7. UpstreamConnectionService</h2></div></div></div><p>
+            Because the Foglight Agent Manager uses a polling model to connect to its upstream
+            server, the upstream server can dynamically adjust the polling interval to account
+            for the load currently being placed on it by all its downstream connections.
+            As the load increases, all Foglight Agent Managers connecting to that server are
+            instructed to decrease the frequency at which they connect and submit data.
+            Conversely, when the load decreases, downstream connections are instucted to
+            increase the frequency at which they connect and submit data.
+        </p><p>
+            Agents (data collectors) can use the <code class="function">UpstreamConnectionService</code> to be notified of
+            changes to the polling interval. These agents can adjust the amount of data they collect and
+            the collection frequency to correspond to the load currently being
+            placed on the upstream server.
+        </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s06.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s08.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">3.6. TimestampService </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 3.8. SupportBundleService</td></tr></table></div></body></html>

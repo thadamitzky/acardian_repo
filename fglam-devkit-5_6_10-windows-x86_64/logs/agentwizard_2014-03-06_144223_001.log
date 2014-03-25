@@ -1,0 +1,35 @@
+2014-03-06 14:42:23.670 VERBOSE [main] com.quest.common.config.Config - Loaded configuration "agentwizard" from "C:\Users\TSHY\workspace\fglam-devkit-5_6_10-windows-x86_64\config\tools.config":
+	DebugLevelLifespan = 5
+	Target.CONSOLE.formatter.columns = 250
+	Target.CONSOLE.formatter.indentWrappedLines = true
+	Target.CONSOLE.formatter.suppressImplDetails = false
+	Target.CONSOLE.formatter.suppressTimestamp = true
+	Target.CONSOLE.threshold = INFO
+	Target.FILE.threshold = OFF
+	Target.SERIALIZED_FILE.threshold = OFF
+2014-03-06 14:42:23.674 VERBOSE [main] com.quest.common.config.Config - System property overrides for configuration "agentwizard":
+2014-03-06 14:44:19.225 VERBOSE [main] com.quest.glue.tools.wizards.newagent.Wizard - Beginning generation of all agent files 
+	agentName = hadaTestAgent
+	agentPackage = hadaTestAgent
+	buildSimulator = false
+	cartridgeName = hadaTestAgent
+	cartridgeVersion = 1.0.0
+	collectors = [com.quest.glue.tools.compiler.agentdef.schema.current.Collector@42698403]
+	destinationDirectory = C:\Users\TSHY\workspace\hadaTestAgent
+	devkitVersion = 5.6.10
+	enableCronCollectors = false
+	extraLibs = false
+	schemaVersion = 1.9.1
+	topologyFile = config\hadaTestAgent-topology.xml
+	topologyFileSafeForXML = config/hadaTestAgent-topology.xml
+	year = 2014
+2014-03-06 14:44:19.324 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Topology Definition:  Created empty topology file at: config\hadaTestAgent-topology.xml
+2014-03-06 14:44:19.327 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent base directory:  Created agent directory C:\Users\TSHY\workspace\hadaTestAgent
+2014-03-06 14:44:19.350 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - agent-definition.xml:  Created agent definintion file at: config/agent-definition.xml
+2014-03-06 14:44:19.404 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - build.xml:  Created build.xml file at: build.xml
+2014-03-06 14:44:19.432 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\hadaTestAgent\hadaTestAgentImpl.java
+2014-03-06 14:44:19.439 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\hadaTestAgent\hadaTestAgentDataProvider.java
+2014-03-06 14:44:19.443 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\hadaTestAgent\hadaTestAgentDataProviderImpl.java
+2014-03-06 14:44:19.449 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\hadaTestAgent\LogResources.properties
+2014-03-06 14:44:19.469 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\hadaTestAgent\hadaTestAgentSupportBundle.java
+2014-03-06 14:44:19.482 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: test\java\hadaTestAgent\TesthadaTestAgentImpl.java

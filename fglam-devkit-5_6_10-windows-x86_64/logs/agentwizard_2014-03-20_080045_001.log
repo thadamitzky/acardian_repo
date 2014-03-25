@@ -1,0 +1,35 @@
+2014-03-20 08:00:45.442 VERBOSE [main] com.quest.common.config.Config - Loaded configuration "agentwizard" from "C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\config\tools.config":
+	DebugLevelLifespan = 5
+	Target.CONSOLE.formatter.columns = 250
+	Target.CONSOLE.formatter.indentWrappedLines = true
+	Target.CONSOLE.formatter.suppressImplDetails = false
+	Target.CONSOLE.formatter.suppressTimestamp = true
+	Target.CONSOLE.threshold = INFO
+	Target.FILE.threshold = OFF
+	Target.SERIALIZED_FILE.threshold = OFF
+2014-03-20 08:00:45.442 VERBOSE [main] com.quest.common.config.Config - System property overrides for configuration "agentwizard":
+2014-03-20 08:06:42.775 VERBOSE [main] com.quest.glue.tools.wizards.newagent.Wizard - Beginning generation of all agent files 
+	agentName = hadaSogetiAgent
+	agentPackage = de.com.aca.hada.agent
+	buildSimulator = false
+	cartridgeName = hadaSogetiAgent
+	cartridgeVersion = 1.0.0
+	collectors = [com.quest.glue.tools.compiler.agentdef.schema.current.Collector@5ae80842]
+	destinationDirectory = C:\Quest_Software\hadaSogetiAgent
+	devkitVersion = 5.6.10
+	enableCronCollectors = false
+	extraLibs = false
+	schemaVersion = 1.9.1
+	topologyFile = config\hadaSogetiAgent-topology.xml
+	topologyFileSafeForXML = config/hadaSogetiAgent-topology.xml
+	year = 2014
+2014-03-20 08:06:43.134 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Topology Definition:  Created empty topology file at: config\hadaSogetiAgent-topology.xml
+2014-03-20 08:06:43.134 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent base directory:  Created agent directory C:\Quest_Software\hadaSogetiAgent
+2014-03-20 08:06:43.243 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - agent-definition.xml:  Created agent definintion file at: config/agent-definition.xml
+2014-03-20 08:06:43.353 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - build.xml:  Created build.xml file at: build.xml
+2014-03-20 08:06:43.399 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\de\com\aca\hada\agent\hadaSogetiAgentImpl.java
+2014-03-20 08:06:43.431 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\de\com\aca\hada\agent\hadaSogetiAgentDataProvider.java
+2014-03-20 08:06:43.524 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\de\com\aca\hada\agent\hadaSogetiAgentDataProviderImpl.java
+2014-03-20 08:06:43.618 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\de\com\aca\hada\agent\LogResources.properties
+2014-03-20 08:06:43.649 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: src\java\de\com\aca\hada\agent\hadaSogetiAgentSupportBundle.java
+2014-03-20 08:06:43.696 VERBOSE [main] com.quest.glue.core.ui.SummaryItem - Agent Impl:  Created agent file at: test\java\de\com\aca\hada\agent\TesthadaSogetiAgentImpl.java

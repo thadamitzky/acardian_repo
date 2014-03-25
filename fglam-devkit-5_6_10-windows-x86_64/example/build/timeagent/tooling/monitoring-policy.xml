@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2013 Dell Inc.
+ ALL RIGHTS RESERVED.
+
+ This software is the confidential and proprietary information of
+ Dell Inc. ("Confidential Information"). You shall not
+ disclose such Confidential Information and shall use it only in
+ accordance with the terms of the license agreement you entered
+ into with Dell Inc.
+
+ DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+ THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+ NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+ DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+ OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--><foglight-config version="1.0.0" exported-on="2013-09-23T12:51:34.975">
+	<persistable-config-model>
+		<config_id>9e8a0282-6355-39ef-90a2-920ea1213846</config_id>
+		<adapter>FglAMExample</adapter>
+		<agent_type>TimeAgent</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>template</config_qualifier>
+		<sharing_name/>
+		<known_name/>
+		<type_id>05b76c40-2f41-3045-8b18-f73bd8948c56</type_id>
+		<asp name="primary" type="singleitem">
+			<structure>
+				<field name="enableSampleCount" dataType="BOOL">
+					<attributes MustEnter="1" PageTitle="Configuration" PageLineNbr="1"/>
+					<prompt>Enable Sample Counting</prompt>
+					<paramdata>1</paramdata>
+				</field>
+				<field name="events" dataType="FUNCTION" paramSelect="Quest_Acquisitions">
+					<attributes MustEnter="1" PageTitle="Configuration" PageLineNbr="2"/>
+					<prompt>Label Event Times</prompt>
+					<paramdata>events</paramdata>
+				</field>
+				<field name="fglamCollectorConfig" dataType="FUNCTION">
+					<attributes MustEnter="1" PageTitle="Data Collection Scheduler" PageLineNbr="1"/>
+					<prompt>Collector Config</prompt>
+					<paramdata>fglamCollectorConfig</paramdata>
+				</field>
+			</structure>
+			<valuelist/>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>ae3ca192-cd6a-3324-8d8e-0655c5f4151c</config_id>
+		<adapter>FglAMExample</adapter>
+		<agent_type>TimeAgent</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>events</sharing_name>
+		<known_name>Foglight_Milestones</known_name>
+		<type_id>7cb49588-2fff-31d5-b464-4a5d6b78b4ed</type_id>
+		<asp name="events" knownName="Foglight_Milestones" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="64">
+					<attributes MustEnter="1"/>
+					<prompt>Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="month" dataType="INT">
+					<attributes MustEnter="1" NotEqualZero="1"/>
+					<prompt>Month</prompt>
+					<paramdata>0</paramdata>
+				</field>
+				<field name="day" dataType="INT">
+					<attributes MustEnter="1" NotEqualZero="1"/>
+					<prompt>Day</prompt>
+					<paramdata>0</paramdata>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">Foglight Server First Release</value>
+					<value name="month">3</value>
+					<value name="day">21</value>
+				</row>
+				<row>
+					<value name="name">FglAM Project Starts</value>
+					<value name="month">6</value>
+					<value name="day">15</value>
+				</row>
+				<row>
+					<value name="name">FglAM First Release</value>
+					<value name="month">1</value>
+					<value name="day">7</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>56b22910-4da2-3e7d-8a20-56575ed73c1a</config_id>
+		<adapter>FglAMExample</adapter>
+		<agent_type>TimeAgent</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>events</sharing_name>
+		<known_name>Quest_Acquisitions</known_name>
+		<type_id>7cb49588-2fff-31d5-b464-4a5d6b78b4ed</type_id>
+		<asp name="events" knownName="Quest_Acquisitions" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="64">
+					<attributes MustEnter="1"/>
+					<prompt>Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="month" dataType="INT">
+					<attributes MustEnter="1" NotEqualZero="1"/>
+					<prompt>Month</prompt>
+					<paramdata>0</paramdata>
+				</field>
+				<field name="day" dataType="INT">
+					<attributes MustEnter="1" NotEqualZero="1"/>
+					<prompt>Day</prompt>
+					<paramdata>0</paramdata>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">Quest acquires Sitraka</value>
+					<value name="month">10</value>
+					<value name="day">23</value>
+				</row>
+				<row>
+					<value name="name">Quest acquires VisionCore</value>
+					<value name="month">1</value>
+					<value name="day">28</value>
+				</row>
+				<row>
+					<value name="name">Quest acquires MonoSphere</value>
+					<value name="month">1</value>
+					<value name="day">13</value>
+				</row>
+				<row>
+					<value name="name">Quest acquires NetPro</value>
+					<value name="month">9</value>
+					<value name="day">12</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model>
+	<persistable-config-model>
+		<config_id>d0532383-0703-3274-a8da-80bda7d36412</config_id>
+		<adapter>FglAMExample</adapter>
+		<agent_type>TimeAgent</agent_type>
+		<encoding_system>Foglight4-XML</encoding_system>
+		<config_type>default</config_type>
+		<config_qualifier>named</config_qualifier>
+		<sharing_name>fglamCollectorConfig</sharing_name>
+		<known_name>defaultSchedule</known_name>
+		<type_id>3629eddb-26b5-3aca-9700-3e18dfdda262</type_id>
+		<asp name="fglamCollectorConfig" knownName="defaultSchedule" type="list">
+			<structure>
+				<field name="name" dataType="STRING" size="128">
+					<attributes MustEnter="1"/>
+					<prompt>Collector Name</prompt>
+					<paramdata/>
+				</field>
+				<field name="methodName" dataType="OPTION">
+					<attributes MustEnter="1" Hidden="1"/>
+					<prompt>Collector Method Name</prompt>
+					<paramdata>normalCollection,fullDetailCollection</paramdata>
+				</field>
+				<field name="interval" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Default Collection Interval</prompt>
+					<paramdata>5</paramdata>
+				</field>
+				<field name="unit" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Time Unit</prompt>
+					<paramdata>minutes,milliseconds,seconds,hours,days,cron</paramdata>
+				</field>
+				<field name="fastModeInterval" dataType="STRING" size="-1">
+					<attributes MustEnter="1"/>
+					<prompt>Fast-Mode Collection Interval</prompt>
+					<paramdata>0</paramdata>
+				</field>
+				<field name="fastModeUnit" dataType="OPTION">
+					<attributes MustEnter="1"/>
+					<prompt>Fast-Mode Time Unit</prompt>
+					<paramdata>seconds,milliseconds,minutes,hours,days,cron</paramdata>
+				</field>
+				<field name="fastModeMaxCount" dataType="INT">
+					<attributes MustEnter="1" GtEqualZero="1"/>
+					<prompt>Fast-Mode Max Count</prompt>
+					<paramdata>0</paramdata>
+				</field>
+			</structure>
+			<valuelist>
+				<row>
+					<value name="name">Normal Collection</value>
+					<value name="methodName">normalCollection</value>
+					<value name="interval">* */5 * ? * *</value>
+					<value name="unit">cron</value>
+					<value name="fastModeInterval">10</value>
+					<value name="fastModeUnit">seconds</value>
+					<value name="fastModeMaxCount">12</value>
+				</row>
+				<row>
+					<value name="name">Full Detail</value>
+					<value name="methodName">fullDetailCollection</value>
+					<value name="interval">1</value>
+					<value name="unit">hours</value>
+					<value name="fastModeInterval">0</value>
+					<value name="fastModeUnit">seconds</value>
+					<value name="fastModeMaxCount">0</value>
+				</row>
+			</valuelist>
+		</asp>
+	</persistable-config-model></foglight-config>

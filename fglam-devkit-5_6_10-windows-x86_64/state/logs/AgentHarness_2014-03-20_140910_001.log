@@ -1,0 +1,151 @@
+2014-03-20 14:09:10.136 DEBUG   [main] com.quest.common.log.DebugLevel - Debug level defaults to 0
+2014-03-20 14:09:10.183 VERBOSE [main] com.quest.common.launcher.ShutdownHook - Added native shutdown hook to be called when the VM exists
+2014-03-20 14:09:10.292 VERBOSE [main] com.quest.common.config.Config - Loaded configuration "AgentHarness" from "C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\config\log.config":
+	DebugLevelLifespan = 5
+	RegExLogFilter = [(?i)(\S?password)\s*(to|=)\s*\S+=$1 $2 XXXX,(?i)value="([^"]+)" field="(.*?password[^"]*?)"=value="XXXX" field="$2",(?i)value="([^"]+)"(.*?) name="(.*?password[^"]*?)"=value="XXXX" $2 name="$3",(?i)field="(.*?password.*?)" value="([^"]+)"=field="$1" value="XXXX",(?i)name="(.*?password.*?)" type="([^"]+)">([^>]+)</field>=name="$1" type="$2">XXXX</field>,(?i)-f:(.*?password.*?) -v:(\S+)=-f:$1 -v:XXXX,(?i)(password])\s*(\S+)=$1  XXXX]
+	Target.CONSOLE.formatter.suppressImplDetails = true
+	Target.FILE.compressOnRollover = true
+	Target.FILE.directory = ./logs
+	Target.FILE.maxFileSize = 10485760
+	Target.FILE.maxRolloverCount = 10
+	Target.FILE.maxSetCount = 10
+	Target.SERIALIZED_FILE.compressOnRollover = false
+	Target.SERIALIZED_FILE.directory = ./logs
+	Target.SERIALIZED_FILE.maxFileSize = 10485760
+	Target.SERIALIZED_FILE.maxRolloverCount = 10
+	Target.SERIALIZED_FILE.maxSetCount = 10
+2014-03-20 14:09:10.292 VERBOSE [main] com.quest.common.config.Config - System property overrides for configuration "AgentHarness":
+2014-03-20 14:09:10.292 VERBOSE [main] com.quest.common.config.Config - Loaded configuration "AgentHarness" from "C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\config\chatty.config":
+	ChattyClasses = [org.apache.commons.httpclient.auth.AuthChallengeProcessor, org.apache.commons.httpclient.HttpMethodDirector, org.quartz.core.QuartzScheduler, ^org.quartz.impl.*, ^org.quartz.simpl.*]
+	HttpClasses = [^org.apache.commons.httpclient.*, org.apache.http.client.protocol.RequestTargetAuthentication, ^org.apache.http.headers.*, ^org.apache.http.wire.*, ^httpclient.wire.*]
+	JettyClasses = [^org.mortbay.*]
+2014-03-20 14:09:10.292 VERBOSE [main] com.quest.common.config.Config - System property overrides for configuration "AgentHarness":
+2014-03-20 14:09:10.900 VERBOSE [main] com.quest.glue.tools.agentharness.AgentHarness - Agent Manager 5.6.10 (build 5.6.10-201309231246-312109-302) on windows x86_64 6.1, Java 1.6.0_45 (64 bit).
+JVM: Sun Microsystems Inc. Java HotSpot(TM) 64-Bit Server VM 20.45-b01
+Common library version: 5.6.10-201308061701-307420-62
+Host name: pc-tshy
+Host architecture: x86_64
+System ID: 43cc071f-3891-11e3-9ae7-201a0670be69
+Process ID: 4396
+Running as daemon: false, Running as service: false
+VM Options:
+    -dsa
+    -da
+    -Xrs
+    -XX:+UseAltSigs
+    exit
+    -Dquest.state.dir=C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\state\
+    -Dsun.java.command=FglAMAgentHarness-5.6.10
+    -Dcom.sun.management.jmxremote
+    -Djava.library.path=C:\Program Files\Java\jdk1.6.0_45\jre\bin\server;C:\Program Files\Java\jdk1.6.0_45\jre\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Intel\OpenCL SDK\3.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\3.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Acer ProShield\;C:\Program Files\Acer ProShield\x86;C:\Program Files (x86)\Acer Proshield\bin\;C:\Program Files\Wave Systems Corp\Wave TSS\bin\;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\bin\
+    -Djava.class.path=C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\activation.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\antlr-runtime.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\bcprov-jdk16.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\codemodel.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-cli.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-codec.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-collections.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-compress.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-lang.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-logging.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-modeler.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\ganymed-ssh2.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\glueapi.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\glueapimockimpl.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\gluecommon.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\gluecore.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\gluetools.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\httpclient-cache.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\httpclient.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\httpcore.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\httpmime.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\j-interop.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jacob.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jaxb-api.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jaxb-impl.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jaxb-xjc.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jaxb1-impl.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jcifs.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-client-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-management-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-sslengine-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-util-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-util5-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jsr173_1.0_api.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jsr173_1.0_ri.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jsr305.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\quartz-1.6.5.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\quest-antlr.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\quest-common-tools.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\quest-common.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\servlet-api-2.5-20081211.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\slf4j-api.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\slf4j-jcl.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\ST.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\xercesImpl.jar
+    -Dquest.common.process-runner=false
+2014-03-20 14:09:10.916 VERBOSE [main] com.quest.glue.tools.agentharness.AgentHarness - Java system properties:
+	awt.toolkit = sun.awt.windows.WToolkit
+	com.sun.management.jmxremote = 
+	file.encoding = Cp1252
+	file.encoding.pkg = sun.io
+	file.separator = \
+	java.awt.graphicsenv = sun.awt.Win32GraphicsEnvironment
+	java.awt.printerjob = sun.awt.windows.WPrinterJob
+	java.class.path = C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\activation.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\antlr-runtime.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\bcprov-jdk16.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\codemodel.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-cli.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-codec.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-collections.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-compress.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-lang.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-logging.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\commons-modeler.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\ganymed-ssh2.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\glueapi.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\glueapimockimpl.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\gluecommon.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\gluecore.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\gluetools.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\httpclient-cache.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\httpclient.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\httpcore.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\httpmime.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\j-interop.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jacob.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jaxb-api.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jaxb-impl.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jaxb-xjc.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jaxb1-impl.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jcifs.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-client-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-management-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-sslengine-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-util-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jetty-util5-6.1.26.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jsr173_1.0_api.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jsr173_1.0_ri.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\jsr305.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\quartz-1.6.5.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\quest-antlr.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\quest-common-tools.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\quest-common.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\servlet-api-2.5-20081211.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\slf4j-api.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\slf4j-jcl.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\ST.jar;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\lib\xercesImpl.jar
+	java.class.version = 50.0
+	java.endorsed.dirs = C:\Program Files\Java\jdk1.6.0_45\jre\lib\endorsed
+	java.ext.dirs = C:\Program Files\Java\jdk1.6.0_45\jre\lib\ext;C:\Windows\Sun\Java\lib\ext
+	java.home = C:\Program Files\Java\jdk1.6.0_45\jre
+	java.io.tmpdir = C:\Users\TSHY\AppData\Local\Temp\
+	java.library.path = C:\Program Files\Java\jdk1.6.0_45\jre\bin\server;C:\Program Files\Java\jdk1.6.0_45\jre\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Intel\OpenCL SDK\3.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\3.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Acer ProShield\;C:\Program Files\Acer ProShield\x86;C:\Program Files (x86)\Acer Proshield\bin\;C:\Program Files\Wave Systems Corp\Wave TSS\bin\;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\bin\
+	java.rmi.server.randomIDs = true
+	java.runtime.name = Java(TM) SE Runtime Environment
+	java.runtime.version = 1.6.0_45-b06
+	java.specification.name = Java Platform API Specification
+	java.specification.vendor = Sun Microsystems Inc.
+	java.specification.version = 1.6
+	java.vendor = Sun Microsystems Inc.
+	java.vendor.url = http://java.sun.com/
+	java.vendor.url.bug = http://java.sun.com/cgi-bin/bugreport.cgi
+	java.version = 1.6.0_45
+	java.vm.info = mixed mode
+	java.vm.name = Java HotSpot(TM) 64-Bit Server VM
+	java.vm.specification.name = Java Virtual Machine Specification
+	java.vm.specification.vendor = Sun Microsystems Inc.
+	java.vm.specification.version = 1.0
+	java.vm.vendor = Sun Microsystems Inc.
+	java.vm.version = 20.45-b01
+	line.separator = 
+
+	os.arch = amd64
+	os.name = Windows 7
+	os.version = 6.1
+	path.separator = ;
+	quest.common.process-runner = false
+	quest.native.launcher.io = true
+	quest.state.dir = C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\state\
+	sun.arch.data.model = 64
+	sun.boot.class.path = C:\Program Files\Java\jdk1.6.0_45\jre\lib\resources.jar;C:\Program Files\Java\jdk1.6.0_45\jre\lib\rt.jar;C:\Program Files\Java\jdk1.6.0_45\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.6.0_45\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.6.0_45\jre\lib\jce.jar;C:\Program Files\Java\jdk1.6.0_45\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.6.0_45\jre\lib\modules\jdk.boot.jar;C:\Program Files\Java\jdk1.6.0_45\jre\classes
+	sun.boot.library.path = C:\Program Files\Java\jdk1.6.0_45\jre\bin
+	sun.cpu.endian = little
+	sun.cpu.isalist = amd64
+	sun.desktop = windows
+	sun.io.unicode.encoding = UnicodeLittle
+	sun.java.command = FglAMAgentHarness-5.6.10
+	sun.jnu.encoding = Cp1252
+	sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+	sun.os.patch.level = Service Pack 1
+	user.country = DE
+	user.dir = C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64
+	user.home = C:\Users\TSHY
+	user.language = de
+	user.name = TSHY
+	user.timezone = Europe/Berlin
+	user.variant = 
+2014-03-20 14:09:10.932 VERBOSE [main] com.quest.glue.tools.agentharness.AgentHarness - System environment settings:
+	ALLUSERSPROFILE = C:\ProgramData
+	APPDATA = C:\Users\TSHY\AppData\Roaming
+	AXIS2_HOME = C:\Users\TSHY\ws\Axis2
+	COMPUTERNAME = PC-TSHY
+	ComSpec = C:\Windows\system32\cmd.exe
+	CommonProgramFiles = C:\Program Files\Common Files
+	CommonProgramFiles(x86) = C:\Program Files (x86)\Common Files
+	CommonProgramW6432 = C:\Program Files\Common Files
+	FGLAM_DEVKIT_HOME = C:\Users\TSHY\workspace\fglam-devkit-5_6_10-windows-x86_64
+	FP_NO_HOST_CHECK = NO
+	HOMEDRIVE = C:
+	HOMEPATH = \Users\TSHY
+	JAVA_HOME = C:\Program Files\Java\jdk1.6.0_45
+	LOCALAPPDATA = C:\Users\TSHY\AppData\Local
+	LOGONSERVER = \\PC-TSHY
+	NUMBER_OF_PROCESSORS = 4
+	OS = Windows_NT
+	PATH = C:\Program Files\Java\jdk1.6.0_45\jre\bin\server;C:\Program Files\Java\jdk1.6.0_45\jre\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Intel\OpenCL SDK\3.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\3.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Acer ProShield\;C:\Program Files\Acer ProShield\x86;C:\Program Files (x86)\Acer Proshield\bin\;C:\Program Files\Wave Systems Corp\Wave TSS\bin\;C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\bin\
+	PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+	PROCESSOR_ARCHITECTURE = AMD64
+	PROCESSOR_IDENTIFIER = Intel64 Family 6 Model 69 Stepping 1, GenuineIntel
+	PROCESSOR_LEVEL = 6
+	PROCESSOR_REVISION = 4501
+	PROMPT = $P$G
+	PSModulePath = C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+	PUBLIC = C:\Users\Public
+	ProgramData = C:\ProgramData
+	ProgramFiles = C:\Program Files
+	ProgramFiles(x86) = C:\Program Files (x86)
+	ProgramW6432 = C:\Program Files
+	SESSIONNAME = Console
+	SystemDrive = C:
+	SystemRoot = C:\Windows
+	TEMP = C:\Users\TSHY\AppData\Local\Temp
+	TMP = C:\Users\TSHY\AppData\Local\Temp
+	USERDOMAIN = PC-TSHY
+	USERNAME = TSHY
+	USERPROFILE = C:\Users\TSHY
+	asl.log = Destination=file
+	windir = C:\Windows
+	windows_tracing_flags = 3
+	windows_tracing_logfile = C:\BVTBin\Tests\installpackage\csilogfile.log
+2014-03-20 14:09:10.932 VERBOSE [main] com.quest.glue.tools.agentharness.AgentHarness - Command Line:
+    0: --gar-file
+    1: hadaSogetiAgent.gar
+    2: --agent-file
+    3: agent-definition.xml
+
+2014-03-20 14:09:10.932 ERROR   [main] com.quest.glue.tools.agentharness.AgentHarness - The --gar-file argument value C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\hadaSogetiAgent.gar does not exist. Please validate the path to the resource when assigning this parameter value.

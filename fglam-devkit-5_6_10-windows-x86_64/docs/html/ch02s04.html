@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>2.4. The Agent Environment</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch02.html" title="Chapter 2. Creating Agents"/><link rel="prev" href="ch02s03.html" title="2.3. Agent Resource Negotiation"/><link rel="next" href="ch02s05.html" title="2.5. Thread Safety"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.4. The Agent Environment</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s03.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 2. Creating Agents</th><td width="20%" align="right"> <a accesskey="n" href="ch02s05.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="2.4. The Agent Environment"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="creating-agents-environment"/>2.4. The Agent Environment</h2></div></div></div><p>
+          The environment available to agents during runtime is defined by the
+          collection of services provided by FglAM's <code class="function">ServiceFactory</code> interface.
+          Unless documented otherwise, every service returned by a call to
+          <code class="function">getService(Class&lt;ServiceType&gt;)</code> is
+          fully configured and ready to use.
+      </p><p>
+          Some services may or may not be available, depending on the host
+          environment. There are several services, for example, that are only
+          present when FglAM is embedded in legacy SPID distributions. These
+          services are not available in a standalone FglAM environment.
+      </p><p>
+          For maximum portability, agents should check for services they do
+          not require and then configure themselves appropriately. The following
+          code illustrates the constructor in such agents:
+
+      </p><div class="example"><a id="d0e473"/><p class="title"><strong>Example 2.1. Agent constructor with optional services</strong></p><div class="example-contents"><pre class="programlisting"><strong class="hl-keyword">public</strong> SampleAgent(ServiceFactory factory)
+    <strong class="hl-keyword">throws</strong> ServiceFactory.ServiceNotAvailableException {
+
+  <em class="hl-tag" style="color: green">// LogService is required. If getService() fails then a</em>
+  <em class="hl-tag" style="color: green">// ServiceNotAvailableException is thrown out of the</em>
+  <em class="hl-tag" style="color: green">// constructor and the agent does not get initialized</em>
+  mLogger = factory.getService(LogService.<strong class="hl-keyword">class</strong>);
+
+  <em class="hl-tag" style="color: green">// need at least mFirst or mSecond</em>
+  <strong class="hl-keyword">try</strong> {
+    mFirst = factory.getService(FirstService.<strong class="hl-keyword">class</strong>);
+  } <strong class="hl-keyword">catch</strong> (ServiceFactory.ServiceNotAvailableException ex) {
+    <em class="hl-tag" style="color: green">// Ignore the exception. The logger only writes stack</em>
+    <em class="hl-tag" style="color: green">// traces for ignored exception in debug mode; otherwise they</em>
+    <em class="hl-tag" style="color: green">// are discarded.</em>
+    mLogger.ignoreException(<strong class="hl-string"><em style="color:red">"FirstService is not available"</em></strong>, ex);
+
+    <em class="hl-tag" style="color: green">// try getting the second service, failing if an exception</em>
+    <em class="hl-tag" style="color: green">// gets thrown</em>
+    mSecond = factory.getService(SecondService.<strong class="hl-keyword">class</strong>);
+  }
+
+  <em class="hl-tag" style="color: green">// code elsewhere in the agent is assumed to check for whether</em>
+  <em class="hl-tag" style="color: green">// to use mFirst or mSecond</em>
+}</pre></div></div><p><br class="example-break"/>
+      </p><p>
+          Before an agent is instantiated, the Foglight Agent Manager configures:
+          </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>A classloader used to load and isolate all the
+              classes present in the agent package</p></li><li class="listitem"><p>For in-process agents, a security manager that
+             ensures that bugs in one agent do not affect the FglAM runtime or
+             other agents</p></li></ul></div><p> 
+      </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s03.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s05.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">2.3. Agent Resource Negotiation </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 2.5. Thread Safety</td></tr></table></div></body></html>

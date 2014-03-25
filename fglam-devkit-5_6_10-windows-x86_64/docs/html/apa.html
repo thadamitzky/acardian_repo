@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Appendix A. credential-repository.xml Template Included with Example Agent</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="prev" href="ch08s02.html" title="8.2. Profiling FglAM using JProbe"/><link rel="next" href="apb.html" title="Appendix B. build.xml for Included Example Agent"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix A. credential-repository.xml Template Included with Example Agent</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s02.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="apb.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="appendix" title="Appendix A. credential-repository.xml Template Included with Example Agent"><div class="titlepage"><div><div><h2 class="title"><a id="example-credential-repository"/>Appendix A. credential-repository.xml Template Included with Example Agent</h2></div></div></div><div class="abstract" title="Abstract"><div class="titlepage"/><p>
+        A template for defining Credentials for use within the AgentHarness
+      </p></div><p>
+        </p><pre class="literallayout">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+--&gt;
+&lt;credential-repository xmlns="urn:X-quest.com:glue/credential-repository/3.0"&gt;
+
+  &lt;!-- just some default entries to get things rolling --&gt;
+  &lt;resource-mappings&gt;
+    &lt;resource-map alias="Toronto"&gt;
+      &lt;target-hosts&gt;
+        &lt;target-host pattern="tor.*"/&gt;
+        &lt;target-host pattern="rd-.*"/&gt;
+        &lt;target-host pattern="lab-.*"/&gt;
+      &lt;/target-hosts&gt;
+    &lt;/resource-map&gt;
+    &lt;resource-map alias="Zhuhai"&gt;
+      &lt;target-hosts&gt;
+        &lt;target-host pattern="zhvm.*"/&gt;
+      &lt;/target-hosts&gt;
+
+    &lt;/resource-map&gt;
+  &lt;/resource-mappings&gt;
+
+  &lt;!-- Policy examples --&gt;
+  &lt;policies&gt;
+    &lt;cache alias="Cache-For-An-Hour" critical="true" time-to-live-millis="3600000"/&gt;
+    &lt;use-count alias="Use-3-Times" critical="true" use-count="3"/&gt;
+    &lt;failure-rate alias="Three-Strikes" critical="true" max-fail-count="3" period-millis="300000"/&gt;
+  &lt;/policies&gt;
+
+  &lt;!-- Credential Definitions --&gt;
+  &lt;credentials&gt;
+
+    &lt;login-password alias="UNIX" purpose="SSH" username="USERNAME" password="PASSWORD"&gt;
+      &lt;resource-aliases&gt;
+        &lt;resource-alias name="Toronto"/&gt;
+      &lt;/resource-aliases&gt;
+      &lt;policy-aliases&gt;
+        &lt;policy-alias name="Three-Strikes"/&gt;
+        &lt;policy-alias name="Use-3-Times"/&gt;
+      &lt;/policy-aliases&gt;
+    &lt;/login-password&gt;
+
+    &lt;windows alias="Active-Directory" purpose="WMI" username="USERNAME" password="PASSWORD" domain="DOMAIN"&gt;
+      &lt;resource-aliases&gt;
+        &lt;resource-alias name="Toronto"/&gt;
+        &lt;resource-alias name="Zhuhai"/&gt;
+      &lt;/resource-aliases&gt;
+      &lt;policy-aliases&gt;
+        &lt;policy-alias name="Three-Strikes"/&gt;
+      &lt;/policy-aliases&gt;
+    &lt;/windows&gt;
+
+  &lt;/credentials&gt;
+
+&lt;/credential-repository&gt;
+
+        </pre><p>
+      </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08s02.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="apb.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">8.2. Profiling FglAM using JProbe </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> Appendix B. build.xml for Included Example Agent</td></tr></table></div></body></html>

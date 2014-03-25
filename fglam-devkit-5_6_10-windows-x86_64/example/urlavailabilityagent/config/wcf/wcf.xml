@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3-027" display-name="URLAvailabilityAgent" last-entity-id="5">
+    <query select="foglight-5:MonitoredURL" id="5" display-name="MonitoredURLQuery" ts="1312912548804" public="false">
+        <uuid>b536a463-4297-40c2-8fa1-b897b7b992f4</uuid>
+        <root>
+            <datasource-root-reference datasource-type="foglight-5" path="MonitoredURLRoot/instances"/>
+        </root>
+    </query>
+    <view id="1" display-name="Availability Chart" ts="1312569040043" priority="high" component="wcf.chart.time-plot">
+        <uuid>bd6e6e7c-2c41-474d-9fd5-8929a118c00d</uuid>
+        <purpose name="monitor"/>
+        <purpose name="page"/>
+        <purpose name="pagelet"/>
+        <relevant-role name="Administrator"/>
+        <relevant-role name="Cartridge Developer"/>
+        <inputs>
+            <entry key="timeRange" data-type="wcf:TimeRange" display-name="Time"/>
+            <entry key="MonitoredURL" data-type="foglight-5:MonitoredURL"/>
+        </inputs>
+        <flow/>
+        <config>
+            <property name="simpleMetricData">
+                <object>
+                    <property name="grouping">
+                        <enum value="metric"/>
+                    </property>
+                    <property name="metricParent">
+                        <context-rv input-key="MonitoredURL"/>
+                    </property>
+                    <property name="metricBindings">
+                        <list-value>
+                            <object>
+                                <property name="metric">
+                                    <context-rv input-key="MonitoredURL" path="availability"/>
+                                </property>
+                                <property name="metricValue">
+                                    <enum value="average"/>
+                                </property>
+                            </object>
+                            <object>
+                                <property name="metric">
+                                    <context-rv input-key="MonitoredURL" path="pageGetTime"/>
+                                </property>
+                                <property name="metricValue">
+                                    <enum value="average"/>
+                                </property>
+                            </object>
+                            <object>
+                                <property name="metric">
+                                    <context-rv input-key="MonitoredURL" path="responseTime"/>
+                                </property>
+                                <property name="metricValue">
+                                    <enum value="average"/>
+                                </property>
+                            </object>
+                        </list-value>
+                    </property>
+                </object>
+            </property>
+            <property name="title">
+                <string xml:space="preserve">Availability</string>
+            </property>
+        </config>
+    </view>
+    <view id="2" display-name="Monitored URLs" ts="1313436934722" component="wcf.table.row-table">
+        <uuid>1a1d0720-1d38-4ee9-959f-d3b511af05e6</uuid>
+        <purpose name="dashboard"/>
+        <purpose name="monitor"/>
+        <purpose name="pagelet"/>
+        <relevant-role name="Administrator"/>
+        <relevant-role name="Advanced Operator"/>
+        <relevant-role name="Cartridge Developer"/>
+        <relevant-role name="Core Reports"/>
+        <relevant-role name="Dashboard Designer"/>
+        <relevant-role name="Dashboard User"/>
+        <relevant-role name="General Access"/>
+        <relevant-role name="Operator"/>
+        <relevant-role name="Report Manager"/>
+        <relevant-role name="Security"/>
+        <relevant-role name="Support"/>
+        <inputs>
+            <entry key="timeRange" data-type="wcf:TimeRange" display-name="Time"/>
+        </inputs>
+        <flow>
+            <on action="dwell">
+                <generated-context output-key="selectedRow" custom-key="selectedRow"/>
+                <generated-context output-key="selectedColumnId" custom-key="AVAILABILITY"/>
+                <popup id="system:urlavailabilityagent.1" type="temporary">
+                    <context>
+                        <entry key="MonitoredURL">
+                            <context-rv input-key="selectedRow"/>
+                        </entry>
+                    </context>
+                    <on-view-not-found>
+                        <nop/>
+                    </on-view-not-found>
+                </popup>
+            </on>
+        </flow>
+        <config>
+            <property name="rows">
+                <query-selection-rv query="system:urlavailabilityagent.5"/>
+            </property>
+            <property name="columns">
+                <list-value>
+                    <object>
+                        <property name="value">
+                            <context-rv input-key="currentRow" path="url"/>
+                        </property>
+                        <property name="id">
+                            <string xml:space="preserve">URL</string>
+                        </property>
+                    </object>
+                    <object>
+                        <property name="value">
+                            <context-rv input-key="currentRow" path="errorCode"/>
+                        </property>
+                        <property name="id">
+                            <string xml:space="preserve">ERRORCODE</string>
+                        </property>
+                        <property name="header">
+                            <i18n-rv key="system:urlavailabilityagent.plain.5"/>
+                        </property>
+                    </object>
+                    <object>
+                        <property name="value">
+                            <context-rv input-key="currentRow" path="availability/current/average"/>
+                        </property>
+                        <property name="id">
+                            <string xml:space="preserve">AVAILABILITY</string>
+                        </property>
+                    </object>
+                    <object>
+                        <property name="value">
+                            <context-rv input-key="currentRow" path="pageGetTime/current/average"/>
+                        </property>
+                        <property name="id">
+                            <string xml:space="preserve">PAGEGET</string>
+                        </property>
+                    </object>
+                    <object>
+                        <property name="value">
+                            <context-rv input-key="currentRow" path="responseTime/current/average"/>
+                        </property>
+                        <property name="id">
+                            <string xml:space="preserve">RESPONSETIME</string>
+                        </property>
+                    </object>
+                </list-value>
+            </property>
+        </config>
+    </view>
+</module>

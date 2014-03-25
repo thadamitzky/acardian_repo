@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->        
+
+<types>
+    <type name='HostValue' extends='ObservedValue'>          
+        <property name='value' type='Host' is-many='false' is-containment='false'/>
+    </type>
+
+    <type name="HostObservation" extends="StringObservation">
+        <property name='current' type='HostValue' is-many='false' is-containment='true'/>
+        <property name='latest'  type='HostValue' is-many='false' is-containment='true'/>
+        <property name='history' type='HostValue' is-many='true'  is-containment='true'/>
+    </type>
+
+    <type name='HostDiscoveryData' extends="CollectionModelRoot">
+        <property name="host" type="HostObservation" is-containment="true"/>
+    </type>
+
+</types>

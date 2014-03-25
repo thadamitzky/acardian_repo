@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<agent-definition xmlns="urn:X-quest.com:glue/agent/definition/1.9.1"
+                  name="HostDiscoveryAgent" allow-asynchronous-access="true"
+                  ver="5.6.10">
+
+    <!-- A pointer to where the topology definition files are. Topology files are loaded in
+         the order they are defined in this file, so later definitions can
+         refer to earlier definitions. -->
+    <topology-types package="com.quest.fglam.example.hostdiscovery.samples">
+        <topology-file filename="hostdiscovery-topology.xml"/>
+    </topology-types>
+
+    <agent name="HostDiscovery" package="com.quest.fglam.example.hostdiscovery" class-name="HostDiscoveryImpl">
+
+        <!-- once in a blue moon scan the entire subnet -->
+        <data-collection enable-cron="true">
+            <collector name="scan" method-name="scanNow" value="12" unit="hours"/>
+        </data-collection>
+
+        <properties>
+            <group id="Properties">
+                <boolean id="local" default="true" label="Scan Local Subnet"/>
+                <boolean id="osinfo" default="true" label="Guess OS Information"/>
+                <integer id="timeout" default="15" label="Ping Timeout (seconds)"/>
+                <secondary id="subnets" size="Unlimited" label="Subnets">
+                    <cols>
+                        <string id="address" label="Address" size="Unlimited"/>
+                        <string id="mask" label="Net Mask" size="Unlimited"/>
+                    </cols>
+                </secondary>
+            </group>
+        </properties>
+
+        <!-- invoke an immediate scan -->
+        <callback name="scanNow"/>
+    </agent>
+
+</agent-definition>

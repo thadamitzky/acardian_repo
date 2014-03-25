@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>6.3. Callbacks</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch06.html" title="Chapter 6. Structured Data Collection and Callbacks"/><link rel="prev" href="ch06s02.html" title="6.2. Structured Data Collection"/><link rel="next" href="ch07.html" title="Chapter 7. Agent Harness"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">6.3. Callbacks</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s02.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 6. Structured Data Collection and Callbacks</th><td width="20%" align="right"> <a accesskey="n" href="ch07.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="6.3. Callbacks"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="callbacks"/>6.3. Callbacks</h2></div></div></div><p>
+            Agent callbacks are similar to structured data collectors. They are added to an
+            agent by creating an interface that extends
+            <code class="function">com.quest.glue.api.agent.CallbackAware</code> and implements that
+            extension in your agent. When the agent is created, FglAM will inspect it for
+            any interfaces that extend <code class="function">CallbackAware</code> and register the
+            defined methods as callbacks.
+        </p><p>
+            Callbacks differ from structured data collectors in two ways:
+            </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+                        Callbacks are never automatically scheduled for execution. They are
+                        only called when a request to run them arrives from the server. Requests 
+                        can be made by calling the appropriate methods from within groovy
+                        scripts.
+                    </p></li><li class="listitem"><p>
+                        Callbacks are able to accept parameters because they are invoked by scripts
+                        on the server. These scripts are able to provide contextual parameters
+                        that cannot be provided when a structured data collector is called. Only
+                        a limited number of parameter types, defined below, can be used.
+                    </p></li></ul></div><p>
+        </p><p>
+            Agent callbacks support only a limited number of parameter types, and no return values.
+            They are always run asynchronously. When a callback is invoked by a groovy script
+            on the server, a message is queued for the agent and the callback returns immediately.
+            Any results that need to be returned by the callback should be sent using the normal data
+            collection methods.
+        </p><p>
+            The supported parameter types are:
+            </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">String</li><li class="listitem">Integer</li><li class="listitem">Long</li><li class="listitem">Double</li><li class="listitem">Boolean</li></ul></div><p>
+            If a callback method that does not match the required signature is detected by FglAM, a
+            warning message is displayed in the FglAM logs. The agent will still be loaded and
+            run.
+        </p><p>
+            Agent callbacks are run on demand by code within the FMS. The code is typically
+            in the form of groovy scripts, although it is possible to execute callbacks using Java code
+            as well. The callback functionality is exposed to groovy scripts by the 
+            <code class="function">AgentCallbackService</code>.
+        </p><div class="section" title="6.3.1. Tooling Changes"><div class="titlepage"><div><div><h3 class="title"><a id="callback_tooling"/>6.3.1. Tooling Changes</h3></div></div></div><p>
+                Starting with version 1.3 of the Agent Definition Schema, support for agent callbacks
+                can be automatically generated using the FglAM tooling.
+            </p><p>
+                The <span class="emphasis"><em>agent-definition.xml</em></span> schema has been updated to support agent
+                callbacks. A <code class="varname">callback</code> element has been added to the
+                <code class="varname">agent</code> block that defines the name and parameters expected for a
+                callback. When run, the tooling creates an extension of the
+                <code class="function">CallbackAware</code> interface that can be implemented by the agent.
+            </p><div class="example"><a id="d0e5042"/><p class="title"><strong>Example 6.1. Agent Callback Definition</strong></p><div class="example-contents"><pre class="programlisting">
+
+&lt;agent-definition xmlns="urn:X-quest.com:/glue/agent/definition/1.9"
+                  name="CallbackExampleCartridge"
+                  ver="0.0.1" allow-asynchronous-access="true"/&gt;
+    &lt;agent name="CallbackExampleAgent"
+           package="com.quest.example"
+           class-name="CallbackExampleAgentImpl"/&gt;
+
+        &lt;properties&gt;
+            ...
+        &lt;/properties&gt;
+
+        &lt;callback name="sayHello"&gt;
+            &lt;param name="who" type="String"&gt;
+        &lt;/callback&gt;
+    &lt;/agent&gt;
+&lt;/agent-definition&gt;
+
+                </pre></div></div><br class="example-break"/><p>
+                The above definition instructs the FglAM tooling to generate a
+                <code class="function">CallbackExampleAgentCallbacks</code> interface. This interface
+                declares a method that corresponds to the callback that must be implemented by
+                the agent developer. It is the agent developer's responsibility to ensure
+                that the agent (in this case the <code class="function">CallbackExampleAgentImpl</code>
+                agent) implements the *Callbacks interface.
+            </p><p>
+                Because the *Callbacks interface is automatically generated by the FglAM
+                tooling, any changes made to the callback specifications cause compile-time
+                errors in the agent until the corresponding changes are implemented.
+            </p></div><div class="section" title="6.3.2. Finding Available Callbacks"><div class="titlepage"><div><div><h3 class="title"><a id="callback_listAvailableAgentCallbacks"/>6.3.2. Finding Available Callbacks</h3></div></div></div><p>
+                The <code class="function">listAvailableAgentCallbacks</code> method can be used to
+                retrieve the current set of callbacks for a particular agent, along with 
+                their parameters. From this, you can determine which (if any) callbacks are 
+                defined on an agent when multiple versions of an agent have been deployed.
+            </p><p>
+                The following groovy script can be used to display the names and parameter
+                types of all the callbacks for a particular agent. It can be executed by
+                saving it to disk and running
+                <code class="computeroutput">fglcmd.bat -usr XXX -pwd XXX -cmd script:run -f /path/to/script</code>
+                </p><div class="example"><a id="d0e5070"/><p class="title"><strong>Example 6.2. Calling listAvailableAgentCallbacks</strong></p><div class="example-contents"><pre class="programlisting">
+
+<em class="hl-tag" style="color: green">/**
+ * Returns a list of strings describing the name and parameter types for all
+ * the callbacks defined for a particular agent.
+ *
+ * @param id The numeric identifier of the agent to query
+ * @return A list of strings describing each available callback
+ */</em>
+def listAgentCallbacks(<strong class="hl-keyword">int</strong> agentId) {
+    callbacks = []
+
+    <em class="hl-tag" style="color: green">// find the agent callback service</em>
+    service = server[<strong class="hl-string"><em style="color:red">"AgentCallbackService"</em></strong>]
+
+    <em class="hl-tag" style="color: green">// Execute listAvailableAgentCallbacks and wait for it to complete.  This</em>
+    <em class="hl-tag" style="color: green">// method can involve a remote call to the agent itself and can take a</em>
+    <em class="hl-tag" style="color: green">// while.  It runs asynchronously so that other work can be done while the</em>
+    <em class="hl-tag" style="color: green">// call is executing.</em>
+    <em class="hl-tag" style="color: green">//</em>
+    <em class="hl-tag" style="color: green">// In this case there is nothing else to do, so wait for ever until the</em>
+    <em class="hl-tag" style="color: green">// call completes.</em>
+    rc = service.listAvailableAgentCallbacks( agentId )
+    rc.waitForCompletion(<span class="hl-number">0</span>)
+
+    <em class="hl-tag" style="color: green">// Walk across the returned set and build a descriptive string for each.</em>
+    rc.getResult().each { cb -&gt;
+
+        params = <strong class="hl-string"><em style="color:red">""</em></strong>
+
+        <em class="hl-tag" style="color: green">// build a string of parameter types</em>
+        cb.getParameterTypes().each { param -&gt;
+
+            <strong class="hl-keyword">if</strong> ( params.length() &gt; <span class="hl-number">0</span> ) {
+                params += <strong class="hl-string"><em style="color:red">", "</em></strong>
+            }
+            params += param.getName()
+        }
+
+        callbacks.add( cb.getName() + <strong class="hl-string"><em style="color:red">"("</em></strong> + params + <strong class="hl-string"><em style="color:red">")"</em></strong> )
+    }
+
+    <strong class="hl-keyword">return</strong> callbacks;
+}
+
+<em class="hl-tag" style="color: green">// Return a list containing the callbacks for agent '103'.</em>
+<strong class="hl-keyword">return</strong> listAgentCallbacks(<span class="hl-number">103</span>)
+
+                    </pre></div></div><p><br class="example-break"/>
+    
+                If agent '103' is the FglAM example agent, the following result would be returned:
+                <code class="computeroutput">[resetSampleCount(), normalCollection(), fullDetailCollection()]</code>
+            </p></div><div class="section" title="6.3.3. Invoking Agent Callbacks"><div class="titlepage"><div><div><h3 class="title"><a id="callback_invokeCallback"/>6.3.3. Invoking Agent Callbacks</h3></div></div></div><p>
+                The <code class="function">invokeCallback</code> method in the <code class="function">AgentCallbackService</code> 
+                is used to execute the callback itself. It accepts the numeric identifier of the agent, a
+                string representing the name of the callback to invoke, and an array of
+                parameters that get passed into the callback function.
+            </p><p>
+                The following example shows how to execute the <code class="function">resetSampleCount</code> callback
+                declared in the FglAM example agent above.
+                </p><div class="example"><a id="d0e5095"/><p class="title"><strong>Example 6.3. Calling invokeCallback</strong></p><div class="example-contents"><pre class="programlisting">
+
+svc = server["AgentCallbackService];
+svc.invokeCallback(103, "resetSampleCount", [] as Object[]);
+
+                    </pre></div></div><p><br class="example-break"/>
+                The <code class="function">[] as Object[]</code> notation creates an empty array and explicitly casts
+                it to an array of objects. This allows the groovy runtime code to locate a method that accepts
+                zero parameters and call it. If <code class="function">resetSampleCount</code> accepted any parameters,
+                they would be provided in order as elements in the array above. The explicit cast to
+                <code class="function">Object[]</code> would still be required.
+            </p></div></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06s02.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch06.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch07.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">6.2. Structured Data Collection </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> Chapter 7. Agent Harness</td></tr></table></div></body></html>

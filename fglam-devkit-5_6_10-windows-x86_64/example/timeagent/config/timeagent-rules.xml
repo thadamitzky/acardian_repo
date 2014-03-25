@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+
+
+
+<foglight-config version="1.0.3.0" exported-on="2009-01-27T21:33:54.147Z">
+    <severity-family id="d3a3bc76-05a5-4647-9927-771359efe1cf" name="Host Clock Out Of Sync" comments="Fires when the TimeAgent for a host
+indicates that the host's system clock
+is out of sync with the server's." is-external="true" help="" trigger="com.quest.nitro.service.rule.rule.Rule$TriggerType DATA_DRIVEN">
+        <scoping-query text="TimeAgentDetailedSample"/>
+        <firing_strategies>
+            <hit_rate_firing_strategy>
+                <id>8a84f2a61f14af53011f1541850000d0</id>
+                <monitor_window_size>1</monitor_window_size>
+                <monitor_hit_threshold>1</monitor_hit_threshold>
+            </hit_rate_firing_strategy>
+        </firing_strategies>
+        <expressions/>
+        <messages/>
+        <effective-schedules>
+            <schedule-id>30afa315-3131-48c2-b0e8-71fea187af4e</schedule-id>
+        </effective-schedules>
+        <blackout-schedules/>
+        <severities>
+            <conditional-severity id="8a84f2a61f14af53011f154184ff00cd" level="3" disabled="true">
+                <message name="SeverityMessage"><![CDATA[]]></message>
+                <expressions/>
+                <messages/>
+                <fire-action-handlers/>
+                <exit-action-handlers/>
+                <condition><![CDATA[]]></condition>
+            </conditional-severity>
+            <unconditional-severity id="8a84f2a61f14af53011f154184ff00cb">
+                <message name="SeverityMessage"><![CDATA[]]></message>
+                <expressions/>
+                <messages/>
+                <fire-action-handlers/>
+                <exit-action-handlers/>
+            </unconditional-severity>
+            <unconditional-severity id="8a84f2a61f14af53011f1541850000cf" level="-1" disabled="true">
+                <message name="default.severity.message"><![CDATA[Rule @foglight_rule_name fired with @foglight_severity_level_name severity.]]></message>
+                <expressions/>
+                <messages/>
+                <fire-action-handlers/>
+                <exit-action-handlers/>
+            </unconditional-severity>
+            <conditional-severity id="8a84f2a61f14af53011f154184ff00cc" level="2">
+                <message name="SeverityMessage"><![CDATA[The host clock on @foglight_monitored_host_name is not synchronized with the server's host clock.]]></message>
+                <expressions/>
+                <messages/>
+                <fire-action-handlers/>
+                <exit-action-handlers/>
+                <condition><![CDATA[#timeDifference# < -30000 || #timeDifference# > 30000]]></condition>
+            </conditional-severity>
+            <conditional-severity id="8a84f2a61f14af53011f1541850000ce" level="4" disabled="true">
+                <message name="SeverityMessage"><![CDATA[]]></message>
+                <expressions/>
+                <messages/>
+                <fire-action-handlers/>
+                <exit-action-handlers/>
+                <condition><![CDATA[]]></condition>
+            </conditional-severity>
+        </severities>
+    </severity-family>
+</foglight-config>

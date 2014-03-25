@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>3.8. SupportBundleService</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch03.html" title="Chapter 3. Agent Services"/><link rel="prev" href="ch03s07.html" title="3.7. UpstreamConnectionService"/><link rel="next" href="ch03s09.html" title="3.9. AgentResourceService"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.8. SupportBundleService</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s07.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 3. Agent Services</th><td width="20%" align="right"> <a accesskey="n" href="ch03s09.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="3.8. SupportBundleService"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="agentservices-SupportBundleService"/>3.8. SupportBundleService</h2></div></div></div><p>
+            A support bundle service allows agents to contribute arbitrary
+            information to a support bundle.
+        </p><p>
+            Support bundles are a collection of log files and state information
+            often used by support and development teams for post-mortem debugging
+            of problems in the field. Information can be added in two ways:
+           </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">Through raw text, which is fed into a text file</li><li class="listitem">In a list of files, which are copied into the support bundle</li></ul></div><p>
+        </p><p>
+            You can improve this process and cut down on the amount of time needed
+            to diagnose and correct problems in the field by allowing an agent instance
+            to submit information to the support bundle. By default, the Foglight
+            Agent Manager collects the log files it maintains
+            for all agent instances. Agent developers only need this service when
+            information that is not in the log files would be useful in a support bundle.
+            This may include, for example, runtime state information, or extra checks
+            that are only performed for diagnostic purposes.
+        </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s07.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s09.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">3.7. UpstreamConnectionService </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 3.9. AgentResourceService</td></tr></table></div></body></html>

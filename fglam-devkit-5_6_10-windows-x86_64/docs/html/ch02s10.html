@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>2.10. Services Available To Agents</title><link rel="stylesheet" type="text/css" href="stylesheet.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"/><link rel="home" href="index.html" title="The Foglight Agent Manager Developer's Kit"/><link rel="up" href="ch02.html" title="Chapter 2. Creating Agents"/><link rel="prev" href="ch02s09.html" title="2.9. Errors and Exceptions in Agents"/><link rel="next" href="ch02s11.html" title="2.11. Restrictions on Agents"/><meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.10. Services Available To Agents</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s09.html"><img src="images/prev.png" alt="Prev"/></a> </td><th width="60%" align="center">Chapter 2. Creating Agents</th><td width="20%" align="right"> <a accesskey="n" href="ch02s11.html"><img src="images/next.png" alt="Next"/></a></td></tr></table><hr/></div><img align="right" alt="[QUEST Logo]" src="images/quest_logo.gif"/><div class="section" title="2.10. Services Available To Agents"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="creating-agents-services"/>2.10. Services Available To Agents</h2></div></div></div><p>
+        When writing agents, there are a number of services provided by the FglAM host. These are 
+        are covered in detail in the 
+        <a class="link" href="ch03.html" title="Chapter 3. Agent Services">Agent Services</a> chapter. Here is a brief overview of
+        the most commonly used services:
+        
+        </p><div class="section" title="1. LogService"><div class="titlepage"><div><div><h4 class="title"><a id="creating-agents-services-logging"/>1. LogService</h4></div></div></div><p>
+                All logging done by an agent must use the <a class="link" href="ch03s02.html" title="3.2. LogService">LogService</a>
+                provided by FglAM. This ensures that all log messages are captured in
+                a log file and that all log messages conform to the same format.
+            </p></div><p>
+        
+        </p><div class="section" title="2. UnitService"><div class="titlepage"><div><div><h4 class="title"><a id="creating-agents-services-unit"/>2. UnitService</h4></div></div></div><p>
+                The <a class="link" href="ch03s05.html" title="3.5. UnitService">UnitService</a> can be 
+                used for associating units with your data when it is submitted through the 
+                TopologyDataSubmissionService service.
+            </p></div><p>
+        
+        </p><div class="section" title="3. TimestampService"><div class="titlepage"><div><div><h4 class="title"><a id="creating-agents-services-timestamp"/>3. TimestampService</h4></div></div></div><p>
+                All data sent to the server has its timestamps adjusted automatically by the
+                TopologyDataSubmissionService to match those on the server. If an agent needs to adjust
+                timestamps that are not handled by the TopologyDataSubmissionService, it can access the
+        <a class="link" href="ch03s06.html" title="3.6. TimestampService">TimestampService</a> to do it.
+            </p></div><p>
+        
+        </p><div class="section" title="4. UpstreamConnectionService"><div class="titlepage"><div><div><h4 class="title"><a id="creating-agents-services-pollinginterval"/>4. UpstreamConnectionService</h4></div></div></div><p>
+                The UpstreamConnectionService 
+                can be used to determine how often the Foglight Agent Manager will connect to 
+                its upstream and submit data, and that information can be used to scale an agent's data 
+                collection accordingly.
+            </p></div><p> 
+        
+        </p><div class="section" title="5. TopologyDataSubmissionService3"><div class="titlepage"><div><div><h4 class="title"><a id="creating-agents-services-submitter"/>5. TopologyDataSubmissionService3</h4></div></div></div><p>
+              The TopologyDataSubmissionService3 is used to submit topology-based data samples associated 
+              with the current host, or a developer-specified host. It is also used to track the status of 
+              verified data submissions.
+            </p></div><p>
+        
+      </p></div><div class="navfooter"><hr/><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s09.html"><img src="images/prev.png" alt="Prev"/></a> </td><td width="20%" align="center"><a accesskey="u" href="ch02.html"><img src="images/up.png" alt="Up"/></a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s11.html"><img src="images/next.png" alt="Next"/></a></td></tr><tr><td width="40%" align="left" valign="top">2.9. Errors and Exceptions in Agents </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"/></a></td><td width="40%" align="right" valign="top"> 2.11. Restrictions on Agents</td></tr></table></div></body></html>

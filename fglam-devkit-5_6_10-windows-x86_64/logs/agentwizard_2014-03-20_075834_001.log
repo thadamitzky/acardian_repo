@@ -1,0 +1,10 @@
+2014-03-20 07:58:34.230 VERBOSE [main] com.quest.common.config.Config - Loaded configuration "agentwizard" from "C:\Users\TSHY\ws\fglam-devkit-5_6_10-windows-x86_64\config\tools.config":
+	DebugLevelLifespan = 5
+	Target.CONSOLE.formatter.columns = 250
+	Target.CONSOLE.formatter.indentWrappedLines = true
+	Target.CONSOLE.formatter.suppressImplDetails = false
+	Target.CONSOLE.formatter.suppressTimestamp = true
+	Target.CONSOLE.threshold = INFO
+	Target.FILE.threshold = OFF
+	Target.SERIALIZED_FILE.threshold = OFF
+2014-03-20 07:58:34.277 VERBOSE [main] com.quest.common.config.Config - System property overrides for configuration "agentwizard":

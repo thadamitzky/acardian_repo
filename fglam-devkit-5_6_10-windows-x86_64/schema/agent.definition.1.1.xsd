@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2013 Dell Inc.
+  ALL RIGHTS RESERVED.
+  
+  This software is the confidential and proprietary information of
+  Dell Inc. ("Confidential Information").  You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Dell Inc.
+  
+  DELL INC. MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT
+  THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+  NON-INFRINGEMENT. DELL SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+  OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:X-quest.com:glue/agent/definition/1.1"
+			xmlns:agentdef="urn:X-quest.com:glue/agent/definition/1.1"
+			xmlns:common="urn:X-quest.com:glue/common/1.1"
+			elementFormDefault="qualified">
+
+	<!-- Include Common types -->
+	<xsd:import namespace="urn:X-quest.com:glue/common/1.1" schemaLocation="common.1.1.xsd"/>
+	
+	<!--
+		Root AgentDefinition Definitions
+	-->
+	<xsd:element name="agent-definition">
+		<xsd:annotation>
+			<xsd:documentation>
+				Configuration options describing a set of agents.  This includes the ASPs to use as
+				well as the sample data that will be sent.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="host-version" type="agentdef:HostVersion">
+					<xsd:annotation>
+						<xsd:documentation>
+							The host-version contains the support SPID release(s) that the agents
+							defined in this xml document are being targeted/deploy on
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element ref="agentdef:sample-types" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="agentdef:agent" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element name="simulator-agent" type="agentdef:SimulatorAgentConfig" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+			<xsd:attributeGroup ref="common:AgentRootNodeAttrs"/>
+		</xsd:complexType>
+		<xsd:unique name="unique.Agent.Id">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Sets a unique constraint for the 'id' attribute of the for all agents
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:selector xpath="agentdef:agent"/>
+            <xsd:field xpath="@name"/>
+        </xsd:unique>
+	</xsd:element>
+
+	<xsd:complexType name="HostVersion">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="exclude" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						List any releases that this agent should NOT be deployed on to
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="version" type="xsd:string" use="required">
+						<xsd:annotation>
+							<xsd:documentation>
+								Host version number to exclude deployment on
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="min" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					This is the version that the agent will be targeted to.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:element name="agent" type="agentdef:Agent">
+        <xsd:annotation>
+            <xsd:documentation>
+                Describes the configuration parameters for a particular agent, such as its name and
+                which sample types it will be sending to the server.
+            </xsd:documentation>
+        </xsd:annotation>
+		<xsd:unique name="unique.SampleName.Name">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a unique constraint for the 'name' attribute of the SampleName element
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="agentdef:samplename"/>
+			<xsd:field xpath="@name"/>
+		</xsd:unique>
+	</xsd:element>
+
+    <xsd:complexType name="Agent">
+        <xsd:sequence minOccurs="1">
+        	<xsd:element ref="agentdef:properties">
+				<xsd:annotation>
+					<xsd:documentation>
+						SPI requires that an agent have properties. This restriction maybe removed
+						when SPID is replaced.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+            <xsd:element ref="agentdef:samplename" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="common:JavaIdentifier" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The name of the agent. This value can also be used to identify the implementing
+					java classname for this agent if the sibling 'class-name' attribute is omitted.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="package" type="common:JavaPackageName" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The package name to use when generating typesafe wrapper Java classes for
+					this agent.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="class-name" type="common:JavaIdentifier" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					The java class name for this agent. If attribute is not set, then the sibling
+					'name' attribute value will be used in it's place
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="SimulatorAgentConfig">
+		<xsd:annotation>
+			<xsd:documentation>
+				Agent Simulator process simulated data for a defined AgentType
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence minOccurs="1">
+        	<xsd:element ref="agentdef:properties">
+				<xsd:annotation>
+					<xsd:documentation>
+						Simulator property set
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+        </xsd:sequence>
+		 <xsd:attribute name="name" type="common:JavaIdentifier" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The name of this Agent Simulator
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="package" type="common:JavaIdentifier" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The agent package that this simulator will mimic
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="type" type="common:JavaIdentifier" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The agent type that this simulator will mimic
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+
+	<!--
+		Metric Sample Definitions
+	-->
+	<xsd:element name="samplename" type="agentdef:SampleName">
+        <xsd:annotation>
+            <xsd:documentation>
+                The name of a previously defined sample.  This can be the name of a topology object
+                imported as part of the sample definitions or a previously defined sample object.
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:complexType name="SampleName">
+        <xsd:attribute name="name" type="common:JavaIdentifier" use="required"/>
+    </xsd:complexType>
+
+	<xsd:element name="sample-types" type="agentdef:SampleTypes">
+        <xsd:annotation>
+            <xsd:documentation>
+                Description of the data types that can be submitted by agents.
+            </xsd:documentation>
+        </xsd:annotation>
+		<xsd:unique name="unique.Sample.Name">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a unique constraint for the 'name' attribute of the Sample element
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="agentdef:sample"/>
+			<xsd:field xpath="@name"/>
+		</xsd:unique>
+	</xsd:element>
+
+    <xsd:complexType name="SampleTypes">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        	<xsd:element ref="agentdef:sample" maxOccurs="unbounded"/>
+        </xsd:choice>
+    </xsd:complexType>
+
+    <xsd:element name="sample" type="agentdef:Sample">
+        <xsd:annotation>
+            <xsd:documentation>
+                Definition of sample data submitted to the server.
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:complexType name="Sample">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        	<xsd:element name="identity" type="agentdef:SampleIdentity" maxOccurs="unbounded"/>
+        	<xsd:element name="observation" type="agentdef:SampleObservation" maxOccurs="unbounded"/>
+        	<xsd:element name="metric" type="agentdef:SampleMetric" maxOccurs="unbounded"/>
+        	<xsd:element name="table" type="agentdef:SampleTable" maxOccurs="unbounded"/>
+            <xsd:element name="property" type="agentdef:SampleTopologyProperty" maxOccurs="unbounded"/>
+        </xsd:choice>
+
+        <xsd:attribute name="name" use="required" type="common:JavaIdentifier"/>
+        <xsd:attribute name="extends" use="optional" default="TopologyObject" type="xsd:string"/>
+        <xsd:anyAttribute namespace="##any" processContents="lax"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="SampleProperty">
+        <xsd:attribute name="name" use="required" type="common:JavaIdentifier"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="TypedSampleProperty">
+        <xsd:complexContent>
+            <xsd:extension base="agentdef:SampleProperty">
+                <xsd:attribute name="type" use="required" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SampleIdentity">
+        <xsd:annotation>
+            <xsd:documentation>
+                A property of the sample that represents its identity.  When samples are submitted
+                to the server a search is performed on the existing set of topology objects.  If an
+                object is found that contains the exact same set of identity values then the sample
+                data is applied to that object.  Otherwise a new object will be created.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="agentdef:TypedSampleProperty">
+                <xsd:attribute name="unit-name" use="optional" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SampleObservation">
+        <xsd:annotation>
+            <xsd:documentation>
+                Observations represent pieces of state that get recorded by agents.  They are
+                different from Metrics in that they represent a snapshot in time that cannot be
+                averaged over a period of time.
+
+                For example, the status code from a monitored webpage would be a good Observation
+                since it makes little sense to average it over a period of time.  The time required
+                to fetch that same page would be a good Metric since it is suitable for averaging.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+        	<xsd:extension base="agentdef:TypedSampleProperty">
+                <xsd:attribute name="unit-name" use="optional" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SampleMetric">
+        <xsd:annotation>
+            <xsd:documentation>
+                Metrics represent data collected and averaged over a period of time.  Examples of
+                metrics include cpu utilization, available memory, or number of swaps.
+
+                All Metrics are stored by the server as double values so that they can be used in
+                calculations with a high degree of precision.  If a value being submitted should not
+                be used in this manner is it probably a better represented as an Observation.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+        	<xsd:extension base="agentdef:SampleProperty">
+                <xsd:attribute name="unit-name" use="required" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SampleTable">
+        <xsd:annotation>
+            <xsd:documentation>
+                Some samples include a table of observed information that contain a large or
+                dynamic number of entries, such as lists of the top CPU consumers, processes that
+                consume large amounts of memory, or snapshots of the processes running on a system.
+
+                These represent a special type of observation in that every time a sample is
+                submitted the entire set of observations will need to be replaced with a new set,
+                rather than being updated as is the case with standard observations.
+
+                This type should only be used when the list does not have a fixed size or is very
+                large.  In cases where the number of entries in a table is small and constant it is
+                better to create a topology object with an observation for each record and update
+                it accordingly.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+        	<xsd:extension base="agentdef:TypedSampleProperty"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SampleTopologyProperty">
+        <xsd:annotation>
+            <xsd:documentation>
+                A property of the sample that represents an attribute of the topology object that
+                can change, but very infrequently.  An example would include the total capacity of
+                a disk:  it does not necessarily identify the disk but will change infreqently over
+                the lifetime of the object.
+
+                Frequent topology object property changes cause a large number of versions of an
+                object to be stored in the server and should be avoided.  Observations are better
+                for these types of values.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="agentdef:TypedSampleProperty">
+                <xsd:attribute name="unit-name" use="optional" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!--
+		ASP Property Definitions
+	-->
+	<xsd:element name="properties" type="agentdef:AgentProperties">
+        <xsd:unique name="unique.Property.Id">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Sets a unique constraint for the 'id' attribute for property types
+                    across all groups
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:selector xpath="agentdef:group/agentdef:*"/>
+            <xsd:field xpath="@id"/>
+        </xsd:unique>
+        <xsd:unique name="unique.Group.Id">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Sets a unique constraint for the 'id' attribute for all groups
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:selector xpath="agentdef:group"/>
+            <xsd:field xpath="@id"/>
+        </xsd:unique>
+    </xsd:element>
+
+	<xsd:complexType name="AgentProperties">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines ASP property values for a single Foglight Agent Manager Agent
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="group" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        A group defines a set of properties that will be displayed in the Admin UI
+                        under a common heading. Examples of groups may include "Connectivity" or
+                        "Database Setup"
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+					<xsd:choice maxOccurs="unbounded">
+						<xsd:element ref="agentdef:string"	 maxOccurs="unbounded"/>
+						<xsd:element ref="agentdef:boolean"	 maxOccurs="unbounded"/>
+						<xsd:element ref="agentdef:enum"	 maxOccurs="unbounded"/>
+						<xsd:element ref="agentdef:integer"	 maxOccurs="unbounded"/>
+						<xsd:element ref="agentdef:float"	 maxOccurs="unbounded"/>
+						<xsd:element ref="agentdef:secondary" maxOccurs="unbounded"/>
+					</xsd:choice>
+					<xsd:attributeGroup ref="agentdef:BaseAttrs"/>
+				</xsd:complexType>
+            </xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="string" type="agentdef:StringProperty">
+		<xsd:annotation>
+			<xsd:documentation>
+				A property that holds a String value.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:complexType name="StringProperty">
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:CharacterPropertyType">
+				<xsd:attribute name="default" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Default/Preset value for this string property (default: empty string)
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="boolean" type="agentdef:BooleanProperty">
+		<xsd:annotation>
+			<xsd:documentation>
+				A property that holds a Boolean value.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:complexType name="BooleanProperty">
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:SelectPropertyType">
+				<xsd:attribute name="default" type="xsd:boolean" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Default/Preset value for this boolean property (default: false)
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="integer" type="agentdef:IntegerProperty">
+		<xsd:annotation>
+			<xsd:documentation>
+				A property that holds an Integer value.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:complexType name="IntegerProperty">
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:NumericPropertyType">
+				<xsd:attribute name="default" type="xsd:integer" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Default/Preset value for this integer property (default: 0)
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="float" type="agentdef:FloatProperty">
+		<xsd:annotation>
+			<xsd:documentation>
+				A property holds a Float value.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:complexType name="FloatProperty">
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:NumericPropertyType">
+				<xsd:attribute name="default" type="xsd:float" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Default/Preset value for this float property (default: 0.0)
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="enum" type="agentdef:EnumProperty">
+		<xsd:annotation>
+			<xsd:documentation>
+				Enum/Select Option property values
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:unique name="unique.Const.Id">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a unique constraint for the 'id' attribute of the for all
+					const values declared within an enum element
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="agentdef:const"/>
+			<xsd:field xpath="@id"/>
+		</xsd:unique>
+        <!-- Key Refs for matching the enum@default with a configured enum/const@id -->
+        <xsd:keyref name="keyRef_enum.default" refer="agentdef:key_const.Id">
+            <xsd:selector xpath="."/>
+			<xsd:field xpath="@default"/>
+        </xsd:keyref>
+        <xsd:key name="key_const.Id">
+            <xsd:selector xpath="agentdef:const"/>
+            <xsd:field xpath="@id"/>
+        </xsd:key>
+    </xsd:element>
+
+	<xsd:complexType name="EnumProperty">
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:SelectPropertyType">
+				<xsd:sequence>
+					<xsd:element name="const" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:attribute name="id" type="common:JavaIdentifier" use="required">
+								<xsd:annotation>
+									<xsd:documentation>
+										Preset value name to comprise enum list
+									</xsd:documentation>
+								</xsd:annotation>
+							</xsd:attribute>
+                        </xsd:complexType>
+                    </xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="default" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							Holds the default enum selection. This value must exist within the
+                            defined child const id list
+                        </xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+        </xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="secondary" type="agentdef:SecondaryASP">
+		<xsd:annotation>
+			<xsd:documentation>
+				Secondary ASP Property set
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:unique name="secondaryASPUniqueColsId">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a unique constraint for the 'id' attribute of the property type fields that
+					make up this secondary asp, thus preventing two or more properties from having
+					the same 'name'
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="agentdef:cols/agentdef:*"/>
+			<xsd:field xpath="@id"/>
+		</xsd:unique>
+
+        <!-- Key Refs for matching the secondary@default with a configured secondary/list@id -->
+        <xsd:keyref name="keyRef_secondary.default" refer="agentdef:key_list.Id">
+			<xsd:selector xpath="."/>
+			<xsd:field xpath="@default"/>
+		</xsd:keyref>
+        <xsd:key name="key_list.Id">
+            <xsd:selector xpath="agentdef:list"/>
+            <xsd:field xpath="@id"/>
+        </xsd:key>
+
+        <!-- Matches all declared rowset properties of a list to those defined the 'cols' property set -->
+		<xsd:keyref name="keyRef_cols.String.Id" refer="agentdef:key_cols.StringProperty.Id">
+			<xsd:selector xpath="agentdef:list/agentdef:row/agentdef:string"/>
+			<xsd:field xpath="@id"/>
+		</xsd:keyref>
+		<xsd:keyref name="keyRef_cols.Integer.Id" refer="agentdef:key_cols.IntegerProperty.Id">
+			<xsd:selector xpath="agentdef:list/agentdef:row/agentdef:integer"/>
+			<xsd:field xpath="@id"/>
+		</xsd:keyref>
+		<xsd:keyref name="keyRef_cols.Float.Id" refer="agentdef:key_cols.FloatProperty.Id">
+			<xsd:selector xpath="agentdef:list/agentdef:row/agentdef:float"/>
+			<xsd:field xpath="@id"/>
+		</xsd:keyref>
+		<xsd:keyref name="keyRef_cols.Boolean.Id" refer="agentdef:key_cols.BooleanProperty.Id">
+			<xsd:selector xpath="agentdef:list/agentdef:row/agentdef:boolean"/>
+			<xsd:field xpath="@id"/>
+		</xsd:keyref>
+		<xsd:keyref name="keyRef_cols.Enum.Id" refer="agentdef:key_cols.EnumProperty.Id">
+			<xsd:selector xpath="agentdef:list/agentdef:row/agentdef:enum"/>
+			<xsd:field xpath="@id"/>
+		</xsd:keyref>
+
+		<xsd:key name="key_cols.StringProperty.Id">
+			<xsd:selector xpath="agentdef:cols/agentdef:string"/>
+			<xsd:field xpath="@id"/>
+		</xsd:key>
+		<xsd:key name="key_cols.IntegerProperty.Id">
+			<xsd:selector xpath="agentdef:cols/agentdef:integer"/>
+			<xsd:field xpath="@id"/>
+		</xsd:key>
+		<xsd:key name="key_cols.FloatProperty.Id">
+			<xsd:selector xpath="agentdef:cols/agentdef:float"/>
+			<xsd:field xpath="@id"/>
+		</xsd:key>
+		<xsd:key name="key_cols.BooleanProperty.Id">
+			<xsd:selector xpath="agentdef:cols/agentdef:boolean"/>
+			<xsd:field xpath="@id"/>
+		</xsd:key>
+		<xsd:key name="key_cols.EnumProperty.Id">
+			<xsd:selector xpath="agentdef:cols/agentdef:enum"/>
+			<xsd:field xpath="@id"/>
+		</xsd:key>
+	</xsd:element>
+
+	<xsd:complexType name="SecondaryASP">
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:CharacterPropertyType">
+				<xsd:sequence>
+					<xsd:element name="cols" maxOccurs="1">
+						<xsd:complexType>
+							<xsd:choice maxOccurs="unbounded">
+								<xsd:element ref="agentdef:string" maxOccurs="unbounded"/>
+								<xsd:element ref="agentdef:boolean" maxOccurs="unbounded"/>
+								<xsd:element ref="agentdef:enum" maxOccurs="unbounded"/>
+								<xsd:element ref="agentdef:integer" maxOccurs="unbounded"/>
+								<xsd:element ref="agentdef:float" maxOccurs="unbounded"/>
+							</xsd:choice>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="list" type="agentdef:SecondaryASPLists" minOccurs="0"
+								 maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="default" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Default/Preset value of the defined list to be used
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+            </xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SecondaryASPLists">
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:AbstractPropertyType">
+				<xsd:sequence>
+					<xsd:element name="row" minOccurs="0" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:choice maxOccurs="unbounded">
+								<xsd:element name="string" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="agentdef:RowValue">
+												<xsd:attribute name="value" type="xsd:string" use="required">
+													<xsd:annotation>
+														<xsd:documentation>
+															Value for string property
+														</xsd:documentation>
+													</xsd:annotation>
+												</xsd:attribute>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="boolean" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="agentdef:RowValue">
+												<xsd:attribute name="value" type="xsd:boolean" use="required">
+													<xsd:annotation>
+														<xsd:documentation>
+															Value for boolean property
+														</xsd:documentation>
+													</xsd:annotation>
+												</xsd:attribute>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="integer" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="agentdef:RowValue">
+												<xsd:attribute name="value" type="xsd:integer" use="required">
+													<xsd:annotation>
+														<xsd:documentation>
+															Value for integer property
+														</xsd:documentation>
+													</xsd:annotation>
+												</xsd:attribute>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="float" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="agentdef:RowValue">
+												<xsd:attribute name="value" type="xsd:float" use="required">
+													<xsd:annotation>
+														<xsd:documentation>
+															Value for float property
+														</xsd:documentation>
+													</xsd:annotation>
+												</xsd:attribute>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="enum" maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:complexContent>
+											<xsd:extension base="agentdef:RowValue">
+												<xsd:attribute name="value" type="xsd:string" use="required">
+													<xsd:annotation>
+														<xsd:documentation>
+															Value from Enum list
+														</xsd:documentation>
+													</xsd:annotation>
+												</xsd:attribute>
+											</xsd:extension>
+										</xsd:complexContent>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:choice>
+						</xsd:complexType>
+						<xsd:unique name="secondaryASPUniqueRowId">
+							<xsd:annotation>
+								<xsd:documentation>
+									Sets a unique constraint for the 'id' attribute of the property type fields that
+									make up the rows of this secondary asp, thus preventing two or more properties
+									from having the same 'name'
+								</xsd:documentation>
+							</xsd:annotation>
+							<xsd:selector xpath="agentdef:*"/>
+							<xsd:field xpath="@id"/>
+						</xsd:unique>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!-- ASP Property :: Abstract Declarations -->
+
+	<xsd:attributeGroup name="BaseAttrs">
+		<xsd:annotation>
+			<xsd:documentation>
+				Core attribute set that is supported by base elements
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="common:JavaIdentifier" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Key/Name of the property.
+					Restriction: id attribute value must be a valid Java Identifier
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="label" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					Display name for this property. If left blank, then value in 'id' attribute
+					will be used.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+
+	<xsd:attributeGroup name="FieldPropertyAttrs">
+		<xsd:annotation>
+			<xsd:documentation>
+				Field type property attributes (i.e text fields)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="encrypted" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Set to true if this property value should be encrypted. This will result in the
+					value being masked in the Admin UI as well as being persisted with an encrypted
+					value (default: false)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+
+	<xsd:attributeGroup name="RenderPropertyAttrs">
+		<xsd:annotation>
+			<xsd:documentation>
+				Common property attributes that are applied to all property based elements
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="renderInline" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Set to true if this property should be displayed in the Admin UI on the same
+					line as the property defined before it. (default: false)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="hidden" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Sets a property as hidden in the Admin UI (default: false)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+
+	<xsd:attributeGroup name="NumericValidationAttrs">
+		<xsd:annotation>
+			<xsd:documentation>
+				Attributes used to validate Numeric property values
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="gtEqualZero" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Validates if the property value set is greater than or equal to zero
+					(default: false)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="equalZero" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Validates if the property value set is equal to zero (default: false)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="notEqualZero" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Validates if the property value set does not equal to zero (default: false)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ltEqualZero" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Validates if the property value set is less than or equal to zero
+					(default: false)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+
+	<xsd:complexType name="AbstractPropertyType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				Base type for all Property types
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="canBeBlank" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Set to determine whether this property's value can be left blank when
+					configuring the agent instance (default: false)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attributeGroup ref="agentdef:BaseAttrs"/>
+		<xsd:attributeGroup ref="agentdef:RenderPropertyAttrs"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="CharacterPropertyType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				Abstract Character based property types
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:AbstractPropertyType">
+				<xsd:attributeGroup ref="agentdef:FieldPropertyAttrs"/>
+				<xsd:attribute name="size" use="required">
+					<xsd:simpleType>
+						<xsd:annotation>
+							<xsd:documentation>
+								Sets the max length of this string value. Used in the Admin UI to
+								validate the length of a property's value.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:restriction base="xsd:positiveInteger">
+							<xsd:enumeration value="16"/>
+							<xsd:enumeration value="32"/>
+							<xsd:enumeration value="64"/>
+							<xsd:enumeration value="128"/>
+							<xsd:enumeration value="256"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SelectPropertyType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				Abstract Character based property types (i.e. string, enum)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:AbstractPropertyType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="NumericPropertyType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				Abstract Numeric based property types (i.e. integer, float)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="agentdef:AbstractPropertyType">
+				<xsd:attributeGroup ref="agentdef:FieldPropertyAttrs"/>
+				<xsd:attributeGroup ref="agentdef:NumericValidationAttrs"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="RowValue" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				Base type for Secondary ASP list row values
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					Key/Name of the property.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+</xsd:schema>
